@@ -1,0 +1,165 @@
+{
+  "description": "TEST SET. The 30 synthetic user utterances from the thesis dataset (chatbot_data_preparation_en), five per intent, with their original labels in \"intent\". They are used only to measure intent recognition (kb/evaluate-chat.mjs). They are never loaded into the database and never vote, so the chatbot is always tested on questions it has not seen. \"secondary\" marks a question that the dataset author judges to belong to two intents. It was added on 2026-10-12, after the first evaluation runs, so the evaluation always reports the strict figure (\"intent\" only) next to the relaxed one (\"intent\" or \"secondary\").",
+  "examples": [
+    {
+      "id": "U01",
+      "intent": "BURNOUT_INFO",
+      "text": "What is academic burnout and its symptoms?"
+    },
+    {
+      "id": "U02",
+      "intent": "BURNOUT_INFO",
+      "text": "Is burnout the same as normal stress?"
+    },
+    {
+      "id": "U03",
+      "intent": "BURNOUT_INFO",
+      "text": "Why are IT students prone to burnout?"
+    },
+    {
+      "id": "U04",
+      "intent": "BURNOUT_INFO",
+      "text": "Does burnout affect my GPA?"
+    },
+    {
+      "id": "U05",
+      "intent": "BURNOUT_INFO",
+      "text": "What is the difference between physical fatigue and burnout?"
+    },
+    {
+      "id": "U06",
+      "intent": "WORKLOAD",
+      "text": "My PBL projects are piling up, what should I do?",
+      "secondary": "TIME_MANAGEMENT",
+      "secondaryReason": "Describes a heavy load and asks what to do about it; managing time is part of the answer."
+    },
+    {
+      "id": "U07",
+      "intent": "WORKLOAD",
+      "text": "What does Temporal Demand mean in the questionnaire?"
+    },
+    {
+      "id": "U08",
+      "intent": "WORKLOAD",
+      "text": "I am frustrated, my coding always has errors.",
+      "secondary": "EXHAUSTION_DISENGAGEMENT",
+      "secondaryReason": "The thesis dataset files it under workload (\"a high cognitive load\"), and frustration is one of the six NASA-TLX dimensions. The dataset author also reads it as the student voicing a strained state rather than describing a load, and the knowledge base (WL-04, Gumasing et al., 2022) reports that students with more frustration also report more exhaustion."
+    },
+    {
+      "id": "U09",
+      "intent": "WORKLOAD",
+      "text": "Why is my Physical Demand score high even though I just sit?"
+    },
+    {
+      "id": "U10",
+      "intent": "WORKLOAD",
+      "text": "Assignments from different courses clash.",
+      "secondary": "TIME_MANAGEMENT",
+      "secondaryReason": "Clashing assignments raise the workload and are also a scheduling problem."
+    },
+    {
+      "id": "U11",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "text": "Why am I so exhausted even with enough sleep?"
+    },
+    {
+      "id": "U12",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "text": "What does a high Disengagement score mean?"
+    },
+    {
+      "id": "U13",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "text": "I don't care about college anymore, what should I do?"
+    },
+    {
+      "id": "U14",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "text": "Is this feeling of indifference normal?"
+    },
+    {
+      "id": "U15",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "text": "How to recover from mental exhaustion?"
+    },
+    {
+      "id": "U16",
+      "intent": "TIME_MANAGEMENT",
+      "text": "How to divide time between assignments?"
+    },
+    {
+      "id": "U17",
+      "intent": "TIME_MANAGEMENT",
+      "text": "I procrastinate often."
+    },
+    {
+      "id": "U18",
+      "intent": "TIME_MANAGEMENT",
+      "text": "Does time management prevent burnout?",
+      "secondary": "BURNOUT_INFO",
+      "secondaryReason": "Names both topics: asks about time management as a way to prevent burnout."
+    },
+    {
+      "id": "U19",
+      "intent": "TIME_MANAGEMENT",
+      "text": "My PBL group mates are passive, my time is drained."
+    },
+    {
+      "id": "U20",
+      "intent": "TIME_MANAGEMENT",
+      "text": "How long should I rest while doing assignments?"
+    },
+    {
+      "id": "U21",
+      "intent": "SCREENING_RESULT",
+      "text": "My result is High Risk, what does it mean?"
+    },
+    {
+      "id": "U22",
+      "intent": "SCREENING_RESULT",
+      "text": "Why is my result Moderate Risk?"
+    },
+    {
+      "id": "U23",
+      "intent": "SCREENING_RESULT",
+      "text": "Is this result guessed randomly by AI?"
+    },
+    {
+      "id": "U24",
+      "intent": "SCREENING_RESULT",
+      "text": "My result is No Burnout, what does it mean?"
+    },
+    {
+      "id": "U25",
+      "intent": "SCREENING_RESULT",
+      "text": "Can my screening result change?"
+    },
+    {
+      "id": "U26",
+      "intent": "STUDENT_SUPPORT",
+      "text": "Where should I report on campus?"
+    },
+    {
+      "id": "U27",
+      "intent": "STUDENT_SUPPORT",
+      "text": "Can the DPA see my test result?"
+    },
+    {
+      "id": "U28",
+      "intent": "STUDENT_SUPPORT",
+      "text": "How to talk about exhaustion to the DPA?"
+    },
+    {
+      "id": "U29",
+      "intent": "STUDENT_SUPPORT",
+      "text": "Is my psychological data safe?"
+    },
+    {
+      "id": "U30",
+      "intent": "STUDENT_SUPPORT",
+      "text": "My friend looks burned out, what should I do?",
+      "secondary": "BURNOUT_INFO",
+      "secondaryReason": "Asks how to help someone else, and is also about recognising burnout."
+    }
+  ]
+}

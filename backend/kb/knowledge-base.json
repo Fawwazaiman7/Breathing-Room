@@ -1,0 +1,405 @@
+{
+  "description": "Support Chat knowledge base. DRAFT: every passage awaits approval by the campus psychologist. Mirrors the document 'Breathing Room Support Chat Knowledge Base (Draft for Review)'. status: draft = awaiting review; adapted = source addressed another audience; to_confirm = wording or facts still to be confirmed.",
+  "version": "2026-10-12",
+  "passages": [
+    {
+      "id": "BI-01",
+      "topic": "BURNOUT_INFO",
+      "status": "draft",
+      "text": "Academic burnout is a state of feeling worn out by your studies and losing enthusiasm for them. It develops when study pressure and workload stay high for a long time.",
+      "source": "Liu et al. (2023)"
+    },
+    {
+      "id": "BI-02",
+      "topic": "BURNOUT_INFO",
+      "status": "draft",
+      "text": "This app looks at two core parts of burnout. Exhaustion is deep tiredness from your studies. Disengagement is a growing distance from your studies.",
+      "source": "Campos et al. (2012)"
+    },
+    {
+      "id": "BI-03",
+      "topic": "BURNOUT_INFO",
+      "status": "draft",
+      "text": "Common signs include constant tiredness, mental exhaustion, trouble concentrating, and feeling irritable. Some students also pull back from other people or stop caring about coursework.",
+      "source": "Gumasing et al. (2022)"
+    },
+    {
+      "id": "BI-04",
+      "topic": "BURNOUT_INFO",
+      "status": "draft",
+      "text": "Feeling tired after a demanding week is normal. Burnout is different: it builds up when pressure stays high over a long period, and the tiredness comes together with losing interest in your studies.",
+      "source": "Liu et al. (2023); Peterson et al. (2008)"
+    },
+    {
+      "id": "BI-05",
+      "topic": "BURNOUT_INFO",
+      "status": "draft",
+      "text": "Burnout is common among university students in many countries. If you recognise it in yourself, you are far from the only one.",
+      "source": "Liu et al. (2023); Chen et al. (2022)"
+    },
+    {
+      "id": "BI-06",
+      "topic": "BURNOUT_INFO",
+      "status": "draft",
+      "text": "Studies link burnout with high perceived stress, poor sleep, and low satisfaction with one's studies. Students with stronger confidence in their own ability, and stronger resilience, tend to report less burnout.",
+      "source": "Liu et al. (2023); Kong et al. (2025); Chen et al. (2022)"
+    },
+    {
+      "id": "BI-07",
+      "topic": "BURNOUT_INFO",
+      "status": "draft",
+      "text": "Burnout that goes unnoticed is linked with lower grades and lower satisfaction with studying. This is why noticing it early, and getting support, is worthwhile.",
+      "source": "Bakker & Mostert (2024)"
+    },
+    {
+      "id": "BI-08",
+      "topic": "BURNOUT_INFO",
+      "status": "draft",
+      "text": "Burnout is not laziness or weakness. Research explains it as what happens when study demands stay higher than the resources a student has to meet them.",
+      "source": "Bakker & Mostert (2024)"
+    },
+    {
+      "id": "WL-01",
+      "topic": "WORKLOAD",
+      "status": "draft",
+      "text": "Academic workload is everything your studies ask of you: the thinking, the deadlines, and the effort needed to keep up. Researchers call these study demands, the parts of studying that cost energy.",
+      "source": "Bakker & Mostert (2024)"
+    },
+    {
+      "id": "WL-02",
+      "topic": "WORKLOAD",
+      "status": "draft",
+      "text": "The first questionnaire, NASA-TLX, asks about six sides of workload: mental demand, physical demand, time pressure, how satisfied you are with your results, effort, and frustration.",
+      "source": "Hart & Staveland (1988)"
+    },
+    {
+      "id": "WL-03",
+      "topic": "WORKLOAD",
+      "status": "draft",
+      "text": "Workload here means workload as you experience it. Two students with the same assignments can feel different loads. The comparison questions show which sides weigh most for you.",
+      "source": "Hart & Staveland (1988)"
+    },
+    {
+      "id": "WL-04",
+      "topic": "WORKLOAD",
+      "status": "draft",
+      "text": "Workload and burnout are linked. In a study of 204 students, those who reported more frustration, effort, and time pressure also reported more exhaustion.",
+      "source": "Gumasing et al. (2022)"
+    },
+    {
+      "id": "WL-05",
+      "topic": "WORKLOAD",
+      "status": "draft",
+      "text": "In project-based courses, workload usually peaks near the final milestone, when parts are combined, tested, and fixed under a deadline. Mental demand, time pressure, and effort are the heaviest sides at that point.",
+      "source": "Firdaus et al. (2026)"
+    },
+    {
+      "id": "WL-06",
+      "topic": "WORKLOAD",
+      "status": "draft",
+      "text": "A demanding workload is not always harmful. When students have enough support and feedback, challenging work can keep them interested and motivated.",
+      "source": "Bakker & Mostert (2024)"
+    },
+    {
+      "id": "WL-07",
+      "topic": "WORKLOAD",
+      "status": "draft",
+      "text": "Support makes a heavy workload easier to carry. Help from lecturers and fellow students, useful feedback, and some control over your own time all reduce the strain.",
+      "source": "Bakker & Mostert (2024)"
+    },
+    {
+      "id": "WL-08",
+      "topic": "WORKLOAD",
+      "status": "draft",
+      "text": "Physical strain counts as workload too. Long hours in front of a screen are linked with eye strain, back and neck pain, and sleep problems.",
+      "source": "Gumasing et al. (2022)"
+    },
+    {
+      "id": "ED-01",
+      "topic": "EXHAUSTION_DISENGAGEMENT",
+      "status": "draft",
+      "text": "Exhaustion is an extreme form of tiredness. It follows long and intense physical, emotional, and mental strain from your studies.",
+      "source": "Peterson et al. (2008)"
+    },
+    {
+      "id": "ED-02",
+      "topic": "EXHAUSTION_DISENGAGEMENT",
+      "status": "draft",
+      "text": "Exhaustion can look like feeling tired before you even reach campus, or needing more time than before to relax after classes. It can also mean feeling emotionally drained while studying, and worn out afterwards.",
+      "source": "Campos et al. (2012)"
+    },
+    {
+      "id": "ED-03",
+      "topic": "EXHAUSTION_DISENGAGEMENT",
+      "status": "draft",
+      "text": "Disengagement means distancing yourself from your studies: from the subject and from the tasks. It is a loss of connection, not a loss of ability.",
+      "source": "Peterson et al. (2008)"
+    },
+    {
+      "id": "ED-04",
+      "topic": "EXHAUSTION_DISENGAGEMENT",
+      "status": "draft",
+      "text": "Disengagement can look like talking about your studies more negatively than before, or doing tasks almost mechanically. Over time you may feel disconnected from your studies or fed up with assignments.",
+      "source": "Campos et al. (2012)"
+    },
+    {
+      "id": "ED-05",
+      "topic": "EXHAUSTION_DISENGAGEMENT",
+      "status": "draft",
+      "text": "Exhaustion and disengagement do not always appear together. A student can be exhausted yet still interested, or rested yet detached. The screening looks at each one separately.",
+      "source": "Campos et al. (2012); validated rule table"
+    },
+    {
+      "id": "ED-06",
+      "topic": "EXHAUSTION_DISENGAGEMENT",
+      "status": "draft",
+      "text": "The opposite of these states is feeling energised and engaged. That looks like having energy left after classes, finding new and interesting things in your studies, and seeing them as a positive challenge.",
+      "source": "Campos et al. (2012); Bakker & Mostert (2024)"
+    },
+    {
+      "id": "ED-07",
+      "topic": "EXHAUSTION_DISENGAGEMENT",
+      "status": "draft",
+      "text": "The second questionnaire, the Oldenburg Burnout Inventory (OLBI), has 16 statements answered on a four-point scale from strongly disagree to strongly agree. Half are worded positively and half negatively. It gives one score for exhaustion and one for disengagement.",
+      "source": "Campos et al. (2012)"
+    },
+    {
+      "id": "TM-01",
+      "topic": "TIME_MANAGEMENT",
+      "status": "draft",
+      "text": "Putting tasks off can feel like relief now, but it costs more later. In one study, students who procrastinated felt less stress early in the semester. By the end they had more stress, more illness, and lower grades.",
+      "source": "Bakker & Mostert (2024), citing Tice & Baumeister (1997)"
+    },
+    {
+      "id": "TM-02",
+      "topic": "TIME_MANAGEMENT",
+      "status": "draft",
+      "text": "When you are drained, it is easy to let tasks pile up and avoid them. The backlog then adds more pressure, which makes starting even harder. Noticing this loop early is the first step out of it.",
+      "source": "Bakker & Mostert (2024)"
+    },
+    {
+      "id": "TM-03",
+      "topic": "TIME_MANAGEMENT",
+      "status": "draft",
+      "text": "Setting clear study goals helps. Students who take the initiative to set goals and deal with problems early are more likely to stay engaged with their studies.",
+      "source": "Bakker & Mostert (2024)"
+    },
+    {
+      "id": "TM-04",
+      "topic": "TIME_MANAGEMENT",
+      "status": "adapted",
+      "text": "Break a large assignment into smaller steps with their own checkpoints. Research on project-based courses recommends this so that work does not all land in the same week.",
+      "source": "Firdaus et al. (2026); written for course designers, applied here to students"
+    },
+    {
+      "id": "TM-05",
+      "topic": "TIME_MANAGEMENT",
+      "status": "adapted",
+      "text": "Expect the busiest stretch near the end of a project, when parts are combined and tested. Starting those parts earlier leaves room for the problems that usually appear there.",
+      "source": "Firdaus et al. (2026); written for course designers, applied here to students"
+    },
+    {
+      "id": "TM-06",
+      "topic": "TIME_MANAGEMENT",
+      "status": "draft",
+      "text": "Ask early. Asking a lecturer for feedback, or a classmate for help, is a recognised way to manage study demands. It is not a sign that you are behind.",
+      "source": "Bakker & Mostert (2024); Liu et al. (2023)"
+    },
+    {
+      "id": "SR-01",
+      "topic": "SCREENING_RESULT",
+      "status": "draft",
+      "text": "Your result is a screening indication based on the answers you gave. It is not a clinical diagnosis. Its purpose is to help you notice how things are going and decide on a next step.",
+      "source": "System design"
+    },
+    {
+      "id": "SR-02",
+      "topic": "SCREENING_RESULT",
+      "status": "draft",
+      "text": "The result comes from three things: your workload level, your exhaustion level, and your disengagement level. Together they are matched to one of 20 rules validated by the campus psychologist.",
+      "source": "Validated rule table"
+    },
+    {
+      "id": "SR-03",
+      "topic": "SCREENING_RESULT",
+      "status": "draft",
+      "text": "Neither the Support Chat nor the note on your result page decides your category. They only explain it. The category is set by the validated rules.",
+      "source": "System design"
+    },
+    {
+      "id": "SR-04",
+      "topic": "SCREENING_RESULT",
+      "status": "draft",
+      "text": "No burnout means exhaustion and disengagement are both low, and workload is in the lower three of its five levels. The suggested next step is self-help education.",
+      "source": "Validated rule table (R1 to R3)"
+    },
+    {
+      "id": "SR-05",
+      "topic": "SCREENING_RESULT",
+      "status": "draft",
+      "text": "Low risk means workload is in its top two levels, while exhaustion and disengagement are still low. You are carrying a lot and coping. The suggested next step is self-help education.",
+      "source": "Validated rule table (R4, R5)"
+    },
+    {
+      "id": "SR-06",
+      "topic": "SCREENING_RESULT",
+      "status": "draft",
+      "text": "Moderate risk means exhaustion is high and disengagement is low, while workload is in its lower three levels. The suggested next step is a consultation with your Academic Advisor.",
+      "source": "Validated rule table (R6 to R8)"
+    },
+    {
+      "id": "SR-07",
+      "topic": "SCREENING_RESULT",
+      "status": "draft",
+      "text": "High risk means extra support is recommended. It applies when exhaustion is high together with a workload in its top two levels, or when disengagement is high. The suggested next step is a counselling referral.",
+      "source": "Validated rule table (R9 to R20)"
+    },
+    {
+      "id": "SR-08",
+      "topic": "SCREENING_RESULT",
+      "status": "to_confirm",
+      "text": "A result can be High risk even when workload is low. In the validated rules, high disengagement counts as a strong signal on its own, because a student can lose connection with their studies even when tasks are light.",
+      "source": "Validated rule table (R11 to R15); wording needs the psychologist's approval"
+    },
+    {
+      "id": "SR-09",
+      "topic": "SCREENING_RESULT",
+      "status": "draft",
+      "text": "There are three possible next steps: self-help education, a consultation with your Academic Advisor, or a counselling referral to the campus counselling unit.",
+      "source": "Validated rule table"
+    },
+    {
+      "id": "SR-10",
+      "topic": "SCREENING_RESULT",
+      "status": "draft",
+      "text": "Your Academic Advisor can see a summary of your result: the category, the three levels and their scores, and the suggested next step with the reason behind it. Your individual answers to the questions are not shown to them.",
+      "source": "System design"
+    },
+    {
+      "id": "SR-11",
+      "topic": "SCREENING_RESULT",
+      "status": "draft",
+      "text": "A result reflects how things have been recently, and it can change. You can take the screening again later. If a result worries you or seems wrong, talk it over with your Academic Advisor.",
+      "source": "Simulation document; system design"
+    },
+    {
+      "id": "SS-01",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "Your Academic Advisor is the lecturer assigned to guide you through your studies. You can talk with them about workload, deadlines, and how to plan your semester.",
+      "source": "Simulation document"
+    },
+    {
+      "id": "SS-02",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "Contacting your Academic Advisor is the suggested next step for a Moderate risk result. You can also reach out at any time your workload feels unmanageable, whatever your result.",
+      "source": "Validated rule table"
+    },
+    {
+      "id": "SS-03",
+      "topic": "STUDENT_SUPPORT",
+      "status": "to_confirm",
+      "text": "When you message your advisor, greet them, give your name, student number, and class, and say briefly what you would like to discuss. Ask when they are available, and write during working hours.",
+      "source": "General guidance, not an official PNJ rule"
+    },
+    {
+      "id": "SS-04",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "PNJ has a psychological service, Layanan Psikologis PNJ, that offers counselling for students, lecturers, and staff. Sessions can be in person or online. For PNJ students it is free and confidential.",
+      "source": "PNJ counselling registration form; published service flow"
+    },
+    {
+      "id": "SS-05",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "To register for counselling, fill in the form at https://s.pnj.ac.id/KonselingPNJ. The service team then contacts you to arrange a schedule and explain how the session will run.",
+      "source": "PNJ counselling registration form; published service flow"
+    },
+    {
+      "id": "SS-06",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "You can message Layanan Psikologis PNJ on WhatsApp at +62 823-7957-4919. The hotline is open Monday to Friday, 08.00 to 16.00 WIB.",
+      "source": "Published service flow; service WhatsApp profile"
+    },
+    {
+      "id": "SS-07",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "In-person counselling takes place in Building Q, the PNJ directorate building, on the 3rd floor in Room 310.",
+      "source": "Confirmed by the service on WhatsApp"
+    },
+    {
+      "id": "SS-08",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "You do not need a referral for counselling. You can register on your own initiative, or because a lecturer suggested it.",
+      "source": "PNJ counselling registration form"
+    },
+    {
+      "id": "SS-09",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "Counselling is not only for a crisis. The registration form lists everyday reasons such as academic stress, trouble focusing or managing time, putting tasks off, exam anxiety, and low motivation.",
+      "source": "PNJ counselling registration form"
+    },
+    {
+      "id": "SS-10",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "A counselling session lasts about 45 to 60 minutes. Before the first session you sign a consent form. In the session you explain why you came, and the psychologist asks questions to understand your situation. Afterwards you are asked to fill in a short satisfaction survey.",
+      "source": "PNJ counselling registration form; published service flow"
+    },
+    {
+      "id": "SS-11",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "What you share in counselling is confidential and is used only to provide the service. If it is ever used to improve the service, your identity is hidden and only initials are written.",
+      "source": "PNJ counselling registration form"
+    },
+    {
+      "id": "SS-12",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "When you register you choose at least three time slots that suit you. The form currently offers weekday slots at 09.00, 10.00, 12.00, and 14.00.",
+      "source": "PNJ counselling registration form; slots may change"
+    },
+    {
+      "id": "SS-13",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "A session can be cancelled if you are more than 15 minutes late. To cancel or reschedule, tell the service by 16.00 WIB the day before. If you cancel on the day or do not come, you register again and rejoin the queue.",
+      "source": "PNJ counselling registration form"
+    },
+    {
+      "id": "SS-14",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "Support from people around you matters. Students with support from friends, family, and lecturers tend to cope better with study pressure. Reaching out is a helpful step, not a burden on others.",
+      "source": "Liu et al. (2023); Bakker & Mostert (2024)"
+    },
+    {
+      "id": "SS-15",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "The Support Chat gives general information about burnout, workload, and student support. It cannot diagnose, change your screening result, or replace a conversation with your advisor or a counsellor.",
+      "source": "System design"
+    },
+    {
+      "id": "SS-16",
+      "topic": "STUDENT_SUPPORT",
+      "status": "to_confirm",
+      "text": "If you feel unsafe or in crisis, do not wait for a reply here. If you are in immediate danger, contact local emergency services or go to the nearest emergency department, and tell someone you trust. The Layanan Psikologis PNJ hotline replies during working hours. Messages sent outside those hours are answered on the next working day.",
+      "source": "Figma design text; published service flow; out-of-hours handling as experienced by the student"
+    },
+    {
+      "id": "SS-17",
+      "topic": "STUDENT_SUPPORT",
+      "status": "draft",
+      "text": "Your screening answers are stored in the app so that your result can be shown to you. Your individual answers are not shown to your Academic Advisor or to other students. An Academic Advisor sees a summary of your results only after you link your account to theirs with their invite code. Conversations in the Support Chat are not saved.",
+      "source": "System design"
+    }
+  ]
+}

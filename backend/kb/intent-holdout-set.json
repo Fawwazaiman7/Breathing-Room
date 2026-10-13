@@ -1,0 +1,365 @@
+{
+  "description": "HOLD-OUT SET. 60 synthetic questions, ten per intent, half English and half casual Indonesian, generated with ChatGPT on 12 October 2026 from the six intent definitions only (no rules, no examples, no knowledge base). Generated after the keyword rules and the training examples were frozen. Never loaded into the database and never used to change a rule or an example: kb/evaluate-chat.mjs classifies them once and the figure is reported as it is.",
+  "examples": [
+    {
+      "id": "H01",
+      "intent": "BURNOUT_INFO",
+      "language": "en",
+      "text": "What exactly is academic burnout?"
+    },
+    {
+      "id": "H02",
+      "intent": "BURNOUT_INFO",
+      "language": "en",
+      "text": "How can I tell the difference between burnout and normal stress?"
+    },
+    {
+      "id": "H03",
+      "intent": "BURNOUT_INFO",
+      "language": "en",
+      "text": "Can someone experience burnout even if they still get good grades?"
+    },
+    {
+      "id": "H04",
+      "intent": "BURNOUT_INFO",
+      "language": "en",
+      "text": "Why do some students lose interest in studying even when they used to enjoy it?"
+    },
+    {
+      "id": "H05",
+      "intent": "BURNOUT_INFO",
+      "language": "en",
+      "text": "Is burnout only something that happens to people who study too much?"
+    },
+    {
+      "id": "H06",
+      "intent": "BURNOUT_INFO",
+      "language": "id",
+      "text": "Burnout akademik itu sebenarnya apaan sih?"
+    },
+    {
+      "id": "H07",
+      "intent": "BURNOUT_INFO",
+      "language": "id",
+      "text": "Bedanya burnout sama capek biasa apa ya?"
+    },
+    {
+      "id": "H08",
+      "intent": "BURNOUT_INFO",
+      "language": "id",
+      "text": "Kok bisa ya mahasiswa yang nilainya bagus juga ngalamin burnout?"
+    },
+    {
+      "id": "H09",
+      "intent": "BURNOUT_INFO",
+      "language": "id",
+      "text": "Apa orang yang suka nunda tugas pasti bakal burnout?"
+    },
+    {
+      "id": "H10",
+      "intent": "BURNOUT_INFO",
+      "language": "id",
+      "text": "Kalau kuliah udah nggak terasa menyenangkan lagi, itu termasuk tanda burnout nggak?"
+    },
+    {
+      "id": "H11",
+      "intent": "WORKLOAD",
+      "language": "en",
+      "text": "Why does my semester feel so overwhelming even though I only have a few courses?"
+    },
+    {
+      "id": "H12",
+      "intent": "WORKLOAD",
+      "language": "en",
+      "text": "What are the six dimensions measured by NASA-TLX?"
+    },
+    {
+      "id": "H13",
+      "intent": "WORKLOAD",
+      "language": "en",
+      "text": "How is the workload score calculated from my NASA-TLX answers?"
+    },
+    {
+      "id": "H14",
+      "intent": "WORKLOAD",
+      "language": "en",
+      "text": "Is it normal to feel frustrated when assignments are difficult?"
+    },
+    {
+      "id": "H15",
+      "intent": "WORKLOAD",
+      "language": "en",
+      "text": "How do I know if my academic workload is too demanding?"
+    },
+    {
+      "id": "H16",
+      "intent": "WORKLOAD",
+      "language": "id",
+      "text": "Tugas kuliah numpuk banget, gimana cara tahu beban kerjaku udah berat atau belum?"
+    },
+    {
+      "id": "H17",
+      "intent": "WORKLOAD",
+      "language": "id",
+      "text": "NASA-TLX itu ngukur apa aja, sih?"
+    },
+    {
+      "id": "H18",
+      "intent": "WORKLOAD",
+      "language": "id",
+      "text": "Skor NASA-TLX aku didapat dari mana?"
+    },
+    {
+      "id": "H19",
+      "intent": "WORKLOAD",
+      "language": "id",
+      "text": "Kenapa tugas yang kelihatannya gampang malah bikin frustrasi banget?"
+    },
+    {
+      "id": "H20",
+      "intent": "WORKLOAD",
+      "language": "id",
+      "text": "Kalau deadline dari beberapa mata kuliah barengan, itu masuk beban kerja yang tinggi nggak?"
+    },
+    {
+      "id": "H21",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "en",
+      "text": "Why do I wake up tired even when I slept enough?"
+    },
+    {
+      "id": "H22",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "en",
+      "text": "What is the difference between exhaustion and disengagement in OLBI?"
+    },
+    {
+      "id": "H23",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "en",
+      "text": "I can finish my assignments, but I don't care about my studies anymore. What could that mean?"
+    },
+    {
+      "id": "H24",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "en",
+      "text": "How can I deal with feeling emotionally drained by college?"
+    },
+    {
+      "id": "H25",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "en",
+      "text": "How are the exhaustion and disengagement scores from OLBI interpreted?"
+    },
+    {
+      "id": "H26",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "id",
+      "text": "Akhir-akhir ini rasanya energi habis terus buat kuliah, harus gimana?"
+    },
+    {
+      "id": "H27",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "id",
+      "text": "OLBI itu ngukur exhaustion sama disengagement, maksudnya apa?"
+    },
+    {
+      "id": "H28",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "id",
+      "text": "Aku ngerjain tugas cuma biar selesai, udah nggak peduli sama materinya. Kenapa ya?"
+    },
+    {
+      "id": "H29",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "id",
+      "text": "Gimana cara ngatasin rasa jenuh dan terkuras gara-gara kuliah?"
+    },
+    {
+      "id": "H30",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "id",
+      "text": "Kalau skor exhaustion tinggi tapi disengagement rendah, artinya gimana?"
+    },
+    {
+      "id": "H31",
+      "intent": "TIME_MANAGEMENT",
+      "language": "en",
+      "text": "How can I plan my week when every lecturer gives deadlines at the same time?"
+    },
+    {
+      "id": "H32",
+      "intent": "TIME_MANAGEMENT",
+      "language": "en",
+      "text": "Why do I keep putting off assignments even when I know they're important?"
+    },
+    {
+      "id": "H33",
+      "intent": "TIME_MANAGEMENT",
+      "language": "en",
+      "text": "What's a practical way to prioritise tasks when everything feels urgent?"
+    },
+    {
+      "id": "H34",
+      "intent": "TIME_MANAGEMENT",
+      "language": "en",
+      "text": "How often should I take breaks when studying for a long time?"
+    },
+    {
+      "id": "H35",
+      "intent": "TIME_MANAGEMENT",
+      "language": "en",
+      "text": "My group members keep delaying their parts. How can I keep the project on schedule?"
+    },
+    {
+      "id": "H36",
+      "intent": "TIME_MANAGEMENT",
+      "language": "id",
+      "text": "Gimana cara nyusun jadwal kuliah, tugas, sama kegiatan organisasi biar nggak berantakan?"
+    },
+    {
+      "id": "H37",
+      "intent": "TIME_MANAGEMENT",
+      "language": "id",
+      "text": "Aku sering nunda tugas sampai mepet deadline, kenapa susah banget mulai ya?"
+    },
+    {
+      "id": "H38",
+      "intent": "TIME_MANAGEMENT",
+      "language": "id",
+      "text": "Kalau semua tugas kayaknya urgent, mending ngerjain yang mana dulu?"
+    },
+    {
+      "id": "H39",
+      "intent": "TIME_MANAGEMENT",
+      "language": "id",
+      "text": "Belajar berapa lama sekali baru sebaiknya istirahat?"
+    },
+    {
+      "id": "H40",
+      "intent": "TIME_MANAGEMENT",
+      "language": "id",
+      "text": "Temen kelompok suka telat ngumpulin bagian tugasnya, gimana biar proyeknya tetap jalan?"
+    },
+    {
+      "id": "H41",
+      "intent": "SCREENING_RESULT",
+      "language": "en",
+      "text": "My result says Moderate Risk. What does that mean for me?"
+    },
+    {
+      "id": "H42",
+      "intent": "SCREENING_RESULT",
+      "language": "en",
+      "text": "How does the system decide whether someone is Low Risk or High Risk?"
+    },
+    {
+      "id": "H43",
+      "intent": "SCREENING_RESULT",
+      "language": "en",
+      "text": "Does a High Risk screening result mean I have a clinical diagnosis of burnout?"
+    },
+    {
+      "id": "H44",
+      "intent": "SCREENING_RESULT",
+      "language": "en",
+      "text": "Can my screening category change if I take the assessment again later?"
+    },
+    {
+      "id": "H45",
+      "intent": "SCREENING_RESULT",
+      "language": "en",
+      "text": "How accurate is this screening, and can I rely on it completely?"
+    },
+    {
+      "id": "H46",
+      "intent": "SCREENING_RESULT",
+      "language": "id",
+      "text": "Hasil skriningku Low Risk, itu maksudnya aku lagi baik-baik aja?"
+    },
+    {
+      "id": "H47",
+      "intent": "SCREENING_RESULT",
+      "language": "id",
+      "text": "Sistem nentuin kategori No Burnout, Low, Moderate, atau High Risk dari apa?"
+    },
+    {
+      "id": "H48",
+      "intent": "SCREENING_RESULT",
+      "language": "id",
+      "text": "Kalau hasilku High Risk, berarti aku udah didiagnosis burnout?"
+    },
+    {
+      "id": "H49",
+      "intent": "SCREENING_RESULT",
+      "language": "id",
+      "text": "Hasil skrining bisa berubah nggak kalau aku isi lagi bulan depan?"
+    },
+    {
+      "id": "H50",
+      "intent": "SCREENING_RESULT",
+      "language": "id",
+      "text": "Aku ngerasa hasil skriningku kurang sesuai sama kondisiku. Apa yang harus aku lakukan?"
+    },
+    {
+      "id": "H51",
+      "intent": "STUDENT_SUPPORT",
+      "language": "en",
+      "text": "Who should I talk to at PNJ if I'm struggling to keep up with college?"
+    },
+    {
+      "id": "H52",
+      "intent": "STUDENT_SUPPORT",
+      "language": "en",
+      "text": "Can my Academic Advisor (DPA) see my screening answers and results?"
+    },
+    {
+      "id": "H53",
+      "intent": "STUDENT_SUPPORT",
+      "language": "en",
+      "text": "Is there a campus counselling service I can contact if I need support?"
+    },
+    {
+      "id": "H54",
+      "intent": "STUDENT_SUPPORT",
+      "language": "en",
+      "text": "If I talk to someone about my problems, will my personal information stay confidential?"
+    },
+    {
+      "id": "H55",
+      "intent": "STUDENT_SUPPORT",
+      "language": "en",
+      "text": "My friend seems overwhelmed and has stopped attending class. How can I help them?"
+    },
+    {
+      "id": "H56",
+      "intent": "STUDENT_SUPPORT",
+      "language": "id",
+      "text": "Kalau aku lagi kesulitan banget ngejalanin kuliah, sebaiknya cerita ke siapa di PNJ?"
+    },
+    {
+      "id": "H57",
+      "intent": "STUDENT_SUPPORT",
+      "language": "id",
+      "text": "DPA bisa lihat jawaban kuesioner dan hasil skrining aku nggak?"
+    },
+    {
+      "id": "H58",
+      "intent": "STUDENT_SUPPORT",
+      "language": "id",
+      "text": "Di PNJ ada layanan konseling buat mahasiswa yang lagi punya masalah nggak?"
+    },
+    {
+      "id": "H59",
+      "intent": "STUDENT_SUPPORT",
+      "language": "id",
+      "text": "Kalau aku cerita ke pihak kampus soal kondisi mentalku, informasiku bakal dirahasiain nggak?"
+    },
+    {
+      "id": "H60",
+      "intent": "STUDENT_SUPPORT",
+      "language": "id",
+      "text": "Temenku kelihatan kewalahan dan sering bolos akhir-akhir ini. Aku bisa bantu dia gimana?"
+    }
+  ]
+}

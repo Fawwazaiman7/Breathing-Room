@@ -1,0 +1,248 @@
+/* Advisor workspace. Uses the design tokens defined in index.css. */
+
+.page-title {
+  margin: 10px 0 8px;
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Summary tiles ---------- */
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.stat-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+.stat-value {
+  font-size: 2.25rem;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.stat-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ---------- Share bars: one hue, the label carries the meaning ---------- */
+
+.advisor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.share-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-self: stretch;
+  margin: 12px 0 4px;
+}
+
+.share-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1.1fr) 2fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.share-label {
+  font-size: 0.95rem;
+}
+
+.share-track {
+  height: 8px;
+  border-radius: 4px;
+  background: #eceae5;
+  overflow: hidden;
+}
+
+.share-fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--teal);
+}
+
+.share-count {
+  min-width: 5.5rem;
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.share-percent {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* ---------- Filter chips ---------- */
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+.chip:hover {
+  border-color: var(--teal);
+}
+
+.chip.selected {
+  border-color: var(--teal);
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+  font-weight: 600;
+}
+
+.chip-count {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.chip.selected .chip-count {
+  color: var(--teal-dark);
+}
+
+/* ---------- Tables ---------- */
+
+.table-wrap {
+  /* Positioned so the visually-hidden header text inside the table is
+     clipped with the table instead of widening the whole page. */
+  position: relative;
+  align-self: stretch;
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.925rem;
+}
+
+.data-table th,
+.data-table td {
+  padding: 16px 14px;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.data-table thead th {
+  border-top: 0;
+  padding-top: 8px;
+  padding-bottom: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.data-table tbody th {
+  font-weight: 600;
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
+  padding-left: 0;
+}
+
+.table-link:hover {
+  color: var(--teal-dark);
+  text-decoration: underline;
+}
+
+.table-meta {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.table-muted {
+  color: var(--muted);
+}
+
+.table-action {
+  width: 1%;
+  padding-right: 0;
+  color: var(--ink-soft);
+}
+
+.table-action a {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+}
+
+.table-action a:hover {
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+}
+
+@media (max-width: 900px) {
+  .stat-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .advisor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .share-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .share-track {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+
+  .page-title {
+    font-size: 1.6rem;
+  }
+}

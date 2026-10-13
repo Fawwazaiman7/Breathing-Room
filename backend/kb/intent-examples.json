@@ -1,0 +1,365 @@
+{
+  "description": "TRAINING EXAMPLES. 60 synthetic example questions, ten per intent, half in English and half in Indonesian. They were written from the intent definitions in kb/INTENTS.md and from the knowledge base topics, not from the test set. These are the labelled examples the Support Chat votes with, together with the knowledge base passages. The test set is kept apart in kb/intent-test-set.json. The dataset author reviewed all 60 on 12 October 2026 and approved them, except that T19 was shortened: its second half (\"saya kewalahan\") voiced a state rather than described the load.",
+  "examples": [
+    {
+      "id": "T01",
+      "intent": "BURNOUT_INFO",
+      "language": "en",
+      "text": "How do I know whether what I am feeling is burnout?"
+    },
+    {
+      "id": "T02",
+      "intent": "BURNOUT_INFO",
+      "language": "en",
+      "text": "What causes burnout in university students?"
+    },
+    {
+      "id": "T03",
+      "intent": "BURNOUT_INFO",
+      "language": "en",
+      "text": "Is being burned out just another word for being lazy?"
+    },
+    {
+      "id": "T04",
+      "intent": "BURNOUT_INFO",
+      "language": "en",
+      "text": "How long does it take for burnout to develop?"
+    },
+    {
+      "id": "T05",
+      "intent": "BURNOUT_INFO",
+      "language": "en",
+      "text": "Can burnout go away on its own?"
+    },
+    {
+      "id": "T06",
+      "intent": "BURNOUT_INFO",
+      "language": "id",
+      "text": "Burnout itu sebenarnya apa sih?"
+    },
+    {
+      "id": "T07",
+      "intent": "BURNOUT_INFO",
+      "language": "id",
+      "text": "Apa saja penyebab mahasiswa bisa kena burnout?"
+    },
+    {
+      "id": "T08",
+      "intent": "BURNOUT_INFO",
+      "language": "id",
+      "text": "Ciri-ciri orang yang burnout kuliah itu seperti apa?"
+    },
+    {
+      "id": "T09",
+      "intent": "BURNOUT_INFO",
+      "language": "id",
+      "text": "Apa dampaknya kalau burnout dibiarkan terus?"
+    },
+    {
+      "id": "T10",
+      "intent": "BURNOUT_INFO",
+      "language": "id",
+      "text": "Apakah semua mahasiswa bisa mengalami burnout?"
+    },
+    {
+      "id": "T11",
+      "intent": "WORKLOAD",
+      "language": "en",
+      "text": "I have too many assignments this semester and I cannot keep up."
+    },
+    {
+      "id": "T12",
+      "intent": "WORKLOAD",
+      "language": "en",
+      "text": "What does Mental Demand measure?"
+    },
+    {
+      "id": "T13",
+      "intent": "WORKLOAD",
+      "language": "en",
+      "text": "Why is my workload score so high?"
+    },
+    {
+      "id": "T14",
+      "intent": "WORKLOAD",
+      "language": "en",
+      "text": "What is the Effort dimension about?"
+    },
+    {
+      "id": "T15",
+      "intent": "WORKLOAD",
+      "language": "en",
+      "text": "What is NASA-TLX and why do I have to fill it in?"
+    },
+    {
+      "id": "T16",
+      "intent": "WORKLOAD",
+      "language": "id",
+      "text": "Beban kuliah semester ini terasa berat banget."
+    },
+    {
+      "id": "T17",
+      "intent": "WORKLOAD",
+      "language": "id",
+      "text": "Apa maksud dimensi Frustration di kuesioner beban kerja?"
+    },
+    {
+      "id": "T18",
+      "intent": "WORKLOAD",
+      "language": "id",
+      "text": "Kenapa skor beban kerja saya masuk kategori tinggi?"
+    },
+    {
+      "id": "T19",
+      "intent": "WORKLOAD",
+      "language": "id",
+      "text": "Deadline minggu ini banyak sekali."
+    },
+    {
+      "id": "T20",
+      "intent": "WORKLOAD",
+      "language": "id",
+      "text": "Apakah beban kerja yang tinggi selalu buruk?"
+    },
+    {
+      "id": "T21",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "en",
+      "text": "I feel drained every day after class."
+    },
+    {
+      "id": "T22",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "en",
+      "text": "I used to enjoy my major but now I feel nothing about it."
+    },
+    {
+      "id": "T23",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "en",
+      "text": "What is the difference between exhaustion and disengagement?"
+    },
+    {
+      "id": "T24",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "en",
+      "text": "What does the exhaustion score tell me?"
+    },
+    {
+      "id": "T25",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "en",
+      "text": "I just go through the motions when I do my coursework."
+    },
+    {
+      "id": "T26",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "id",
+      "text": "Saya selalu lelah bahkan sebelum berangkat ke kampus."
+    },
+    {
+      "id": "T27",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "id",
+      "text": "Kenapa saya jadi kehilangan minat sama jurusan sendiri?"
+    },
+    {
+      "id": "T28",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "id",
+      "text": "Apa arti skor exhaustion yang tinggi?"
+    },
+    {
+      "id": "T29",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "id",
+      "text": "Rasanya jenuh dan nggak semangat belajar lagi."
+    },
+    {
+      "id": "T30",
+      "intent": "EXHAUSTION_DISENGAGEMENT",
+      "language": "id",
+      "text": "Apa itu OLBI dan apa yang diukurnya?"
+    },
+    {
+      "id": "T31",
+      "intent": "TIME_MANAGEMENT",
+      "language": "en",
+      "text": "How can I plan my week so I am not rushing at the last minute?"
+    },
+    {
+      "id": "T32",
+      "intent": "TIME_MANAGEMENT",
+      "language": "en",
+      "text": "I always start my assignments the night before the deadline."
+    },
+    {
+      "id": "T33",
+      "intent": "TIME_MANAGEMENT",
+      "language": "en",
+      "text": "How do I decide which task to do first?"
+    },
+    {
+      "id": "T34",
+      "intent": "TIME_MANAGEMENT",
+      "language": "en",
+      "text": "How do I break a big project into smaller parts?"
+    },
+    {
+      "id": "T35",
+      "intent": "TIME_MANAGEMENT",
+      "language": "en",
+      "text": "Is it okay to take breaks when I have a lot to do?"
+    },
+    {
+      "id": "T36",
+      "intent": "TIME_MANAGEMENT",
+      "language": "id",
+      "text": "Gimana cara bikin jadwal belajar yang realistis?"
+    },
+    {
+      "id": "T37",
+      "intent": "TIME_MANAGEMENT",
+      "language": "id",
+      "text": "Saya sering mengerjakan tugas mepet deadline."
+    },
+    {
+      "id": "T38",
+      "intent": "TIME_MANAGEMENT",
+      "language": "id",
+      "text": "Bagaimana menentukan prioritas kalau semua tugas terasa penting?"
+    },
+    {
+      "id": "T39",
+      "intent": "TIME_MANAGEMENT",
+      "language": "id",
+      "text": "Waktu saya habis buat organisasi, kuliah jadi keteteran."
+    },
+    {
+      "id": "T40",
+      "intent": "TIME_MANAGEMENT",
+      "language": "id",
+      "text": "Kerja kelompok selalu molor, gimana ngatur waktunya?"
+    },
+    {
+      "id": "T41",
+      "intent": "SCREENING_RESULT",
+      "language": "en",
+      "text": "What does Low Risk mean?"
+    },
+    {
+      "id": "T42",
+      "intent": "SCREENING_RESULT",
+      "language": "en",
+      "text": "How is my screening result calculated?"
+    },
+    {
+      "id": "T43",
+      "intent": "SCREENING_RESULT",
+      "language": "en",
+      "text": "What do the four result categories mean?"
+    },
+    {
+      "id": "T44",
+      "intent": "SCREENING_RESULT",
+      "language": "en",
+      "text": "How accurate is the screening?"
+    },
+    {
+      "id": "T45",
+      "intent": "SCREENING_RESULT",
+      "language": "en",
+      "text": "Can I take the screening again?"
+    },
+    {
+      "id": "T46",
+      "intent": "SCREENING_RESULT",
+      "language": "id",
+      "text": "Kenapa hasil saya risiko rendah padahal saya merasa capek?"
+    },
+    {
+      "id": "T47",
+      "intent": "SCREENING_RESULT",
+      "language": "id",
+      "text": "Hasil saya risiko sedang, apa yang harus saya lakukan?"
+    },
+    {
+      "id": "T48",
+      "intent": "SCREENING_RESULT",
+      "language": "id",
+      "text": "Siapa yang menentukan kategori hasil saya, AI atau aturan?"
+    },
+    {
+      "id": "T49",
+      "intent": "SCREENING_RESULT",
+      "language": "id",
+      "text": "Apakah hasil skrining ini sama dengan diagnosis dokter?"
+    },
+    {
+      "id": "T50",
+      "intent": "SCREENING_RESULT",
+      "language": "id",
+      "text": "Kapan sebaiknya saya mengisi skrining lagi?"
+    },
+    {
+      "id": "T51",
+      "intent": "STUDENT_SUPPORT",
+      "language": "en",
+      "text": "How do I contact my Academic Advisor about this?"
+    },
+    {
+      "id": "T52",
+      "intent": "STUDENT_SUPPORT",
+      "language": "en",
+      "text": "What happens in a counselling session?"
+    },
+    {
+      "id": "T53",
+      "intent": "STUDENT_SUPPORT",
+      "language": "en",
+      "text": "Is what I say in counselling kept confidential?"
+    },
+    {
+      "id": "T54",
+      "intent": "STUDENT_SUPPORT",
+      "language": "id",
+      "text": "Kalau butuh bantuan, saya bisa menghubungi siapa di kampus?"
+    },
+    {
+      "id": "T55",
+      "intent": "STUDENT_SUPPORT",
+      "language": "en",
+      "text": "Who else can see my answers in this app?"
+    },
+    {
+      "id": "T56",
+      "intent": "STUDENT_SUPPORT",
+      "language": "en",
+      "text": "How can I support a classmate who seems overwhelmed?"
+    },
+    {
+      "id": "T57",
+      "intent": "STUDENT_SUPPORT",
+      "language": "id",
+      "text": "Di mana lokasi layanan konseling PNJ?"
+    },
+    {
+      "id": "T58",
+      "intent": "STUDENT_SUPPORT",
+      "language": "id",
+      "text": "Kapan sebaiknya saya menemui dosen pembimbing akademik?"
+    },
+    {
+      "id": "T59",
+      "intent": "STUDENT_SUPPORT",
+      "language": "id",
+      "text": "Saya sungkan menghubungi dosen PA, enaknya mulai dari mana?"
+    },
+    {
+      "id": "T60",
+      "intent": "STUDENT_SUPPORT",
+      "language": "id",
+      "text": "Apakah saya butuh surat rujukan untuk konseling?"
+    }
+  ]
+}
