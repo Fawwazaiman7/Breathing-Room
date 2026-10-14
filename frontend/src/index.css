@@ -74,9 +74,21 @@ button {
   cursor: pointer;
 }
 
+/* No box or flash when something is clicked or tapped. The focus ring
+   stays for keyboard users only, and appears without any fade. */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
 :focus-visible {
   outline: 2px solid var(--teal);
   outline-offset: 3px;
+  transition: none;
 }
 
 /* ---------- Shared pieces ---------- */
@@ -723,6 +735,7 @@ button {
 
 .choice-card.selected {
   border-color: var(--teal);
+  background: var(--teal-soft);
 }
 
 /* Hover only on devices with a real pointer. On a phone a tap leaves the
@@ -805,6 +818,7 @@ button {
 
 .option.selected {
   border-color: var(--teal);
+  background: var(--teal-soft);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1025,6 +1039,29 @@ button {
 .field input:focus {
   outline: 2px solid var(--teal);
   outline-offset: 1px;
+}
+
+/* Advisor student page: optional rule details. */
+
+.rule-details {
+  width: 100%;
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.rule-details summary {
+  cursor: pointer;
+  color: var(--teal-dark);
+  font-weight: 600;
+}
+
+.rule-details[open] summary {
+  margin-bottom: 10px;
+}
+
+.rule-details .fine-print {
+  margin-top: 8px;
 }
 
 /* ---------- Small screens ---------- */

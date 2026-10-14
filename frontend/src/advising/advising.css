@@ -4,6 +4,15 @@
   gap: 16px;
 }
 
+/* The code form itself: space between the field, any error, and the button. */
+form.link-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  width: 100%;
+}
+
 .link-card .field {
   align-self: stretch;
   max-width: 22rem;

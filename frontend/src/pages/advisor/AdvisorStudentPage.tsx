@@ -170,17 +170,28 @@ export function AdvisorStudentPage() {
             </p>
           </section>
 
-          {latestRule && (
-            <section className="card">
-              <p className="eyebrow">About rule {latestRule.id}</p>
-              <p className="card-text note-text">{latestRule.rationale.en}</p>
-              <p className="fine-print">
-                This is the campus psychologist’s general explanation of the
-                rule this result matched. It describes the rule, not an
-                individual assessment of this student.
-              </p>
-            </section>
-          )}
+          <section className="card">
+            <p className="eyebrow">How this result was reached</p>
+            <p className="card-text">
+              The result is not a judgement made by AI or by a person. The
+              system combined the three levels above (workload, exhaustion,
+              and disengagement) and matched them to a fixed rule table
+              validated by the campus psychologist. That rule gives the
+              category and the recommended follow-up.
+            </p>
+            {latestRule && (
+              <details className="rule-details">
+                <summary>
+                  Matched rule {latestRule.id} · psychologist’s explanation
+                </summary>
+                <p className="card-text">{latestRule.rationale.en}</p>
+                <p className="fine-print">
+                  A general explanation of the rule, not an individual
+                  assessment of this student.
+                </p>
+              </details>
+            )}
+          </section>
 
           <section className="card">
             <p className="eyebrow">Screening history</p>

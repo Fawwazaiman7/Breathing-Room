@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMyAdvisor } from '../advising/useMyAdvisor';
 import { useAuth } from '../auth/useAuth';
@@ -42,6 +42,9 @@ const STEPS: Step[] = [
 const PART_ONE_TOTAL = NASA_TLX_PAIRS.length + NASA_TLX_DIMENSIONS.length;
 const PART_TWO_TOTAL = OLBI_STATEMENTS.length;
 const RATING_START = 50;
+
+/** Pause between choosing an answer and moving to the next question. */
+const ADVANCE_DELAY_MS = 700;
 
 function replaceAt<T>(list: T[], index: number, value: T): T[] {
   const copy = [...list];
@@ -150,12 +153,39 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
 
   const step = STEPS[stepIndex];
 
+  // A short pause after a choice before the next question appears. The
+  // selected answer shows straight away, so the student sees what they
+  // picked, and a mistaken tap can be changed within the pause. The next
+  // question's buttons also no longer appear right under a finger that is
+  // still on the screen.
+  const advanceTimer = useRef<number | null>(null);
+
+  function cancelAdvance() {
+    if (advanceTimer.current !== null) {
+      window.clearTimeout(advanceTimer.current);
+      advanceTimer.current = null;
+    }
+  }
+
+  useEffect(() => cancelAdvance, []);
+
+  function chooseAndAdvance(record: () => void) {
+    record();
+    cancelAdvance();
+    advanceTimer.current = window.setTimeout(() => {
+      advanceTimer.current = null;
+      goNext();
+    }, ADVANCE_DELAY_MS);
+  }
+
   function goNext() {
+    cancelAdvance();
     setRestored(false);
     setStepIndex((current) => Math.min(current + 1, STEPS.length - 1));
   }
 
   function goBack() {
+    cancelAdvance();
     setRestored(false);
     if (stepIndex === 0) {
       navigate('/app');
@@ -301,12 +331,13 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
                       : 'choice-card'
                   }
                   aria-pressed={choices[step.index] === dimension}
-                  onClick={() => {
-                    setChoices((current) =>
-                      replaceAt(current, step.index, dimension),
-                    );
-                    goNext();
-                  }}
+                  onClick={() =>
+                    chooseAndAdvance(() =>
+                      setChoices((current) =>
+                        replaceAt(current, step.index, dimension),
+                      ),
+                    )
+                  }
                 >
                   <span className="choice-letter">
                     {optionIndex === 0 ? 'A' : 'B'}
@@ -420,12 +451,13 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
                       : 'option'
                   }
                   aria-pressed={answers[step.index] === option.value}
-                  onClick={() => {
-                    setAnswers((current) =>
-                      replaceAt(current, step.index, option.value),
-                    );
-                    goNext();
-                  }}
+                  onClick={() =>
+                    chooseAndAdvance(() =>
+                      setAnswers((current) =>
+                        replaceAt(current, step.index, option.value),
+                      ),
+                    )
+                  }
                 >
                   {option.label}
                 </button>
