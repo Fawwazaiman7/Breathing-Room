@@ -28,7 +28,9 @@ export type SignInFailure =
   /** The account exists but belongs to the other portal. */
   | { kind: 'wrongPortal'; role: Role }
   /** The account's role could not be read. */
-  | { kind: 'unknown' };
+  | { kind: 'unknown' }
+  /** Right password, but the email address has not been verified yet. */
+  | { kind: 'unconfirmed' };
 
 export interface AuthState {
   status: 'loading' | 'signedOut' | 'signedIn';
@@ -46,8 +48,18 @@ export interface AuthState {
     password: string,
     portal: Role,
   ) => Promise<SignInFailure | null>;
-  /** Creates a STUDENT account. Advisor accounts are created by the administrator. */
+  /**
+   * Creates a STUDENT account; the email address is then confirmed with a
+   * code. Advisor accounts are created by the administrator.
+   */
   signUp: (details: SignUpDetails) => Promise<SignUpResult>;
+  /**
+   * Checks the code emailed after sign-up. On success the account is
+   * verified and signed in. Returns an error message, or null.
+   */
+  verifyEmailCode: (email: string, code: string) => Promise<string | null>;
+  /** Emails a new sign-up code. Returns an error message, or null. */
+  resendEmailCode: (email: string) => Promise<string | null>;
   signOut: () => Promise<void>;
   /** Reads the profile again, after the profile page has saved a change. */
   refreshProfile: () => Promise<void>;

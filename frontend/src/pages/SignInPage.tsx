@@ -6,6 +6,7 @@ import type { Role, SignInFailure } from '../auth/auth-context';
 import { useAuth } from '../auth/useAuth';
 import { AuthLayout } from '../components/AuthLayout';
 import { ArrowRightIcon } from '../components/Icons';
+import { VerifyEmailCard } from '../components/VerifyEmailCard';
 
 /**
  * Wording for each portal. Every sign-in belongs to exactly one portal, and
@@ -48,7 +49,7 @@ const PORTAL_COPY: Record<
 const HOME: Record<Role, string> = { student: '/app', advisor: '/advisor' };
 
 export function SignInPage() {
-  const { status, profile, signIn, signOut } = useAuth();
+  const { status, profile, signIn, signOut, resendEmailCode } = useAuth();
   const [searchParams] = useSearchParams();
   // /sign-in?as=advisor is the advisor portal; everything else is the
   // student portal.
@@ -68,6 +69,9 @@ export function SignInPage() {
   // other page opens ready to submit.
   const [handoff, setHandoff] = useState<Role | null>(null);
   const [busy, setBusy] = useState(false);
+  // Set when an unverified account asks for its code from this page.
+  const [verifying, setVerifying] = useState<string | null>(null);
+  const [codeError, setCodeError] = useState<string | null>(null);
 
   if (status === 'signedIn' && profile) {
     if (profile.role === portal) {
@@ -104,8 +108,32 @@ export function SignInPage() {
     );
   }
 
+  async function startVerification() {
+    const address = email.trim().toLowerCase();
+    setCodeError(null);
+    const message = await resendEmailCode(address);
+    if (message) {
+      setCodeError(message);
+    } else {
+      setVerifying(address);
+    }
+  }
+
+  if (verifying) {
+    return (
+      <AuthLayout>
+        <VerifyEmailCard
+          email={verifying}
+          sentNow
+          onCancel={() => setVerifying(null)}
+        />
+      </AuthLayout>
+    );
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setCodeError(null);
     setBusy(true);
     setFailed(null);
     setHandoff(null);
@@ -148,6 +176,23 @@ export function SignInPage() {
           <p className="form-error" role="alert">
             The email or password is not correct.
           </p>
+        )}
+        {failure?.kind === 'unconfirmed' && (
+          <div className="portal-hint" role="alert">
+            <strong>Your email address is not verified yet</strong>
+            <span>
+              We will email you a code. Enter it to activate your account.
+            </span>
+            <button
+              type="button"
+              className="portal-hint-link link-button"
+              onClick={() => void startVerification()}
+            >
+              Send me a code
+              <ArrowRightIcon size={18} />
+            </button>
+            {codeError && <p className="form-error">{codeError}</p>}
+          </div>
         )}
         {failure?.kind === 'unknown' && (
           <p className="form-error" role="alert">

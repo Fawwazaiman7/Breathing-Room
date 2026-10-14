@@ -961,6 +961,13 @@ button {
   color: var(--ink);
 }
 
+/* The emailed verification code: large, spaced digits. */
+.code-input {
+  font-size: 1.4rem;
+  letter-spacing: 0.3em;
+  text-align: center;
+}
+
 /* Shown when an account is used on the other portal's sign-in: a calm
    pointer to the right page, not an error. */
 .portal-hint {

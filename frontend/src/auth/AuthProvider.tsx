@@ -96,6 +96,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           email,
           password,
         });
+        if (error && /not confirmed/i.test(error.message ?? '')) {
+          return { kind: 'unconfirmed' };
+        }
         if (error || !data.user) {
           return { kind: 'credentials' };
         }
@@ -144,6 +147,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               'We could not create the account. This student number may already be registered.',
           };
         }
+        if (/rate limit|too many/i.test(text)) {
+          return {
+            ok: false,
+            message:
+              'Too many attempts in a short time. Please wait a few minutes and try again.',
+          };
+        }
         if (/already registered|already exists/i.test(text)) {
           return {
             ok: false,
@@ -159,8 +169,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           message: 'We could not create the account. Please try again.',
         };
       }
+      // Supabase answers an address that already has a verified account
+      // with a user that has no identities, and sends no email.
+      if (data.user && data.user.identities?.length === 0) {
+        return {
+          ok: false,
+          message:
+            'An account with this email already exists. Try signing in instead.',
+        };
+      }
       // No session means Supabase is waiting for the email to be confirmed.
       return { ok: true, needsEmailConfirmation: !data.session };
+    },
+    [],
+  );
+
+  const verifyEmailCode = useCallback(
+    async (address: string, code: string): Promise<string | null> => {
+      const { error } = await supabase.auth.verifyOtp({
+        email: address,
+        token: code,
+        type: 'signup',
+      });
+      if (!error) {
+        return null;
+      }
+      return /expired|invalid/i.test(error.message ?? '')
+        ? 'This code is not correct or has expired. Check the newest email, or send a new code.'
+        : 'We could not check the code. Please try again.';
+    },
+    [],
+  );
+
+  const resendEmailCode = useCallback(
+    async (address: string): Promise<string | null> => {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: address,
+      });
+      if (!error) {
+        return null;
+      }
+      return /rate limit|seconds|too many/i.test(error.message ?? '')
+        ? 'Please wait a little before asking for another code.'
+        : 'We could not send a new code. Please try again.';
     },
     [],
   );
@@ -217,6 +269,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email: userId ? email : null,
       signIn,
       signUp,
+      verifyEmailCode,
+      resendEmailCode,
       signOut,
       refreshProfile,
       changePassword,
@@ -228,6 +282,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkingPortal,
     signIn,
     signUp,
+    verifyEmailCode,
+    resendEmailCode,
     signOut,
     refreshProfile,
     changePassword,

@@ -4,8 +4,12 @@ import { Link, Navigate } from 'react-router-dom';
 import '../advising/advising.css';
 import { useAuth } from '../auth/useAuth';
 import { AuthLayout } from '../components/AuthLayout';
+import { VerifyEmailCard } from '../components/VerifyEmailCard';
 
-/** Sign-up for students. Advisor accounts are created by the administrator. */
+/**
+ * Sign-up for students. The email address is confirmed with a code before
+ * the account can be used. Advisor accounts are created by the administrator.
+ */
 export function SignUpPage() {
   const { status, profile, signUp } = useAuth();
   const [fullName, setFullName] = useState('');
@@ -15,7 +19,7 @@ export function SignUpPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [confirmEmail, setConfirmEmail] = useState(false);
+  const [verifying, setVerifying] = useState<string | null>(null);
 
   if (status === 'signedIn' && profile) {
     return (
@@ -25,38 +29,34 @@ export function SignUpPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const address = email.trim().toLowerCase();
     setBusy(true);
     setError(null);
     const result = await signUp({
       fullName: fullName.trim(),
       studentNumber: studentNumber.trim(),
       className: className.trim(),
-      email: email.trim(),
+      email: address,
       password,
     });
     if (!result.ok) {
       setError(result.message);
     } else if (result.needsEmailConfirmation) {
-      setConfirmEmail(true);
+      setVerifying(address);
     }
     // When no confirmation is needed, the session starts and the redirect
     // above takes over.
     setBusy(false);
   }
 
-  if (confirmEmail) {
+  if (verifying) {
     return (
       <AuthLayout>
-        <section className="auth-card">
-          <h1 className="card-title">Check your email</h1>
-          <p className="card-text">
-            We sent a confirmation link to {email.trim()}. Open it to activate
-            your account, then sign in.
-          </p>
-          <Link className="button-primary" to="/sign-in?as=student">
-            Go to sign in
-          </Link>
-        </section>
+        <VerifyEmailCard
+          email={verifying}
+          sentNow
+          onCancel={() => setVerifying(null)}
+        />
       </AuthLayout>
     );
   }
@@ -66,8 +66,8 @@ export function SignUpPage() {
       <form className="auth-card" onSubmit={handleSubmit}>
         <h1 className="card-title">Create a student account</h1>
         <p className="card-text">
-          For students. Academic Advisors receive their account from the
-          administrator.
+          For students. We will email you a code to confirm your address.
+          Academic Advisors receive their account from the administrator.
         </p>
 
         <label className="field">
