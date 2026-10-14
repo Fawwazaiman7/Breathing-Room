@@ -13,6 +13,7 @@ import { RiskBadge } from '../components/RiskBadge';
 import { fetchMyScreenings } from '../lib/api';
 import { CATEGORY_CONTENT } from '../screening/content';
 import type { ScreeningHistoryItem } from '../screening/types';
+import { usePageTitle } from '../lib/usePageTitle';
 
 const dayFormat = new Intl.DateTimeFormat('en-GB', { day: '2-digit' });
 const monthFormat = new Intl.DateTimeFormat('en-GB', { month: 'short' });
@@ -20,6 +21,7 @@ const monthFormat = new Intl.DateTimeFormat('en-GB', { month: 'short' });
 const MAX_ITEMS = 5;
 
 export function OverviewPage() {
+  usePageTitle('Overview');
   const [items, setItems] = useState<ScreeningHistoryItem[] | null>(null);
   const [failed, setFailed] = useState(false);
   const { state: advisorState, setAdvisor } = useMyAdvisor();
@@ -63,12 +65,13 @@ export function OverviewPage() {
           <section className="hero">
             <div>
               <p className="hero-kicker">
-                <span className="dot" /> Check-in available
+                <span className="dot" /> Burnout check-in available
               </p>
               <h1 className="hero-title">How are things going this semester?</h1>
               <p className="hero-text">
-                Your next screening is ready. It takes around 8–10 minutes and
-                gives you a summary of your current workload and wellbeing.
+                Your next burnout screening is ready. It takes around 8–10
+                minutes and shows your academic workload, your signs of
+                burnout, and a suggested next step.
               </p>
               <Link className="button-light" to="/app/screening">
                 Start screening <ArrowRightIcon size={18} />
@@ -111,7 +114,7 @@ export function OverviewPage() {
       <div className="overview-grid">
         <section className="card">
           <p className="eyebrow">Your check-ins</p>
-          <h2 className="card-title">Previous screenings</h2>
+          <h2 className="card-title">Previous burnout screenings</h2>
 
           {failed && (
             <p className="card-text">
@@ -121,7 +124,7 @@ export function OverviewPage() {
           {!failed && items === null && <p className="card-text">Loading…</p>}
           {!failed && items !== null && items.length === 0 && (
             <p className="card-text">
-              No screenings yet. Your results will appear here.
+              No screenings yet. Your burnout screening results will appear here.
             </p>
           )}
           {!failed && items !== null && items.length > 0 && (
@@ -137,8 +140,8 @@ export function OverviewPage() {
                         <span>{monthFormat.format(date)}</span>
                       </span>
                       <span className="history-text">
-                        <strong>{content.label}</strong>
-                        <span>{content.short}</span>
+                        <strong>{content.short}</strong>
+                        <span>Burnout screening</span>
                       </span>
                       <RiskBadge category={item.category} />
                       <ChevronRightIcon />

@@ -202,7 +202,7 @@ export const CATEGORY_CONTENT: Record<
       'The recommended step is self-guided: keep the routines for rest, planning, and pacing that are working for you, and check in again later in the semester.',
   },
   LOW_RISK: {
-    label: 'Low risk',
+    label: 'Low burnout risk',
     tone: 'low',
     short: 'Workload was manageable',
     summary:
@@ -211,7 +211,7 @@ export const CATEGORY_CONTENT: Record<
       'The recommended step is self-guided: protect your rest, break large tasks into smaller ones, and pace yourself so the load stays manageable.',
   },
   MODERATE_RISK: {
-    label: 'Moderate risk',
+    label: 'Moderate burnout risk',
     tone: 'moderate',
     short: 'Some signs of exhaustion',
     summary:
@@ -220,7 +220,7 @@ export const CATEGORY_CONTENT: Record<
       'We recommend arranging a conversation with your Academic Advisor (DPA) about your workload and how you have been feeling.',
   },
   HIGH_RISK: {
-    label: 'High risk',
+    label: 'High burnout risk',
     tone: 'high',
     short: 'Extra support recommended',
     summary:
@@ -242,3 +242,10 @@ export const BINARY_LABELS: Record<BinaryLevel, string> = {
   LOW: 'Low',
   HIGH: 'High',
 };
+
+/** Plain-language meaning of each measure, shown next to the levels. */
+export const MEASURE_HINTS = {
+  workload: 'How demanding your studies have felt',
+  exhaustion: 'Feeling drained or worn out by your studies',
+  disengagement: 'Feeling distant from, or tired of, your studies',
+} as const;

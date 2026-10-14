@@ -12,6 +12,7 @@ import {
   CATEGORY_CONTENT,
   WORKLOAD_LABELS,
 } from '../../screening/content';
+import { usePageTitle } from '../../lib/usePageTitle';
 
 const dateFormat = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
@@ -20,6 +21,7 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', {
 });
 
 export function AdvisorStudentPage() {
+  usePageTitle('Student burnout screening');
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [confirmingRemove, setConfirmingRemove] = useState(false);
@@ -122,7 +124,7 @@ export function AdvisorStudentPage() {
             className={`result-card result-${CATEGORY_CONTENT[latest.category].tone}`}
           >
             <p className="result-kicker">
-              Latest screening · {dateFormat.format(new Date(latest.createdAt))}
+              Latest burnout screening · {dateFormat.format(new Date(latest.createdAt))}
             </p>
             <h2 className="result-title">
               {CATEGORY_CONTENT[latest.category].label}

@@ -100,6 +100,11 @@ Questions about the Academic Advisor keep a single label
 (`STUDENT_SUPPORT`), so a different prediction for them is an error under
 both figures.
 
+On 15 October 2026 the result labels shown in the app gained the word
+"burnout" (for example "High burnout risk"). The `SR-CATEGORY` pattern was
+widened to also match these labels. No question in the three data files
+contains such a label, so every figure reported here is unchanged.
+
 ## The data files
 
 | File | Rows | Role |

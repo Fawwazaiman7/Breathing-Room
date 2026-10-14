@@ -111,6 +111,18 @@ button {
   color: #fff;
 }
 
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.logo-tagline {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
 .logo-name {
   font-size: 1.25rem;
   font-weight: 600;
@@ -1058,6 +1070,12 @@ button {
 
 .rule-details[open] summary {
   margin-bottom: 10px;
+}
+
+.rule-details.about-burnout {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .rule-details .fine-print {

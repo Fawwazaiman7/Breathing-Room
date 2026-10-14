@@ -21,7 +21,7 @@ export function AppShell() {
             <HomeIcon /> Overview
           </NavLink>
           <NavLink to="/app/screening" className={navClass}>
-            <BookIcon /> Screening
+            <BookIcon /> Burnout screening
           </NavLink>
           <NavLink to="/app/support" className={navClass}>
             <MessageIcon /> Support chat

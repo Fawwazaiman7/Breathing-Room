@@ -5,12 +5,14 @@ import '../advising/advising.css';
 import { useAuth } from '../auth/useAuth';
 import { AuthLayout } from '../components/AuthLayout';
 import { VerifyEmailCard } from '../components/VerifyEmailCard';
+import { usePageTitle } from '../lib/usePageTitle';
 
 /**
  * Sign-up for students. The email address is confirmed with a code before
  * the account can be used. Advisor accounts are created by the administrator.
  */
 export function SignUpPage() {
+  usePageTitle('Create an account');
   const { status, profile, signUp } = useAuth();
   const [fullName, setFullName] = useState('');
   const [studentNumber, setStudentNumber] = useState('');

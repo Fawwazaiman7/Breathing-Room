@@ -280,6 +280,7 @@ describe('Intent rules', () => {
     expect(matchIntentRule('My result is No Burnout, what does it mean?')).toEqual({ rule: 'SR-CATEGORY', intent: 'SCREENING_RESULT' });
     expect(ruleOf('Hasil saya risiko sedang, apa yang harus saya lakukan?')).toBe('SR-CATEGORY');
     expect(ruleOf('Can my screening result change?')).toBe('SR-CATEGORY');
+    expect(ruleOf('My result is High burnout risk, what now?')).toBe('SR-CATEGORY');
     expect(matchIntentRule('What does Temporal Demand mean in the questionnaire?')).toEqual({ rule: 'WL-INSTRUMENT', intent: 'WORKLOAD' });
     expect(ruleOf('apa itu nasa tlx')).toBe('WL-INSTRUMENT');
     expect(matchIntentRule('What does a high Disengagement score mean?')).toEqual({ rule: 'ED-INSTRUMENT', intent: 'EXHAUSTION_DISENGAGEMENT' });
@@ -504,7 +505,7 @@ describe('Chat prompt', () => {
   it('states the stored result as a fixed fact only when it was looked up', () => {
     const withResult = buildChatMessages({ message: 'What does my result mean?', history: [], intent: 'SCREENING_RESULT', passages: PASSAGES, result: HIGH_RISK });
     const text = withResult[withResult.length - 1].content;
-    expect(text).toContain('Category: High risk');
+    expect(text).toContain('Category: High burnout risk');
     expect(text).toContain('Validated next step: a counselling referral');
     expect(text).toMatch(/never change it/);
     // No staff label reaches the model.
@@ -623,7 +624,7 @@ describe('Chat flow', () => {
     const reply = await ask(deps, 'What does my result mean?');
     expect(reply.kind).toBe('answer');
     expect(calls.result).toEqual(['student-1']);
-    expect(calls.complete[0][calls.complete[0].length - 1].content).toContain('Category: High risk');
+    expect(calls.complete[0][calls.complete[0].length - 1].content).toContain('Category: High burnout risk');
   });
 
   it('also looks the result up when another topic mentions it', async () => {

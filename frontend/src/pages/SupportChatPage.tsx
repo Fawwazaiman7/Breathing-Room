@@ -6,6 +6,7 @@ import type { ChatTurn } from '../chat/api';
 import '../chat/chat.css';
 import { ChevronRightIcon, InfoIcon, SendIcon } from '../components/Icons';
 import { ApiError } from '../lib/api';
+import { usePageTitle } from '../lib/usePageTitle';
 
 const TOPICS = [
   'Academic burnout',
@@ -54,6 +55,7 @@ function withLinks(text: string): ReactNode[] {
 }
 
 export function SupportChatPage() {
+  usePageTitle('Support chat');
   const { profile } = useAuth();
   const firstName = profile?.full_name.trim().split(/\s+/)[0] ?? '';
   const [messages, setMessages] = useState<Message[]>(() => [

@@ -1,15 +1,15 @@
-import { RULE_BASE } from '../screening/rule-engine/rule-base';
-import { checkFeedback } from './feedback.checker';
-import { toFeedbackContext } from './feedback.context';
-import type { FeedbackContext } from './feedback.context';
-import { generateFeedback } from './feedback.generator';
-import { buildFeedbackMessages, FEEDBACK_SYSTEM_PROMPT } from './feedback.prompt';
+import { RULE_BASE } from '../screening/rule-engine/rule-base.js';
+import { checkFeedback } from './feedback.checker.js';
+import { toFeedbackContext } from './feedback.context.js';
+import type { FeedbackContext } from './feedback.context.js';
+import { generateFeedback } from './feedback.generator.js';
+import { buildFeedbackMessages, FEEDBACK_SYSTEM_PROMPT } from './feedback.prompt.js';
 import {
   DEFAULT_GROQ_MODEL,
   GROQ_CHAT_URL,
   GROQ_MAX_COMPLETION_TOKENS,
   requestGroqCompletion,
-} from './groq.request';
+} from './groq.request.js';
 
 function contextFor(ruleId: string): FeedbackContext {
   const rule = RULE_BASE.find((r) => r.id === ruleId)!;
@@ -79,7 +79,7 @@ describe('Feedback context and prompt', () => {
     const [system, user] = buildFeedbackMessages(HIGH);
     expect(system).toEqual({ role: 'system', content: FEEDBACK_SYSTEM_PROMPT });
     expect(user.role).toBe('user');
-    expect(user.content).toContain('Screening category (final): High risk');
+    expect(user.content).toContain('Screening category (final): High burnout risk');
     expect(user.content).toContain('Academic workload: High');
     expect(user.content).toContain('Exhaustion: High');
     expect(user.content).toContain('Disengagement: Low');
@@ -127,6 +127,13 @@ describe('Feedback checker', () => {
     const mixed = GOOD_HIGH_NOTE + ' This is close to low risk.';
     expect(checkFeedback(mixed, HIGH).ok).toBe(false);
     expect(checkFeedback(GOOD_NONE_NOTE + ' You are not high-risk.', NONE).ok).toBe(false);
+  });
+
+  it('accepts the category with "burnout" in its name and still catches other categories', () => {
+    const named = GOOD_HIGH_NOTE.replace('High risk', 'High burnout risk');
+    expect(checkFeedback(named, HIGH).ok).toBe(true);
+    const wrong = GOOD_HIGH_NOTE.replace('High risk', 'Low burnout risk');
+    expect(JSON.stringify(checkFeedback(wrong, HIGH))).toContain('LOW_RISK');
   });
 
   it('rejects a note that drops the recommended action', () => {

@@ -7,6 +7,7 @@ import { useAuth } from '../auth/useAuth';
 import { AuthLayout } from '../components/AuthLayout';
 import { ArrowRightIcon } from '../components/Icons';
 import { VerifyEmailCard } from '../components/VerifyEmailCard';
+import { usePageTitle } from '../lib/usePageTitle';
 
 /**
  * Wording for each portal. Every sign-in belongs to exactly one portal, and
@@ -49,6 +50,7 @@ const PORTAL_COPY: Record<
 const HOME: Record<Role, string> = { student: '/app', advisor: '/advisor' };
 
 export function SignInPage() {
+  usePageTitle('Sign in');
   const { status, profile, signIn, signOut, resendEmailCode } = useAuth();
   const [searchParams] = useSearchParams();
   // /sign-in?as=advisor is the advisor portal; everything else is the

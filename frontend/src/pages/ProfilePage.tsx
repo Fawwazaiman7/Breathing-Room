@@ -5,6 +5,7 @@ import { useAuth } from '../auth/useAuth';
 import { ApiError } from '../lib/api';
 import { updateProfile } from '../profile/api';
 import '../profile/profile.css';
+import { usePageTitle } from '../lib/usePageTitle';
 
 type Feedback = { kind: 'saved' | 'error'; text: string } | null;
 
@@ -247,6 +248,7 @@ function PasswordForm() {
 
 /** Account page for both students and Academic Advisors. */
 export function ProfilePage() {
+  usePageTitle('Profile');
   const { profile, email } = useAuth();
   if (!profile) {
     return null;

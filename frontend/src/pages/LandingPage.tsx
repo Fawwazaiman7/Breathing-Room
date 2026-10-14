@@ -12,6 +12,7 @@ import {
 } from '../components/Icons';
 import { LogoLink } from '../components/Logo';
 import './landing.css';
+import { usePageTitle } from '../lib/usePageTitle';
 
 /** The drawing from the Figma design: a student studying calmly at a desk. */
 function HeroIllustration() {
@@ -84,6 +85,7 @@ function HeroIllustration() {
 }
 
 export function LandingPage() {
+  usePageTitle();
   const { status, profile } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -134,12 +136,13 @@ export function LandingPage() {
         <section className="lp-hero">
           <div className="lp-hero-copy">
             <p className="lp-eyebrow">
-              <span></span> Student wellbeing at PNJ
+              <span></span> Academic burnout screening at PNJ
             </p>
             <h1>A calmer way to check in on your semester.</h1>
             <p className="lp-lead">
-              A private, guided screening to help you understand your academic
-              workload and how it may be affecting you.
+              A private, guided screening for academic burnout. It looks at
+              your workload and how you have been feeling, then gives you a
+              clear result and a next step.
             </p>
             <div className="lp-actions">
               <Link className="lp-button" to="/app/screening">
@@ -192,8 +195,8 @@ export function LandingPage() {
               <span>02</span>
               <h3>Understand your result</h3>
               <p>
-                A consistent rule-based assessment gives you a clear screening
-                summary.
+                Fixed rules, validated by a psychologist, give you a clear
+                burnout screening result.
               </p>
             </article>
             <article>
@@ -206,11 +209,42 @@ export function LandingPage() {
             </article>
           </div>
         </section>
+
+        <section className="lp-how lp-about" aria-labelledby="about-burnout">
+          <p className="lp-kicker">About burnout</p>
+          <h2 id="about-burnout">What is academic burnout?</h2>
+          <div className="lp-steps">
+            <article>
+              <span>Exhaustion</span>
+              <h3>Feeling drained</h3>
+              <p>
+                Your studies leave you tired, and rest no longer seems to
+                recover your energy.
+              </p>
+            </article>
+            <article>
+              <span>Disengagement</span>
+              <h3>Feeling distant</h3>
+              <p>
+                Your courses start to feel meaningless, and you find yourself
+                pulling away from them.
+              </p>
+            </article>
+            <article>
+              <span>Workload</span>
+              <h3>The pressure behind it</h3>
+              <p>
+                Heavy demands that last for weeks without enough recovery are
+                a common cause. Burnout can change with rest and support.
+              </p>
+            </article>
+          </div>
+        </section>
       </main>
 
       <footer className="lp-footer">
-        <span>Jakarta State Polytechic (PNJ) · Student wellbeing support</span>
-        <span>Screening support, not a clinical diagnosis</span>
+        <span>Politeknik Negeri Jakarta · Student wellbeing support</span>
+        <span>A burnout screening, not a clinical diagnosis</span>
       </footer>
     </div>
   );

@@ -54,7 +54,7 @@ const CONCERN_OR_HELP =
 
 const RESULT_WORD = /\b(?:results?|hasil(?:nya)?|kategori|category)\b/i;
 const CATEGORY_NAME =
-  /\b(?:no burnout|low[- ]risk|moderate[- ]risk|high[- ]risk|tidak (?:mengalami |ada )?burnout|r[ie]siko (?:rendah|sedang|tinggi))\b/i;
+  /\b(?:no burnout|(?:low|moderate|high)[- ](?:burn-?out[- ])?risk|tidak (?:mengalami |ada )?burnout|r[ie]siko (?:rendah|sedang|tinggi))\b/i;
 // "test result" alone is left to the vote: it can be an exam.
 const SCREENING_RESULT_PHRASE =
   /\b(?:screening|skrining) results?\b|\bhasil (?:skrining|screening)\b/i;

@@ -12,7 +12,14 @@ export function Logo({ compact = false }: LogoProps) {
       <span className="logo-mark">
         <LeafIcon size={compact ? 19 : 22} />
       </span>
-      <span className="logo-name">Breathing Room</span>
+      {compact ? (
+        <span className="logo-name">Breathing Room</span>
+      ) : (
+        <span className="logo-text">
+          <span className="logo-name">Breathing Room</span>
+          <span className="logo-tagline">Academic burnout screening</span>
+        </span>
+      )}
     </span>
   );
 }

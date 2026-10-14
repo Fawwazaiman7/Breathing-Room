@@ -8,9 +8,9 @@ export type FeedbackCheck =
 /** How each category might be named in the note. */
 const CATEGORY_MENTIONS: Record<ScreeningCategory, RegExp> = {
   NO_BURNOUT: /\bno (signs? of )?burn-?out\b/i,
-  LOW_RISK: /\blow[- ]risk\b/i,
-  MODERATE_RISK: /\bmoderate[- ]risk\b/i,
-  HIGH_RISK: /\bhigh[- ]risk\b/i,
+  LOW_RISK: /\blow[- ](burn-?out[- ])?risk\b/i,
+  MODERATE_RISK: /\bmoderate[- ](burn-?out[- ])?risk\b/i,
+  HIGH_RISK: /\bhigh[- ](burn-?out[- ])?risk\b/i,
 };
 
 /** Clinical territory the note must stay out of. */

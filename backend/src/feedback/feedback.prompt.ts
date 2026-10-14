@@ -13,9 +13,9 @@ export interface ChatMessage {
 
 export const CATEGORY_LABELS: Record<ScreeningCategory, string> = {
   NO_BURNOUT: 'No burnout',
-  LOW_RISK: 'Low risk',
-  MODERATE_RISK: 'Moderate risk',
-  HIGH_RISK: 'High risk',
+  LOW_RISK: 'Low burnout risk',
+  MODERATE_RISK: 'Moderate burnout risk',
+  HIGH_RISK: 'High burnout risk',
 };
 
 export const WORKLOAD_LABELS: Record<WorkloadLevel, string> = {

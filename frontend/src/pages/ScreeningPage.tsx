@@ -15,6 +15,7 @@ import {
 } from '../screening/content';
 import { clearDraft, loadDraft, saveDraft } from '../screening/draft';
 import type { NasaTlxDimension, ScreeningPayload } from '../screening/types';
+import { usePageTitle } from '../lib/usePageTitle';
 
 type Step =
   | { kind: 'intro' }
@@ -91,6 +92,7 @@ function Progress({
  * results are shared with that advisor. The backend enforces the same rule.
  */
 export function ScreeningPage() {
+  usePageTitle('Burnout screening');
   const { state, setAdvisor } = useMyAdvisor();
 
   if (state.status === 'loading') {
@@ -287,11 +289,12 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
       <div className="flow-body">
         {step.kind === 'intro' && (
           <>
-            <p className="eyebrow">Screening</p>
+            <p className="eyebrow">Academic burnout screening</p>
             <h1 className="flow-title">A quick check-in, in two parts</h1>
             <p className="flow-sub">
-              Part 1 looks at your academic workload. Part 2 asks how you have
-              been feeling about your studies. It takes around 8–10 minutes.
+              Part 1 looks at your academic workload. Part 2 looks at two
+              signs of burnout: exhaustion and disengagement. It takes around
+              8–10 minutes.
             </p>
             <ul className="plain-list">
               <li>Answer based on the past two weeks.</li>
@@ -418,11 +421,13 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
 
         {step.kind === 'olbiIntro' && (
           <>
-            <p className="eyebrow">Part 2 of 2</p>
+            <p className="eyebrow">Part 2 of 2 · Signs of burnout</p>
             <h1 className="flow-title">How you have been feeling</h1>
             <p className="flow-sub">
               Next are {OLBI_STATEMENTS.length} short statements about your
-              studies. For each one, choose how much you agree.
+              studies. They look at exhaustion (feeling drained) and
+              disengagement (feeling distant from your studies). For each one,
+              choose how much you agree.
             </p>
             <button type="button" className="button-primary" onClick={goNext}>
               Continue <ArrowRightIcon size={18} />
@@ -471,7 +476,8 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
             <p className="eyebrow">All done</p>
             <h1 className="flow-title">Thank you for checking in</h1>
             <p className="flow-sub">
-              Submit your answers to see your result. It will also be shared
+              Submit your answers to see your burnout screening result. It
+              will also be shared
               with your Academic Advisor, {advisorName}.
             </p>
             {error && (

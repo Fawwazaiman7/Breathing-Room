@@ -330,6 +330,12 @@
   line-height: 1.7;
 }
 
+/* About burnout: same layout as the steps, on the page background. */
+.lp-about {
+  background: transparent;
+  border: 0;
+}
+
 /* ---------- Footer ---------- */
 
 .lp-footer {

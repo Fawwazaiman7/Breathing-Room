@@ -11,6 +11,7 @@ import {
   WORKLOAD_LABELS,
 } from '../../screening/content';
 import type { ScreeningCategory } from '../../screening/types';
+import { usePageTitle } from '../../lib/usePageTitle';
 
 type Filter = 'ALL' | ScreeningCategory | 'NOT_SCREENED';
 
@@ -63,6 +64,7 @@ function ShareRow({
 }
 
 export function AdvisorDashboardPage() {
+  usePageTitle('Your students');
   const [data, setData] = useState<AdvisorDashboard | null>(null);
   const [failed, setFailed] = useState(false);
   const [filter, setFilter] = useState<Filter>('ALL');
@@ -118,7 +120,7 @@ export function AdvisorDashboardPage() {
         <p className="eyebrow">Advisor workspace</p>
         <h1 className="page-title">Your students</h1>
         <p className="card-text">
-          The latest screening result for each student you advise. Students
+          The latest burnout screening result for each student you advise. Students
           who may need follow-up are listed first.
         </p>
       </header>
@@ -158,7 +160,7 @@ export function AdvisorDashboardPage() {
           <div className="advisor-grid">
             <section className="card">
               <p className="eyebrow">Latest result</p>
-              <h2 className="card-title">Students by category</h2>
+              <h2 className="card-title">Burnout risk across your students</h2>
               {screened === 0 ? (
                 <p className="card-text">No screenings yet.</p>
               ) : (

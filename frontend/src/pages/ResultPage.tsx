@@ -5,6 +5,7 @@ import { fetchMyScreenings, requestFeedback } from '../lib/api';
 import {
   BINARY_LABELS,
   CATEGORY_CONTENT,
+  MEASURE_HINTS,
   WORKLOAD_LABELS,
 } from '../screening/content';
 import { toHistoryItem } from '../screening/types';
@@ -12,6 +13,7 @@ import type {
   ScreeningHistoryItem,
   SubmittedScreening,
 } from '../screening/types';
+import { usePageTitle } from '../lib/usePageTitle';
 
 const dateFormat = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
@@ -20,6 +22,7 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', {
 });
 
 export function ResultPage() {
+  usePageTitle('Your burnout screening result');
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
 
@@ -120,24 +123,30 @@ export function ResultPage() {
   return (
     <div className="page page-narrow">
       <p className="eyebrow">
-        Your screening result · {dateFormat.format(new Date(item.createdAt))}
+        Your burnout screening result · {dateFormat.format(new Date(item.createdAt))}
       </p>
 
       {/* The Rule-Based category is the primary information on this page. */}
       <section className={`result-card result-${content.tone}`}>
-        <p className="result-kicker">Screening category</p>
+        <p className="result-kicker">Burnout screening category</p>
         <h1 className="result-title">{content.label}</h1>
         <p className="result-summary">{content.summary}</p>
       </section>
 
       <section className="card">
         <p className="eyebrow">What this is based on</p>
+        <p className="card-text">
+          Academic burnout shows up as two signs: exhaustion and
+          disengagement. Your workload shows how much pressure sits behind
+          them. Your result combines all three.
+        </p>
         <div className="metric-row">
           <div className="metric">
             <span className="metric-label">Academic workload</span>
             <span className="metric-value">
               {WORKLOAD_LABELS[item.workload.level]}
             </span>
+            <span className="metric-note">{MEASURE_HINTS.workload}</span>
             <span className="metric-note">
               Score {item.workload.score} out of 100
             </span>
@@ -147,12 +156,14 @@ export function ResultPage() {
             <span className="metric-value">
               {BINARY_LABELS[item.exhaustion.level]}
             </span>
+            <span className="metric-note">{MEASURE_HINTS.exhaustion}</span>
           </div>
           <div className="metric">
             <span className="metric-label">Disengagement</span>
             <span className="metric-value">
               {BINARY_LABELS[item.disengagement.level]}
             </span>
+            <span className="metric-note">{MEASURE_HINTS.disengagement}</span>
           </div>
         </div>
       </section>
@@ -174,7 +185,8 @@ export function ResultPage() {
                 </p>
               ))}
               <p className="fine-print">
-                Written by AI to explain your result.
+                Written by AI to explain your result. It does not change your
+                screening category.
               </p>
             </>
           ) : (
@@ -183,9 +195,29 @@ export function ResultPage() {
         </section>
       )}
 
+      <section className="card">
+        <details className="rule-details about-burnout">
+          <summary>What is academic burnout?</summary>
+          <p className="card-text">
+            Academic burnout is a state of long-term study strain. It usually
+            builds up when demands stay high for weeks without enough rest or
+            support. It shows up in two ways: feeling exhausted by your
+            studies, and feeling distant from them, as if they no longer
+            matter to you.
+          </p>
+          <p className="card-text">
+            Burnout is common among students and it can change. Rest, a more
+            manageable workload, and talking with someone all help. That is
+            why this screening suggests a next step for every result.
+          </p>
+        </details>
+      </section>
+
       <p className="fine-print">
-        This is a screening result, not a diagnosis. The category was
-        determined by fixed rules applied to your answers.
+        This is a burnout screening result, not a diagnosis. The category was
+        decided by fixed rules, validated by the campus psychologist, applied
+        to your answers. Things can change over a semester, so it helps to
+        check in again in a few weeks.
       </p>
 
       <div className="button-row">
