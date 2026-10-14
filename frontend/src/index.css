@@ -721,9 +721,17 @@ button {
     background-color 0.15s ease;
 }
 
-.choice-card:hover,
 .choice-card.selected {
   border-color: var(--teal);
+}
+
+/* Hover only on devices with a real pointer. On a phone a tap leaves the
+   hover state on the spot that was touched, which then showed up on the
+   next question's answer in the same place. */
+@media (hover: hover) and (pointer: fine) {
+  .choice-card:hover {
+    border-color: var(--teal);
+  }
 }
 
 .choice-card.selected {
@@ -795,9 +803,23 @@ button {
     background-color 0.15s ease;
 }
 
-.option:hover,
 .option.selected {
   border-color: var(--teal);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .option:hover {
+    border-color: var(--teal);
+  }
+}
+
+.flow-restored {
+  margin: 16px 0 0;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+  font-size: 0.9rem;
 }
 
 .option.selected {

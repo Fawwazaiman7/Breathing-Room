@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMyAdvisor } from '../advising/useMyAdvisor';
+import { useAuth } from '../auth/useAuth';
 import { ArrowLeftIcon, ArrowRightIcon } from '../components/Icons';
 import { LinkAdvisorCard } from '../components/LinkAdvisorCard';
 import { ApiError, submitScreening } from '../lib/api';
@@ -12,6 +13,7 @@ import {
   OLBI_OPTIONS,
   OLBI_STATEMENTS,
 } from '../screening/content';
+import { clearDraft, loadDraft, saveDraft } from '../screening/draft';
 import type { NasaTlxDimension, ScreeningPayload } from '../screening/types';
 
 type Step =
@@ -110,28 +112,51 @@ export function ScreeningPage() {
   );
 }
 
+/** Restores unfinished answers once, when the flow first appears. */
+function useInitialDraft(userId: string | null) {
+  const [draft] = useState(() =>
+    userId ? loadDraft(userId, STEPS.length) : null,
+  );
+  return draft;
+}
+
 function ScreeningFlow({ advisorName }: { advisorName: string }) {
   const navigate = useNavigate();
-  const [stepIndex, setStepIndex] = useState(0);
-  const [choices, setChoices] = useState<(NasaTlxDimension | null)[]>(() =>
-    NASA_TLX_PAIRS.map(() => null),
+  const { profile } = useAuth();
+  const userId = profile?.id ?? null;
+  const draft = useInitialDraft(userId);
+  const [stepIndex, setStepIndex] = useState(draft?.stepIndex ?? 0);
+  const [choices, setChoices] = useState<(NasaTlxDimension | null)[]>(
+    () => draft?.choices ?? NASA_TLX_PAIRS.map(() => null),
   );
-  const [ratings, setRatings] = useState<(number | null)[]>(() =>
-    NASA_TLX_DIMENSIONS.map(() => null),
+  const [ratings, setRatings] = useState<(number | null)[]>(
+    () => draft?.ratings ?? NASA_TLX_DIMENSIONS.map(() => null),
   );
-  const [answers, setAnswers] = useState<(number | null)[]>(() =>
-    OLBI_STATEMENTS.map(() => null),
+  const [answers, setAnswers] = useState<(number | null)[]>(
+    () => draft?.answers ?? OLBI_STATEMENTS.map(() => null),
   );
+  const [restored, setRestored] = useState(draft !== null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Keep unfinished answers on this device, so leaving the app (which can
+  // make a phone browser reload the page) does not lose them.
+  useEffect(() => {
+    if (!userId || submitting || stepIndex === 0) {
+      return;
+    }
+    saveDraft(userId, { stepIndex, choices, ratings, answers });
+  }, [userId, stepIndex, choices, ratings, answers, submitting]);
 
   const step = STEPS[stepIndex];
 
   function goNext() {
+    setRestored(false);
     setStepIndex((current) => Math.min(current + 1, STEPS.length - 1));
   }
 
   function goBack() {
+    setRestored(false);
     if (stepIndex === 0) {
       navigate('/app');
     } else {
@@ -166,6 +191,9 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
     setError(null);
     try {
       const result = await submitScreening(payload);
+      if (userId) {
+        clearDraft(userId);
+      }
       navigate(`/app/results/${result.id}`, { state: { result } });
     } catch (caught) {
       setError(
@@ -219,6 +247,13 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
 
       {progress && <Progress {...progress} />}
 
+      {restored && (
+        <p className="flow-restored" role="status">
+          Welcome back. Your earlier answers are saved, so you can carry on
+          from here.
+        </p>
+      )}
+
       <div className="flow-body">
         {step.kind === 'intro' && (
           <>
@@ -255,7 +290,7 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
               Think about your academic work over the past two weeks. Choose
               the experience that had the greater impact.
             </p>
-            <div className="choice-pair">
+            <div className="choice-pair" key={`compare-${step.index}`}>
               {NASA_TLX_PAIRS[step.index].map((dimension, optionIndex) => (
                 <button
                   key={dimension}
@@ -374,7 +409,7 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
               {OLBI_STATEMENTS[step.index][OLBI_LANGUAGE]}
             </h1>
             <p className="flow-sub">How much do you agree with this?</p>
-            <div className="option-list">
+            <div className="option-list" key={`olbi-${step.index}`}>
               {OLBI_OPTIONS.map((option) => (
                 <button
                   key={option.value}
