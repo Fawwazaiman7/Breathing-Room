@@ -217,6 +217,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const requestPasswordReset = useCallback(
+    async (address: string): Promise<string | null> => {
+      // Supabase answers the same way whether or not the account exists, so
+      // the page never reveals which addresses are registered.
+      const { error } = await supabase.auth.resetPasswordForEmail(address);
+      if (!error) {
+        return null;
+      }
+      return /rate limit|seconds|too many/i.test(error.message ?? '')
+        ? 'Please wait a little before asking for another code.'
+        : 'We could not send the code. Please try again.';
+    },
+    [],
+  );
+
+  const resetPassword = useCallback(
+    async (
+      address: string,
+      code: string,
+      newPassword: string,
+    ): Promise<string | null> => {
+      if (newPassword.length < 8) {
+        return 'Choose a password of at least 8 characters.';
+      }
+      const check = await supabase.auth.verifyOtp({
+        email: address,
+        token: code,
+        type: 'recovery',
+      });
+      if (check.error) {
+        return /expired|invalid/i.test(check.error.message ?? '')
+          ? 'This code is not correct or has expired. Check the newest email, or send a new code.'
+          : 'We could not check the code. Please try again.';
+      }
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+      if (error) {
+        const text = error.message ?? '';
+        return /password/i.test(text)
+          ? text
+          : 'We could not change your password. Please try again.';
+      }
+      return null;
+    },
+    [],
+  );
+
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
   }, []);
@@ -271,6 +319,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signUp,
       verifyEmailCode,
       resendEmailCode,
+      requestPasswordReset,
+      resetPassword,
       signOut,
       refreshProfile,
       changePassword,
@@ -284,6 +334,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signUp,
     verifyEmailCode,
     resendEmailCode,
+    requestPasswordReset,
+    resetPassword,
     signOut,
     refreshProfile,
     changePassword,

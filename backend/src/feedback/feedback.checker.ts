@@ -7,35 +7,43 @@ export type FeedbackCheck =
 
 /** How each category might be named in the note. */
 const CATEGORY_MENTIONS: Record<ScreeningCategory, RegExp> = {
-  NO_BURNOUT: /\bno (signs? of )?burn-?out\b/i,
-  LOW_RISK: /\blow[- ](burn-?out[- ])?risk\b/i,
-  MODERATE_RISK: /\bmoderate[- ](burn-?out[- ])?risk\b/i,
-  HIGH_RISK: /\bhigh[- ](burn-?out[- ])?risk\b/i,
+  NO_BURNOUT:
+    /\bno (signs? of )?burn-?out\b|\btidak (mengalami |ada )?(tanda[- ]tanda )?burn-?out\b/i,
+  LOW_RISK: /\blow[- ](burn-?out[- ])?risk\b|\brisiko (burn-?out )?rendah\b/i,
+  MODERATE_RISK:
+    /\bmoderate[- ](burn-?out[- ])?risk\b|\brisiko (burn-?out )?sedang\b/i,
+  HIGH_RISK: /\bhigh[- ](burn-?out[- ])?risk\b|\brisiko (burn-?out )?tinggi\b/i,
 };
 
 /** Clinical territory the note must stay out of. */
 const CLINICAL_TERMS =
-  /\b(depress\w*|disorder\w*|medicat\w*|antidepress\w*|psychiatr\w*|suicid\w*|self-harm\w*)\b/i;
+  /\b(depress\w*|disorder\w*|medicat\w*|antidepress\w*|psychiatr\w*|suicid\w*|self-harm\w*|depresi\w*|antidepresan\w*|psikiat\w*|gangguan (mental|jiwa|kecemasan)|obat\w*|bunuh diri|menyakiti diri)\b/i;
 
 /** Staff-facing intervention labels that should not reach a student. */
-const INTERVENTION_LABELS = /\b(promotive|preventive|curative)\b/i;
+const INTERVENTION_LABELS =
+  /\b(promotive|preventive|curative|promotif|preventif|kuratif)\b/i;
 
 /**
  * Resources and contact channels the system never gave the model, so any
  * mention of them is invented (e.g. "workshops", "contact them by phone").
  */
 const INVENTED_DETAILS =
-  /\b(phone|telephone|hotline|e-?mail|website|workshops?|webinars?|seminars?|brochures?|opening hours)\b/i;
+  /\b(phone|telephone|hotline|e-?mail|website|workshops?|webinars?|seminars?|brochures?|opening hours|telepon|nomor (hp|telepon|whatsapp)|whatsapp|situs|lokakarya|brosur|jam (buka|layanan|operasional))\b/i;
 
 const RULE_ID = /\bR(?:[1-9]|1\d|20)\b/;
-const SELF_REFERENCE = /\b(as an ai|language model|i am an ai|i'm an ai)\b/i;
+const SELF_REFERENCE =
+  /\b(as an ai|language model|i am an ai|i'm an ai|sebagai ai|model bahasa|saya adalah ai)\b/i;
+
+/** A note requested in Indonesian has to be written in Indonesian. */
+const INDONESIAN_WORDS = /\b(yang|dan|kamu|untuk|dengan|ini|itu|tidak|bisa|dari|dalam|agar)\b/gi;
+const MIN_INDONESIAN_WORDS = 5;
 
 /** The validated action has to survive in the note. */
 const REQUIRED_ACTION: Partial<
   Record<FeedbackContext['interventionLevel'], RegExp>
 > = {
-  PREVENTIVE: /\b(advisor|DPA)\b/i,
-  CURATIVE: /\b(counsel\w*|BK PNJ)\b/i,
+  PREVENTIVE: /\b(advisor|DPA|dosen pembimbing)\b/i,
+  CURATIVE: /\b(counsel\w*|konsel\w*)\b/i,
 };
 
 const MIN_WORDS = 40;
@@ -70,6 +78,13 @@ export function checkFeedback(
   const words = text.split(/\s+/).length;
   if (words < MIN_WORDS || words > MAX_WORDS) {
     return { ok: false, reason: `length out of range (${words} words)` };
+  }
+
+  if (
+    context.language === 'id' &&
+    (text.match(INDONESIAN_WORDS) ?? []).length < MIN_INDONESIAN_WORDS
+  ) {
+    return { ok: false, reason: 'not written in Indonesian' };
   }
 
   for (const category of Object.keys(CATEGORY_MENTIONS) as ScreeningCategory[]) {

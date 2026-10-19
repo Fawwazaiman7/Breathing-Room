@@ -7,13 +7,17 @@ import { useAuth } from '../auth/useAuth';
 import { AuthLayout } from '../components/AuthLayout';
 import { ArrowRightIcon } from '../components/Icons';
 import { VerifyEmailCard } from '../components/VerifyEmailCard';
+import { useLanguage } from '../i18n/language';
+import { translateMessage } from '../i18n/messages';
+import { useT } from '../i18n/strings';
+import type { Strings } from '../i18n/strings';
 import { usePageTitle } from '../lib/usePageTitle';
 
 /**
  * Wording for each portal. Every sign-in belongs to exactly one portal, and
  * a portal only accepts accounts with its own role.
  */
-const PORTAL_COPY: Record<
+function portalCopy(t: Strings): Record<
   Role,
   {
     eyebrow: string;
@@ -26,31 +30,36 @@ const PORTAL_COPY: Record<
     wrongPortalText: string;
     wrongPortalLink: string;
   }
-> = {
-  student: {
-    eyebrow: 'Student portal',
-    title: 'Student sign in',
-    text: 'Sign in to take a screening and see your results.',
-    accountName: 'a student',
-    wrongPortalTitle: 'This is a student account',
-    wrongPortalText: 'Students sign in on their own page.',
-    wrongPortalLink: 'Continue to student sign in',
-  },
-  advisor: {
-    eyebrow: 'Advisor portal',
-    title: 'Advisor sign in',
-    text: 'Sign in to see the screening summaries of your students.',
-    accountName: 'an Academic Advisor',
-    wrongPortalTitle: 'This is an Academic Advisor account',
-    wrongPortalText: 'Academic Advisors sign in on their own page.',
-    wrongPortalLink: 'Continue to advisor sign in',
-  },
-};
+> {
+  return {
+    student: {
+      eyebrow: t.auth.studentPortal,
+      title: t.auth.studentTitle,
+      text: t.auth.studentText,
+      accountName: t.auth.aStudent,
+      wrongPortalTitle: t.auth.studentAccount,
+      wrongPortalText: t.auth.studentsOwnPage,
+      wrongPortalLink: t.auth.toStudent,
+    },
+    advisor: {
+      eyebrow: t.auth.advisorPortal,
+      title: t.auth.advisorTitle,
+      text: t.auth.advisorText,
+      accountName: t.auth.anAdvisor,
+      wrongPortalTitle: t.auth.advisorAccount,
+      wrongPortalText: t.auth.advisorsOwnPage,
+      wrongPortalLink: t.auth.toAdvisor,
+    },
+  };
+}
 
 const HOME: Record<Role, string> = { student: '/app', advisor: '/advisor' };
 
 export function SignInPage() {
-  usePageTitle('Sign in');
+  const t = useT();
+  const { language } = useLanguage();
+  usePageTitle(t.titles.signIn);
+  const PORTAL_COPY = portalCopy(t);
   const { status, profile, signIn, signOut, resendEmailCode } = useAuth();
   const [searchParams] = useSearchParams();
   // /sign-in?as=advisor is the advisor portal; everything else is the
@@ -86,24 +95,21 @@ export function SignInPage() {
         <section className="auth-card">
           <p className="eyebrow">{copy.eyebrow}</p>
           <h1 className="card-title">
-            You are signed in as {PORTAL_COPY[profile.role].accountName}
+            {t.auth.signedInAs(PORTAL_COPY[profile.role].accountName)}
           </h1>
           <p className="card-text">
-            {portal === 'advisor'
-              ? 'The advisor portal is only for Academic Advisors.'
-              : 'The student portal is only for students.'}{' '}
-            To use it, sign out first and then sign in with{' '}
-            {copy.accountName} account.
+            {portal === 'advisor' ? t.auth.advisorOnly : t.auth.studentOnly}{' '}
+            {t.auth.signOutFirst(copy.accountName)}
           </p>
           <Link className="button-primary" to={HOME[profile.role]}>
-            Go to my dashboard
+            {t.auth.goToMyDashboard}
           </Link>
           <button
             type="button"
             className="button-secondary"
             onClick={() => void signOut()}
           >
-            Sign out
+            {t.common.signOut}
           </button>
         </section>
       </AuthLayout>
@@ -115,7 +121,7 @@ export function SignInPage() {
     setCodeError(null);
     const message = await resendEmailCode(address);
     if (message) {
-      setCodeError(message);
+      setCodeError(translateMessage(message, language));
     } else {
       setVerifying(address);
     }
@@ -152,7 +158,7 @@ export function SignInPage() {
         <p className="card-text">{copy.text}</p>
 
         <label className="field">
-          <span>Email</span>
+          <span>{t.common.email}</span>
           <input
             type="email"
             name="email"
@@ -163,7 +169,7 @@ export function SignInPage() {
           />
         </label>
         <label className="field">
-          <span>Password</span>
+          <span>{t.common.password}</span>
           <input
             type="password"
             name="password"
@@ -176,21 +182,19 @@ export function SignInPage() {
 
         {failure?.kind === 'credentials' && (
           <p className="form-error" role="alert">
-            The email or password is not correct.
+            {t.auth.wrongCredentials}
           </p>
         )}
         {failure?.kind === 'unconfirmed' && (
           <div className="portal-hint" role="alert">
-            <strong>Your email address is not verified yet</strong>
-            <span>
-              We will email you a code. Enter it to activate your account.
-            </span>
+            <strong>{t.auth.unverifiedTitle}</strong>
+            <span>{t.auth.unverifiedText}</span>
             <button
               type="button"
               className="portal-hint-link link-button"
               onClick={() => void startVerification()}
             >
-              Send me a code
+              {t.auth.sendCode}
               <ArrowRightIcon size={18} />
             </button>
             {codeError && <p className="form-error">{codeError}</p>}
@@ -198,7 +202,7 @@ export function SignInPage() {
         )}
         {failure?.kind === 'unknown' && (
           <p className="form-error" role="alert">
-            We could not check this account. Please try again.
+            {t.auth.unknownError}
           </p>
         )}
         {failure?.kind === 'wrongPortal' && (
@@ -219,7 +223,7 @@ export function SignInPage() {
         )}
         {handoff === portal && !failure && (
           <p className="portal-ready" role="status">
-            Your details are filled in. Select Sign in to continue.
+            {t.auth.detailsFilled}
           </p>
         )}
 
@@ -231,28 +235,32 @@ export function SignInPage() {
           disabled={busy}
           autoFocus={handoff === portal}
         >
-          {busy ? 'Signing in…' : 'Sign in'}
+          {busy ? t.auth.signingIn : t.common.signIn}
         </button>
+
+        <p className="auth-footnote auth-forgot">
+          <Link to={`/forgot-password?as=${portal}`}>
+            {t.auth.forgotPassword}
+          </Link>
+        </p>
 
         {portal === 'advisor' ? (
           <>
+            <p className="auth-footnote">{t.auth.advisorNoSignUp}</p>
             <p className="auth-footnote">
-              Advisor accounts are provided by the administrator, so there is
-              no sign-up here.
-            </p>
-            <p className="auth-footnote">
-              Looking for the student sign-in?{' '}
-              <Link to="/sign-in?as=student">Student sign in</Link>
+              {t.auth.lookingForStudent}{' '}
+              <Link to="/sign-in?as=student">{t.auth.studentTitle}</Link>
             </p>
           </>
         ) : (
           <>
             <p className="auth-footnote">
-              New student? <Link to="/sign-up">Create an account</Link>
+              {t.auth.newStudent}{' '}
+              <Link to="/sign-up">{t.auth.createAccount}</Link>
             </p>
             <p className="auth-footnote">
-              Looking for the advisor sign-in?{' '}
-              <Link to="/sign-in?as=advisor">Advisor sign in</Link>
+              {t.auth.lookingForAdvisor}{' '}
+              <Link to="/sign-in?as=advisor">{t.auth.advisorTitle}</Link>
             </p>
           </>
         )}

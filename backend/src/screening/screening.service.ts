@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import type { AuthUser } from '../auth/auth.types.js';
 import { toFeedbackContext } from '../feedback/feedback.context.js';
+import type { FeedbackLanguage } from '../feedback/feedback.context.js';
 import { FeedbackService } from '../feedback/feedback.service.js';
 import { evaluateScreening, toStudentView } from './screening.evaluator.js';
 import type {
@@ -87,18 +88,27 @@ export class ScreeningService {
    * screenings, generating and saving it the first time it is requested.
    * The note explains the stored rule-based result and cannot alter it.
    */
-  async feedback(user: AuthUser, id: string): Promise<ScreeningFeedback> {
+  async feedback(
+    user: AuthUser,
+    id: string,
+    language: FeedbackLanguage = 'en',
+  ): Promise<ScreeningFeedback> {
     const stored = await this.repository.findOneForStudent(id, user.id);
     if (!stored) {
       throw new NotFoundException('Screening not found.');
     }
-    if (stored.feedback_text) {
-      return { feedbackText: stored.feedback_text };
+    // Each language has its own saved note.
+    const saved =
+      language === 'id' ? stored.feedback_text_id : stored.feedback_text;
+    if (saved) {
+      return { feedbackText: saved };
     }
 
-    const text = await this.feedbackService.generate(toFeedbackContext(stored));
+    const text = await this.feedbackService.generate(
+      toFeedbackContext(stored, language),
+    );
     if (text) {
-      await this.repository.saveFeedback(id, user.id, text);
+      await this.repository.saveFeedback(id, user.id, text, language);
     }
     return { feedbackText: text };
   }

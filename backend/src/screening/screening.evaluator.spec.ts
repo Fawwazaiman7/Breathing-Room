@@ -79,7 +79,7 @@ describe('Screening evaluator (end to end)', () => {
     expect(result.category).toBe('HIGH_RISK');
     expect(result.interventionLevel).toBe('CURATIVE');
     expect(result.recommendation.id).toBe(
-      'Kuratif dengan rujukan konseling ke BK PNJ',
+      'Kuratif dengan rujukan konseling ke layanan konseling kampus',
     );
   });
 

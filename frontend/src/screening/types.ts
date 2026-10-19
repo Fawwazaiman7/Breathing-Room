@@ -60,6 +60,8 @@ export interface ScreeningHistoryItem {
   disengagement: { score: number; level: BinaryLevel };
   recommendation: Recommendation;
   feedbackText: string | null;
+  /** The note in Indonesian, saved separately. Absent from older servers. */
+  feedbackTextId?: string | null;
 }
 
 export function toHistoryItem(result: SubmittedScreening): ScreeningHistoryItem {

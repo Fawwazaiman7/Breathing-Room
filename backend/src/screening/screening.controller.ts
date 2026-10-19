@@ -11,6 +11,7 @@ import {
 import { AuthGuard } from '../auth/auth.guard.js';
 import type { AuthUser } from '../auth/auth.types.js';
 import { CurrentUser } from '../auth/current-user.decorator.js';
+import { isFeedbackLanguage } from '../feedback/feedback.context.js';
 import { EvaluateScreeningDto } from './dto/evaluate-screening.dto.js';
 import { toStudentView } from './screening.evaluator.js';
 import type { StudentScreeningView } from './screening.evaluator.js';
@@ -64,7 +65,13 @@ export class ScreeningController {
   feedback(
     @CurrentUser() user: AuthUser,
     @Param('id', new ParseUUIDPipe()) id: string,
+    // Optional body { "language": "id" }; anything else means English.
+    @Body('language') language?: unknown,
   ): Promise<ScreeningFeedback> {
-    return this.screeningService.feedback(user, id);
+    return this.screeningService.feedback(
+      user,
+      id,
+      isFeedbackLanguage(language) ? language : 'en',
+    );
   }
 }

@@ -86,15 +86,21 @@ const feedbackRequests = new Map<string, Promise<ScreeningFeedback>>();
  * the same screening share one call, so the note is never generated twice
  * from this page.
  */
-export function requestFeedback(screeningId: string): Promise<ScreeningFeedback> {
-  let pending = feedbackRequests.get(screeningId);
+export function requestFeedback(
+  screeningId: string,
+  language: 'en' | 'id' = 'en',
+): Promise<ScreeningFeedback> {
+  // Each language has its own note, so each has its own request.
+  const key = `${screeningId}:${language}`;
+  let pending = feedbackRequests.get(key);
   if (!pending) {
     pending = request<ScreeningFeedback>(`/screening/${screeningId}/feedback`, {
       method: 'POST',
+      body: JSON.stringify({ language }),
     }).finally(() => {
-      feedbackRequests.delete(screeningId);
+      feedbackRequests.delete(key);
     });
-    feedbackRequests.set(screeningId, pending);
+    feedbackRequests.set(key, pending);
   }
   return pending;
 }

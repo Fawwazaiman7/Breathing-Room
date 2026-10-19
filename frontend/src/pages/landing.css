@@ -102,6 +102,12 @@
   color: var(--ink);
 }
 
+.lp-nav-mobile {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
 .lp-menu-button {
   display: none;
   width: 44px;
@@ -378,6 +384,10 @@
 
   .lp-links {
     display: none;
+  }
+
+  .lp-nav-mobile {
+    display: flex;
   }
 
   .lp-menu-button {

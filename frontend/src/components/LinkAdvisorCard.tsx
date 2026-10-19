@@ -3,6 +3,9 @@ import type { FormEvent } from 'react';
 import '../advising/advising.css';
 import { joinAdvisor, previewAdvisor } from '../advising/api';
 import type { MyAdvisor } from '../advising/api';
+import { useLanguage } from '../i18n/language';
+import { translateMessage } from '../i18n/messages';
+import { useT } from '../i18n/strings';
 import { ApiError } from '../lib/api';
 import { ArrowRightIcon } from './Icons';
 
@@ -26,6 +29,9 @@ export function LinkAdvisorCard({
   onLinked: (advisor: MyAdvisor) => void;
   onCancel?: () => void;
 }) {
+  const t = useT();
+  const { language } = useLanguage();
+  const say = (caught: unknown) => translateMessage(messageOf(caught), language);
   const [code, setCode] = useState('');
   const [found, setFound] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -39,7 +45,7 @@ export function LinkAdvisorCard({
       const result = await previewAdvisor(code);
       setFound(result.advisor.fullName);
     } catch (caught) {
-      setError(messageOf(caught));
+      setError(say(caught));
     }
     setBusy(false);
   }
@@ -51,7 +57,7 @@ export function LinkAdvisorCard({
       const result = await joinAdvisor(code);
       onLinked(result.advisor);
     } catch (caught) {
-      setError(messageOf(caught));
+      setError(say(caught));
       setBusy(false);
     }
   }
@@ -59,13 +65,10 @@ export function LinkAdvisorCard({
   if (found !== null) {
     return (
       <section className="card link-card">
-        <p className="eyebrow">Confirm your advisor</p>
-        <h2 className="card-title">Is this your Academic Advisor?</h2>
-        <p className="confirm-name">{found || 'Unnamed advisor'}</p>
-        <p className="card-text">
-          Once you connect, your screening results are shared with this
-          advisor so they can offer support.
-        </p>
+        <p className="eyebrow">{t.link.confirmKicker}</p>
+        <h2 className="card-title">{t.link.confirmTitle}</h2>
+        <p className="confirm-name">{found || t.common.unnamedAdvisor}</p>
+        <p className="card-text">{t.link.confirmText}</p>
         {error && (
           <p className="form-error" role="alert">
             {error}
@@ -78,7 +81,7 @@ export function LinkAdvisorCard({
             disabled={busy}
             onClick={handleConfirm}
           >
-            {busy ? 'Connecting…' : 'Yes, connect'}
+            {busy ? t.link.connecting : t.link.yes}
           </button>
           <button
             type="button"
@@ -89,7 +92,7 @@ export function LinkAdvisorCard({
               setError(null);
             }}
           >
-            No, enter another code
+            {t.link.no}
           </button>
         </div>
       </section>
@@ -99,21 +102,17 @@ export function LinkAdvisorCard({
   return (
     <section className="card link-card">
       <p className="eyebrow">
-        {current ? 'Change advisor' : 'Before your first screening'}
+        {current ? t.link.changeKicker : t.link.firstKicker}
       </p>
       <h2 className="card-title">
-        {current
-          ? 'Connect to a different Academic Advisor'
-          : 'Connect to your Academic Advisor'}
+        {current ? t.link.changeTitle : t.link.firstTitle}
       </h2>
       <p className="card-text">
-        {current
-          ? `You are connected to ${current.fullName}. Enter another advisor’s code to switch.`
-          : 'Ask your Academic Advisor (DPA) for their code and enter it here. Your screening results are shared with them so they can offer support.'}
+        {current ? t.link.changeText(current.fullName) : t.link.firstText}
       </p>
       <form onSubmit={handleFind} className="link-card">
         <label className="field">
-          <span>Advisor code</span>
+          <span>{t.link.code}</span>
           <input
             className="code-input"
             name="code"
@@ -133,7 +132,7 @@ export function LinkAdvisorCard({
         )}
         <div className="button-row">
           <button type="submit" className="button-primary" disabled={busy}>
-            {busy ? 'Checking…' : 'Find my advisor'}{' '}
+            {busy ? t.link.checking : t.link.find}{' '}
             {!busy && <ArrowRightIcon size={18} />}
           </button>
           {onCancel && (
@@ -143,7 +142,7 @@ export function LinkAdvisorCard({
               disabled={busy}
               onClick={onCancel}
             >
-              Cancel
+              {t.common.cancel}
             </button>
           )}
         </div>

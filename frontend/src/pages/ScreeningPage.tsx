@@ -5,12 +5,13 @@ import { useAuth } from '../auth/useAuth';
 import { ArrowLeftIcon, ArrowRightIcon } from '../components/Icons';
 import { LinkAdvisorCard } from '../components/LinkAdvisorCard';
 import { ApiError, submitScreening } from '../lib/api';
+import { useLanguage } from '../i18n/language';
+import { translateMessage } from '../i18n/messages';
+import { useScreeningContent } from '../i18n/screening-content';
+import { useT } from '../i18n/strings';
 import {
-  DIMENSION_CONTENT,
   NASA_TLX_DIMENSIONS,
   NASA_TLX_PAIRS,
-  OLBI_LANGUAGE,
-  OLBI_OPTIONS,
   OLBI_STATEMENTS,
 } from '../screening/content';
 import { clearDraft, loadDraft, saveDraft } from '../screening/draft';
@@ -62,13 +63,12 @@ function Progress({
   position: number;
   total: number;
 }) {
+  const t = useT();
   return (
     <div className="flow-progress">
       <div className="flow-progress-labels">
         <span>{label}</span>
-        <span>
-          {position} of {total}
-        </span>
+        <span>{t.screening.of(position, total)}</span>
       </div>
       <div
         className="flow-progress-track"
@@ -92,18 +92,15 @@ function Progress({
  * results are shared with that advisor. The backend enforces the same rule.
  */
 export function ScreeningPage() {
-  usePageTitle('Burnout screening');
+  const t = useT();
+  usePageTitle(t.titles.screening);
   const { state, setAdvisor } = useMyAdvisor();
 
   if (state.status === 'loading') {
-    return <p className="page-message">Loading…</p>;
+    return <p className="page-message">{t.common.loading}</p>;
   }
   if (state.status === 'error') {
-    return (
-      <p className="page-message">
-        We could not check your Academic Advisor. Please refresh the page.
-      </p>
-    );
+    return <p className="page-message">{t.screening.loadAdvisorFailed}</p>;
   }
   if (!state.advisor) {
     return (
@@ -113,7 +110,9 @@ export function ScreeningPage() {
     );
   }
   return (
-    <ScreeningFlow advisorName={state.advisor.fullName || 'your advisor'} />
+    <ScreeningFlow
+      advisorName={state.advisor.fullName || t.common.yourAdvisor}
+    />
   );
 }
 
@@ -127,6 +126,9 @@ function useInitialDraft(userId: string | null) {
 
 function ScreeningFlow({ advisorName }: { advisorName: string }) {
   const navigate = useNavigate();
+  const t = useT();
+  const { language } = useLanguage();
+  const content = useScreeningContent();
   const { profile } = useAuth();
   const userId = profile?.id ?? null;
   const draft = useInitialDraft(userId);
@@ -202,7 +204,7 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
       ratings.every((rating) => rating !== null) &&
       answers.every((answer) => answer !== null);
     if (!complete) {
-      setError('Some answers are missing. Please go back and complete them.');
+      setError(t.screening.missing);
       return;
     }
 
@@ -230,8 +232,8 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
     } catch (caught) {
       setError(
         caught instanceof ApiError
-          ? caught.message
-          : 'Something went wrong. Please try again.',
+          ? translateMessage(caught.message, language)
+          : t.common.somethingWrong,
       );
       setSubmitting(false);
     }
@@ -242,8 +244,8 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
       <div className="flow">
         <div className="flow-body flow-center" role="status">
           <span className="spinner" aria-hidden="true" />
-          <h1 className="flow-title">Putting your result together…</h1>
-          <p className="flow-sub">This only takes a moment.</p>
+          <h1 className="flow-title">{t.screening.putting}</h1>
+          <p className="flow-sub">{t.screening.moment}</p>
         </div>
       </div>
     );
@@ -253,19 +255,19 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
     null;
   if (step.kind === 'compare') {
     progress = {
-      label: 'Academic workload · NASA-TLX',
+      label: t.screening.workloadProgress,
       position: step.index + 1,
       total: PART_ONE_TOTAL,
     };
   } else if (step.kind === 'rate') {
     progress = {
-      label: 'Academic workload · NASA-TLX',
+      label: t.screening.workloadProgress,
       position: NASA_TLX_PAIRS.length + step.index + 1,
       total: PART_ONE_TOTAL,
     };
   } else if (step.kind === 'olbi') {
     progress = {
-      label: 'How you have been feeling · OLBI',
+      label: t.screening.feelingProgress,
       position: step.index + 1,
       total: PART_TWO_TOTAL,
     };
@@ -274,38 +276,30 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
   return (
     <div className="flow">
       <button type="button" className="back-button" onClick={goBack}>
-        <ArrowLeftIcon size={18} /> Back
+        <ArrowLeftIcon size={18} /> {t.common.back}
       </button>
 
       {progress && <Progress {...progress} />}
 
       {restored && (
         <p className="flow-restored" role="status">
-          Welcome back. Your earlier answers are saved, so you can carry on
-          from here.
+          {t.screening.restored}
         </p>
       )}
 
       <div className="flow-body">
         {step.kind === 'intro' && (
           <>
-            <p className="eyebrow">Academic burnout screening</p>
-            <h1 className="flow-title">A quick check-in, in two parts</h1>
-            <p className="flow-sub">
-              Part 1 looks at your academic workload. Part 2 looks at two
-              signs of burnout: exhaustion and disengagement. It takes around
-              8–10 minutes.
-            </p>
+            <p className="eyebrow">{t.screening.introKicker}</p>
+            <h1 className="flow-title">{t.screening.introTitle}</h1>
+            <p className="flow-sub">{t.screening.introText}</p>
             <ul className="plain-list">
-              <li>Answer based on the past two weeks.</li>
-              <li>There are no right or wrong answers.</li>
-              <li>
-                Your result is shown to you and shared with your Academic
-                Advisor, {advisorName}, so they can offer support.
-              </li>
+              {t.screening.introPoints(advisorName).map((point) => (
+                <li key={point}>{point}</li>
+              ))}
             </ul>
             <button type="button" className="button-primary" onClick={goNext}>
-              Start <ArrowRightIcon size={18} />
+              {t.screening.start} <ArrowRightIcon size={18} />
             </button>
           </>
         )}
@@ -313,16 +307,10 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
         {step.kind === 'compare' && (
           <>
             <p className="eyebrow">
-              Part 1 of 2 · Comparison {step.index + 1} of{' '}
-              {NASA_TLX_PAIRS.length}
+              {t.screening.compareKicker(step.index + 1, NASA_TLX_PAIRS.length)}
             </p>
-            <h1 className="flow-title">
-              Which one contributed more to your workload?
-            </h1>
-            <p className="flow-sub">
-              Think about your academic work over the past two weeks. Choose
-              the experience that had the greater impact.
-            </p>
+            <h1 className="flow-title">{t.screening.compareTitle}</h1>
+            <p className="flow-sub">{t.screening.compareText}</p>
             <div className="choice-pair" key={`compare-${step.index}`}>
               {NASA_TLX_PAIRS[step.index].map((dimension, optionIndex) => (
                 <button
@@ -346,16 +334,16 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
                     {optionIndex === 0 ? 'A' : 'B'}
                   </span>
                   <span className="choice-label">
-                    {DIMENSION_CONTENT[dimension].label}
+                    {content.dimensions[dimension].label}
                   </span>
                   <span className="choice-description">
-                    {DIMENSION_CONTENT[dimension].description}
+                    {content.dimensions[dimension].description}
                   </span>
                 </button>
               ))}
             </div>
             <p className="flow-note">
-              Take your time. There is no right or wrong choice.
+              {t.screening.compareNote}
             </p>
           </>
         )}
@@ -363,18 +351,20 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
         {step.kind === 'rate' &&
           (() => {
             const dimension = NASA_TLX_DIMENSIONS[step.index];
-            const content = DIMENSION_CONTENT[dimension];
+            const dimensionText = content.dimensions[dimension];
             const rating = ratings[step.index];
             const setRating = (value: number) =>
               setRatings((current) => replaceAt(current, step.index, value));
             return (
               <>
                 <p className="eyebrow">
-                  Part 1 of 2 · Rating {step.index + 1} of{' '}
-                  {NASA_TLX_DIMENSIONS.length}
+                  {t.screening.rateKicker(
+                    step.index + 1,
+                    NASA_TLX_DIMENSIONS.length,
+                  )}
                 </p>
-                <h1 className="flow-title">{content.label}</h1>
-                <p className="flow-sub">{content.ratingQuestion}</p>
+                <h1 className="flow-title">{dimensionText.label}</h1>
+                <p className="flow-sub">{dimensionText.ratingQuestion}</p>
                 <div className="slider-card">
                   <output className="slider-value" htmlFor="rating-slider">
                     {rating === null ? '–' : rating}
@@ -386,7 +376,7 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
                     max={100}
                     step={5}
                     value={rating ?? RATING_START}
-                    aria-label={content.label}
+                    aria-label={dimensionText.label}
                     onChange={(event) => setRating(Number(event.target.value))}
                     onPointerDown={() => {
                       if (rating === null) {
@@ -400,8 +390,8 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
                     }}
                   />
                   <div className="slider-anchors">
-                    <span>Very low</span>
-                    <span>Very high</span>
+                    <span>{t.screening.veryLow}</span>
+                    <span>{t.screening.veryHigh}</span>
                   </div>
                 </div>
                 <button
@@ -410,10 +400,10 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
                   disabled={rating === null}
                   onClick={goNext}
                 >
-                  Continue <ArrowRightIcon size={18} />
+                  {t.common.continue} <ArrowRightIcon size={18} />
                 </button>
                 {rating === null && (
-                  <p className="flow-note">Move the slider to answer.</p>
+                  <p className="flow-note">{t.screening.moveSlider}</p>
                 )}
               </>
             );
@@ -421,16 +411,13 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
 
         {step.kind === 'olbiIntro' && (
           <>
-            <p className="eyebrow">Part 2 of 2 · Signs of burnout</p>
-            <h1 className="flow-title">How you have been feeling</h1>
+            <p className="eyebrow">{t.screening.olbiIntroKicker}</p>
+            <h1 className="flow-title">{t.screening.olbiIntroTitle}</h1>
             <p className="flow-sub">
-              Next are {OLBI_STATEMENTS.length} short statements about your
-              studies. They look at exhaustion (feeling drained) and
-              disengagement (feeling distant from your studies). For each one,
-              choose how much you agree.
+              {t.screening.olbiIntroText(OLBI_STATEMENTS.length)}
             </p>
             <button type="button" className="button-primary" onClick={goNext}>
-              Continue <ArrowRightIcon size={18} />
+              {t.common.continue} <ArrowRightIcon size={18} />
             </button>
           </>
         )}
@@ -438,15 +425,14 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
         {step.kind === 'olbi' && (
           <>
             <p className="eyebrow">
-              Part 2 of 2 · Statement {step.index + 1} of{' '}
-              {OLBI_STATEMENTS.length}
+              {t.screening.olbiKicker(step.index + 1, OLBI_STATEMENTS.length)}
             </p>
-            <h1 className="flow-title flow-statement">
-              {OLBI_STATEMENTS[step.index][OLBI_LANGUAGE]}
+            <h1 className="flow-title flow-statement" lang={content.olbiWording}>
+              {OLBI_STATEMENTS[step.index][content.olbiWording]}
             </h1>
-            <p className="flow-sub">How much do you agree with this?</p>
+            <p className="flow-sub">{t.screening.agreeQuestion}</p>
             <div className="option-list" key={`olbi-${step.index}`}>
-              {OLBI_OPTIONS.map((option) => (
+              {content.olbiOptions.map((option) => (
                 <button
                   key={option.value}
                   type="button"
@@ -473,13 +459,9 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
 
         {step.kind === 'review' && (
           <>
-            <p className="eyebrow">All done</p>
-            <h1 className="flow-title">Thank you for checking in</h1>
-            <p className="flow-sub">
-              Submit your answers to see your burnout screening result. It
-              will also be shared
-              with your Academic Advisor, {advisorName}.
-            </p>
+            <p className="eyebrow">{t.screening.doneKicker}</p>
+            <h1 className="flow-title">{t.screening.doneTitle}</h1>
+            <p className="flow-sub">{t.screening.doneText(advisorName)}</p>
             {error && (
               <p className="form-error" role="alert">
                 {error}
@@ -490,7 +472,7 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
               className="button-primary"
               onClick={handleSubmit}
             >
-              See my result <ArrowRightIcon size={18} />
+              {t.screening.seeResult} <ArrowRightIcon size={18} />
             </button>
           </>
         )}

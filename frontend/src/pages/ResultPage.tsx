@@ -2,12 +2,10 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { ArrowRightIcon } from '../components/Icons';
 import { fetchMyScreenings, requestFeedback } from '../lib/api';
-import {
-  BINARY_LABELS,
-  CATEGORY_CONTENT,
-  MEASURE_HINTS,
-  WORKLOAD_LABELS,
-} from '../screening/content';
+import { UrgentHelpCard } from '../components/UrgentHelpCard';
+import { localeOf, useLanguage } from '../i18n/language';
+import { useScreeningContent } from '../i18n/screening-content';
+import { useT } from '../i18n/strings';
 import { toHistoryItem } from '../screening/types';
 import type {
   ScreeningHistoryItem,
@@ -15,14 +13,16 @@ import type {
 } from '../screening/types';
 import { usePageTitle } from '../lib/usePageTitle';
 
-const dateFormat = new Intl.DateTimeFormat('en-GB', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-});
-
 export function ResultPage() {
-  usePageTitle('Your burnout screening result');
+  const t = useT();
+  const { language } = useLanguage();
+  const screening = useScreeningContent();
+  usePageTitle(t.titles.result);
+  const dateFormat = new Intl.DateTimeFormat(localeOf(language), {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
 
@@ -68,115 +68,122 @@ export function ResultPage() {
   // "A note for you": requested after the result is known, so the
   // rule-based category is on screen first and never waits for the AI.
   const itemId = item ? item.id : null;
-  const savedNote = item ? item.feedbackText : null;
+  // Each language has its own note.
+  const savedNote = item
+    ? language === 'id'
+      ? (item.feedbackTextId ?? null)
+      : item.feedbackText
+    : null;
+  const noteKey = itemId ? `${itemId}:${language}` : null;
   const [requested, setRequested] = useState<{
     id: string;
     text: string | null;
   } | null>(null);
 
   useEffect(() => {
-    if (!itemId || savedNote) {
+    if (!itemId || !noteKey || savedNote) {
       return;
     }
     let active = true;
-    requestFeedback(itemId)
+    requestFeedback(itemId, language)
       .then((result) => {
         if (active) {
-          setRequested({ id: itemId, text: result.feedbackText });
+          setRequested({ id: noteKey, text: result.feedbackText });
         }
       })
       .catch(() => {
         // No note is fine: the result page is complete without it.
         if (active) {
-          setRequested({ id: itemId, text: null });
+          setRequested({ id: noteKey, text: null });
         }
       });
     return () => {
       active = false;
     };
-  }, [itemId, savedNote]);
+  }, [itemId, noteKey, language, savedNote]);
 
-  const noteAnswered = requested !== null && requested.id === itemId;
+  const noteAnswered = requested !== null && requested.id === noteKey;
   const noteText = savedNote ?? (noteAnswered ? requested.text : null);
   const noteLoading = itemId !== null && !savedNote && !noteAnswered;
 
   if (loading) {
-    return <p className="page-message">Loading your result…</p>;
+    return <p className="page-message">{t.result.loading}</p>;
   }
   if (!item) {
     return (
       <div className="page">
         <p className="page-message">
-          {failed
-            ? 'We could not load this result. Please try again.'
-            : 'We could not find this result.'}
+          {failed ? t.result.loadFailed : t.result.notFound}
         </p>
         <Link className="text-link" to="/app">
-          Back to overview
+          {t.result.backToOverview}
         </Link>
       </div>
     );
   }
 
-  const content = CATEGORY_CONTENT[item.category];
+  const content = screening.categories[item.category];
 
   return (
     <div className="page page-narrow">
       <p className="eyebrow">
-        Your burnout screening result · {dateFormat.format(new Date(item.createdAt))}
+        {t.result.kicker(dateFormat.format(new Date(item.createdAt)))}
       </p>
 
       {/* The Rule-Based category is the primary information on this page. */}
       <section className={`result-card result-${content.tone}`}>
-        <p className="result-kicker">Burnout screening category</p>
+        <p className="result-kicker">{t.result.category}</p>
         <h1 className="result-title">{content.label}</h1>
         <p className="result-summary">{content.summary}</p>
       </section>
 
       <section className="card">
-        <p className="eyebrow">What this is based on</p>
-        <p className="card-text">
-          Academic burnout shows up as two signs: exhaustion and
-          disengagement. Your workload shows how much pressure sits behind
-          them. Your result combines all three.
-        </p>
+        <p className="eyebrow">{t.result.basedOn}</p>
+        <p className="card-text">{t.result.basedOnText}</p>
         <div className="metric-row">
           <div className="metric">
-            <span className="metric-label">Academic workload</span>
+            <span className="metric-label">{t.result.workload}</span>
             <span className="metric-value">
-              {WORKLOAD_LABELS[item.workload.level]}
+              {screening.workloadLabels[item.workload.level]}
             </span>
-            <span className="metric-note">{MEASURE_HINTS.workload}</span>
+            <span className="metric-note">{screening.measureHints.workload}</span>
             <span className="metric-note">
-              Score {item.workload.score} out of 100
+              {t.result.score(item.workload.score)}
             </span>
           </div>
           <div className="metric">
-            <span className="metric-label">Exhaustion</span>
+            <span className="metric-label">{t.result.exhaustion}</span>
             <span className="metric-value">
-              {BINARY_LABELS[item.exhaustion.level]}
+              {screening.binaryLabels[item.exhaustion.level]}
             </span>
-            <span className="metric-note">{MEASURE_HINTS.exhaustion}</span>
+            <span className="metric-note">
+              {screening.measureHints.exhaustion}
+            </span>
           </div>
           <div className="metric">
-            <span className="metric-label">Disengagement</span>
+            <span className="metric-label">{t.result.disengagement}</span>
             <span className="metric-value">
-              {BINARY_LABELS[item.disengagement.level]}
+              {screening.binaryLabels[item.disengagement.level]}
             </span>
-            <span className="metric-note">{MEASURE_HINTS.disengagement}</span>
+            <span className="metric-note">
+              {screening.measureHints.disengagement}
+            </span>
           </div>
         </div>
       </section>
 
       <section className="card">
-        <p className="eyebrow">Recommended next step</p>
+        <p className="eyebrow">{t.result.nextStep}</p>
         <p className="card-text">{content.nextStep}</p>
       </section>
+
+      {/* Support that does not have to wait for an appointment. */}
+      {item.category === 'HIGH_RISK' && <UrgentHelpCard variant="result" />}
 
       {/* AI explanation: secondary to the category above, and optional. */}
       {(noteLoading || noteText) && (
         <section className="card card-soft" aria-live="polite">
-          <p className="eyebrow">A note for you</p>
+          <p className="eyebrow">{t.result.note}</p>
           {noteText ? (
             <>
               {noteText.split(/\n{2,}/).map((paragraph, index) => (
@@ -184,48 +191,33 @@ export function ResultPage() {
                   {paragraph}
                 </p>
               ))}
-              <p className="fine-print">
-                Written by AI to explain your result. It does not change your
-                screening category.
-              </p>
+              <p className="fine-print">{t.result.noteByAi}</p>
             </>
           ) : (
-            <p className="card-text">Writing a short note for you…</p>
+            <p className="card-text">{t.result.writingNote}</p>
           )}
         </section>
       )}
 
       <section className="card">
         <details className="rule-details about-burnout">
-          <summary>What is academic burnout?</summary>
-          <p className="card-text">
-            Academic burnout is a state of long-term study strain. It usually
-            builds up when demands stay high for weeks without enough rest or
-            support. It shows up in two ways: feeling exhausted by your
-            studies, and feeling distant from them, as if they no longer
-            matter to you.
-          </p>
-          <p className="card-text">
-            Burnout is common among students and it can change. Rest, a more
-            manageable workload, and talking with someone all help. That is
-            why this screening suggests a next step for every result.
-          </p>
+          <summary>{t.result.whatIsBurnout}</summary>
+          {t.result.burnoutText.map((paragraph) => (
+            <p key={paragraph} className="card-text">
+              {paragraph}
+            </p>
+          ))}
         </details>
       </section>
 
-      <p className="fine-print">
-        This is a burnout screening result, not a diagnosis. The category was
-        decided by fixed rules, validated by the campus psychologist, applied
-        to your answers. Things can change over a semester, so it helps to
-        check in again in a few weeks.
-      </p>
+      <p className="fine-print">{t.result.disclaimer}</p>
 
       <div className="button-row">
         <Link className="button-secondary" to="/app">
-          Back to overview
+          {t.result.backToOverview}
         </Link>
         <Link className="text-link" to="/app/support">
-          Open Support chat <ArrowRightIcon size={18} />
+          {t.result.openChat} <ArrowRightIcon size={18} />
         </Link>
       </div>
     </div>

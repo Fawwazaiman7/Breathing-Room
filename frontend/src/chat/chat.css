@@ -86,19 +86,6 @@
   cursor: not-allowed;
 }
 
-.chat-topics .chat-urgent {
-  display: flex;
-  gap: 10px;
-  margin-top: 24px;
-  font-size: 0.82rem;
-  line-height: 1.5;
-}
-
-.chat-urgent .icon {
-  margin-top: 2px;
-  color: var(--teal);
-}
-
 /* ---------- Conversation ---------- */
 
 .chat-window {
@@ -240,6 +227,239 @@
   text-align: center;
 }
 
+/* ---------- Replies: short answer, key points, small pictures ---------- */
+
+.chat-message-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.chat-message-user .chat-message-body {
+  align-items: flex-end;
+}
+
+.chat-topic-chip {
+  margin-bottom: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+div.chat-bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  white-space: normal;
+}
+
+.reply-paragraph {
+  white-space: pre-wrap;
+}
+
+.reply-points {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reply-points li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  background: var(--bg);
+  border-radius: 10px;
+  line-height: 1.5;
+}
+
+.reply-point-mark {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 0.5em;
+  border-radius: 50%;
+  background: var(--teal);
+}
+
+.reply-step-number {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.reply-points strong {
+  color: var(--ink);
+}
+
+.reply-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  /* A figure has side margins by default; the card lines up with the bubble. */
+  margin: 10px 0 0;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.reply-visual figcaption {
+  color: var(--teal-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.reply-visual-text {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.reply-visual .text-link {
+  font-size: 0.9rem;
+}
+
+/* Burnout at a glance: the two signs side by side, workload beneath. */
+.signs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+.sign-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px;
+  background: var(--teal-soft);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.sign-tile strong {
+  color: var(--teal-dark);
+}
+
+.sign-tile.sign-2 {
+  grid-column: 1 / -1;
+  background: var(--bg);
+}
+
+/* Where to find support: three numbered steps joined by a line. */
+.support-path {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.support-path li {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding-bottom: 14px;
+}
+
+.support-path li:last-child {
+  padding-bottom: 0;
+}
+
+.support-path li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 28px;
+  bottom: 2px;
+  left: 13px;
+  width: 2px;
+  background: var(--teal-soft);
+}
+
+.support-path-number {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.support-path-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.support-path-text > span {
+  color: var(--ink-soft);
+}
+
+/* Latest result: the category, then each level as filled steps. */
+.result-meters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.result-meter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.875rem;
+}
+
+.result-meter dt {
+  color: var(--ink-soft);
+}
+
+.result-meter dd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.meter {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.meter-step {
+  width: 14px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--line);
+}
+
+.meter-step.on {
+  background: var(--teal);
+}
+
+.meter-value {
+  min-width: 5.5em;
+  font-weight: 600;
+}
+
 /* ---------- Smaller screens ---------- */
 
 @media (max-width: 900px) {
@@ -266,7 +486,7 @@
     overflow: visible;
   }
 
-  .chat-topics > p:not(.chat-urgent) {
+  .chat-topics > p {
     display: none;
   }
 
@@ -296,8 +516,19 @@
     display: none;
   }
 
-  .chat-topics .chat-urgent {
+  /* On a phone the help card stays short: the actions, not the details. */
+  .help-card-chat {
     margin-top: 12px;
+    gap: 10px;
+  }
+
+  .help-card-chat .help-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .help-card-chat .help-row {
+    flex: 1 1 140px;
   }
 
   .chat-messages {

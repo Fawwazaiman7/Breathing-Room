@@ -523,8 +523,8 @@ describe('Chat prompt', () => {
 
   it('forbids offering what the passages do not contain and renaming the service', () => {
     expect(CHAT_SYSTEM_PROMPT).toMatch(/Do not offer tips, techniques, exercises or topics that the passages do not contain/);
-    expect(CHAT_SYSTEM_PROMPT).toMatch(/"Layanan Psikologis PNJ"\. Write that name as it is and never translate it/);
-    expect(CHAT_SYSTEM_PROMPT).toMatch(/Breathing Room is only the app/);
+    expect(CHAT_SYSTEM_PROMPT).toMatch(/Name only services that are written in the passages, exactly as written/);
+    expect(CHAT_SYSTEM_PROMPT).toMatch(/Ruang Pulih is only the app/);
     // The rules stay numbered without gaps.
     const numbers = [...CHAT_SYSTEM_PROMPT.matchAll(/^(\d+)\. /gm)].map((match) => Number(match[1]));
     expect(numbers).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
@@ -615,8 +615,8 @@ describe('Chat flow', () => {
     expect(indonesian.reply).toBe(CRISIS_REPLY.id);
     expect(calls.embed).toEqual([]);
     expect(calls.complete).toEqual([]);
-    expect(CRISIS_REPLY.en).toContain('+62 823-7957-4919');
-    expect(CRISIS_REPLY.id).toContain('+62 823-7957-4919');
+    expect(CRISIS_REPLY.en).toContain('119, extension 8');
+    expect(CRISIS_REPLY.id).toContain('119, ekstensi 8');
   });
 
   it('passes the stored result, for that student only, when the question is about it', async () => {

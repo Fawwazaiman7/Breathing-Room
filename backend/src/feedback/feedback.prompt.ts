@@ -18,6 +18,14 @@ export const CATEGORY_LABELS: Record<ScreeningCategory, string> = {
   HIGH_RISK: 'High burnout risk',
 };
 
+/** Category names as the Indonesian interface shows them. */
+export const CATEGORY_LABELS_ID: Record<ScreeningCategory, string> = {
+  NO_BURNOUT: 'Tidak mengalami burnout',
+  LOW_RISK: 'Risiko burnout rendah',
+  MODERATE_RISK: 'Risiko burnout sedang',
+  HIGH_RISK: 'Risiko burnout tinggi',
+};
+
 export const WORKLOAD_LABELS: Record<WorkloadLevel, string> = {
   VERY_LOW: 'Very low',
   LOW: 'Low',
@@ -33,7 +41,7 @@ export const BINARY_LABELS: Record<BinaryLevel, string> = { LOW: 'Low', HIGH: 'H
  * recommended action come from the rule base and are passed in as fixed
  * facts. feedback.checker.ts verifies the reply before it is shown.
  */
-export const FEEDBACK_SYSTEM_PROMPT = `You write a short, supportive note for a university student who has just completed an academic burnout screening in the Breathing Room app.
+export const FEEDBACK_SYSTEM_PROMPT = `You write a short, supportive note for a university student who has just completed an academic burnout screening in the Ruang Pulih app.
 
 The screening category and the recommended next step were already decided by a fixed rule base validated by a campus psychologist. They are final. Your only job is to explain them in warm, plain language.
 
@@ -53,9 +61,25 @@ Rules:
 - Paragraph 2: encourage the recommended next step in a practical, calm way.
 - This is a screening, not a diagnosis. Avoid frightening or judgmental language.`;
 
+/**
+ * The Indonesian note follows the same rules; only the language lines
+ * differ. The category name is given in Indonesian, as the student sees it.
+ */
+export const FEEDBACK_SYSTEM_PROMPT_ID = FEEDBACK_SYSTEM_PROMPT.replace(
+  '- Describe the next step in your own everyday words. Never use the labels "promotive", "preventive", or "curative".',
+  '- Describe the next step in your own everyday words. Never use the labels "promotive", "preventive", "curative", "promotif", "preventif", or "kuratif".',
+).replace(
+  '- Write in English and address the student as "you".',
+  '- Write in natural, warm Indonesian (Bahasa Indonesia) and address the student as "kamu". Keep the screening category name exactly as given.',
+);
+
 export function buildFeedbackMessages(context: FeedbackContext): ChatMessage[] {
+  const categoryLabel =
+    context.language === 'id'
+      ? CATEGORY_LABELS_ID[context.category]
+      : CATEGORY_LABELS[context.category];
   const user = [
-    `Screening category (final): ${CATEGORY_LABELS[context.category]}`,
+    `Screening category (final): ${categoryLabel}`,
     `Academic workload: ${WORKLOAD_LABELS[context.workloadLevel]}`,
     `Exhaustion: ${BINARY_LABELS[context.exhaustionLevel]}`,
     `Disengagement: ${BINARY_LABELS[context.disengagementLevel]}`,
@@ -66,7 +90,13 @@ export function buildFeedbackMessages(context: FeedbackContext): ChatMessage[] {
   ].join('\n');
 
   return [
-    { role: 'system', content: FEEDBACK_SYSTEM_PROMPT },
+    {
+      role: 'system',
+      content:
+        context.language === 'id'
+          ? FEEDBACK_SYSTEM_PROMPT_ID
+          : FEEDBACK_SYSTEM_PROMPT,
+    },
     { role: 'user', content: user },
   ];
 }

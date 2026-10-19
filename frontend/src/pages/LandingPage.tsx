@@ -12,6 +12,8 @@ import {
 } from '../components/Icons';
 import { LogoLink } from '../components/Logo';
 import './landing.css';
+import { LanguageSwitch } from '../i18n/LanguageSwitch';
+import { useT } from '../i18n/strings';
 import { usePageTitle } from '../lib/usePageTitle';
 
 /** The drawing from the Figma design: a student studying calmly at a desk. */
@@ -86,6 +88,7 @@ function HeroIllustration() {
 
 export function LandingPage() {
   usePageTitle();
+  const t = useT();
   const { status, profile } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -96,38 +99,42 @@ export function LandingPage() {
     : profile.role === 'advisor'
       ? '/advisor'
       : '/app';
-  const accountLabel = signedIn ? 'Go to dashboard' : 'Sign in';
+  const accountLabel = signedIn ? t.landing.goToDashboard : t.common.signIn;
 
   return (
     <div className="lp">
       <header className="lp-nav">
         <LogoLink compact />
-        <nav className="lp-links" aria-label="Main navigation">
-          <Link to="/app">Student portal</Link>
-          <Link to="/advisor">Advisor portal</Link>
+        <nav className="lp-links" aria-label={t.landing.mainNav}>
+          <Link to="/app">{t.landing.studentPortal}</Link>
+          <Link to="/advisor">{t.landing.advisorPortal}</Link>
+          <LanguageSwitch />
           <Link className="lp-button lp-button-secondary" to={accountPath}>
             {accountLabel}
           </Link>
         </nav>
-        <button
-          type="button"
-          className="lp-menu-button"
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={menuOpen}
-          aria-controls="lp-mobile-menu"
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          {menuOpen ? <CloseIcon /> : <MenuIcon />}
-        </button>
+        <div className="lp-nav-mobile">
+          <LanguageSwitch />
+          <button
+            type="button"
+            className="lp-menu-button"
+            aria-label={menuOpen ? t.landing.closeMenu : t.landing.openMenu}
+            aria-expanded={menuOpen}
+            aria-controls="lp-mobile-menu"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <CloseIcon /> : <MenuIcon />}
+          </button>
+        </div>
       </header>
       {menuOpen && (
         <nav
           id="lp-mobile-menu"
           className="lp-mobile-menu"
-          aria-label="Main navigation"
+          aria-label={t.landing.mainNav}
         >
-          <Link to="/app">Student portal</Link>
-          <Link to="/advisor">Advisor portal</Link>
+          <Link to="/app">{t.landing.studentPortal}</Link>
+          <Link to="/advisor">{t.landing.advisorPortal}</Link>
           <Link to={accountPath}>{accountLabel}</Link>
         </nav>
       )}
@@ -136,31 +143,27 @@ export function LandingPage() {
         <section className="lp-hero">
           <div className="lp-hero-copy">
             <p className="lp-eyebrow">
-              <span></span> Academic burnout screening at PNJ
+              <span></span> {t.landing.eyebrow}
             </p>
-            <h1>A calmer way to check in on your semester.</h1>
-            <p className="lp-lead">
-              A private, guided screening for academic burnout. It looks at
-              your workload and how you have been feeling, then gives you a
-              clear result and a next step.
-            </p>
+            <h1>{t.landing.title}</h1>
+            <p className="lp-lead">{t.landing.lead}</p>
             <div className="lp-actions">
               <Link className="lp-button" to="/app/screening">
-                Start screening
+                {t.landing.start}
                 <ArrowRightIcon size={18} />
               </Link>
               <a className="lp-text-link" href="#how-it-works">
-                Learn more <ChevronRightIcon size={16} />
+                {t.landing.learnMore} <ChevronRightIcon size={16} />
               </a>
             </div>
             <div className="lp-reassurance">
               <div>
                 <ClockIcon size={17} />
-                <span>Takes about 8–10 minutes</span>
+                <span>{t.landing.duration}</span>
               </div>
               <div>
                 <CheckIcon size={17} />
-                <span>Your answers stay private</span>
+                <span>{t.landing.private}</span>
               </div>
             </div>
           </div>
@@ -172,79 +175,45 @@ export function LandingPage() {
                 <LeafIcon size={17} />
               </span>
               <span>
-                <strong>A moment for yourself</strong>
-                <small>There are no right or wrong answers.</small>
+                <strong>{t.landing.noteTitle}</strong>
+                <small>{t.landing.noteText}</small>
               </span>
             </div>
           </div>
         </section>
 
         <section id="how-it-works" className="lp-how">
-          <p className="lp-kicker">How it works</p>
-          <h2>Clarity in three simple steps.</h2>
+          <p className="lp-kicker">{t.landing.howKicker}</p>
+          <h2>{t.landing.howTitle}</h2>
           <div className="lp-steps">
-            <article>
-              <span>01</span>
-              <h3>Share how things feel</h3>
-              <p>
-                Answer straightforward questions about your workload and
-                wellbeing.
-              </p>
-            </article>
-            <article>
-              <span>02</span>
-              <h3>Understand your result</h3>
-              <p>
-                Fixed rules, validated by a psychologist, give you a clear
-                burnout screening result.
-              </p>
-            </article>
-            <article>
-              <span>03</span>
-              <h3>Choose what comes next</h3>
-              <p>
-                Receive practical guidance and find student support when you
-                need it.
-              </p>
-            </article>
+            {t.landing.steps.map((step, index) => (
+              <article key={step.title}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
+              </article>
+            ))}
           </div>
         </section>
 
         <section className="lp-how lp-about" aria-labelledby="about-burnout">
-          <p className="lp-kicker">About burnout</p>
-          <h2 id="about-burnout">What is academic burnout?</h2>
+          <p className="lp-kicker">{t.landing.aboutKicker}</p>
+          <h2 id="about-burnout">{t.landing.aboutTitle}</h2>
           <div className="lp-steps">
-            <article>
-              <span>Exhaustion</span>
-              <h3>Feeling drained</h3>
-              <p>
-                Your studies leave you tired, and rest no longer seems to
-                recover your energy.
-              </p>
-            </article>
-            <article>
-              <span>Disengagement</span>
-              <h3>Feeling distant</h3>
-              <p>
-                Your courses start to feel meaningless, and you find yourself
-                pulling away from them.
-              </p>
-            </article>
-            <article>
-              <span>Workload</span>
-              <h3>The pressure behind it</h3>
-              <p>
-                Heavy demands that last for weeks without enough recovery are
-                a common cause. Burnout can change with rest and support.
-              </p>
-            </article>
+            {t.landing.signs.map((sign) => (
+              <article key={sign.tag}>
+                <span>{sign.tag}</span>
+                <h3>{sign.title}</h3>
+                <p>{sign.text}</p>
+              </article>
+            ))}
           </div>
         </section>
       </main>
 
       <footer className="lp-footer">
-        <span>Politeknik Negeri Jakarta · Student wellbeing support</span>
-        <span>A burnout screening, not a clinical diagnosis</span>
+        <span>{t.landing.footerLeft}</span>
+        <span>{t.landing.footerRight}</span>
       </footer>
     </div>
   );

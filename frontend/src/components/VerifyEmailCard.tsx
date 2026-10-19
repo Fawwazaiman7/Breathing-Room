@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { useAuth } from '../auth/useAuth';
+import { useLanguage } from '../i18n/language';
+import { translateMessage } from '../i18n/messages';
+import { useT } from '../i18n/strings';
 
 const RESEND_WAIT_SECONDS = 60;
 
@@ -20,6 +23,8 @@ export function VerifyEmailCard({
   onCancel: () => void;
 }) {
   const { verifyEmailCode, resendEmailCode } = useAuth();
+  const t = useT();
+  const { language } = useLanguage();
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +46,7 @@ export function VerifyEmailCard({
     setNotice(null);
     const message = await verifyEmailCode(email, code.trim());
     if (message) {
-      setError(message);
+      setError(translateMessage(message, language));
       setBusy(false);
     }
     // On success the session starts and the page redirects.
@@ -52,31 +57,29 @@ export function VerifyEmailCard({
     setNotice(null);
     const message = await resendEmailCode(email);
     if (message) {
-      setError(message);
+      setError(translateMessage(message, language));
     } else {
-      setNotice('A new code is on its way. Codes from earlier emails no longer work.');
+      setNotice(t.auth.newCodeSent);
       setWait(RESEND_WAIT_SECONDS);
     }
   }
 
   return (
     <form className="auth-card" onSubmit={handleSubmit}>
-      <h1 className="card-title">Check your email</h1>
+      <h1 className="card-title">{t.auth.checkEmail}</h1>
       <p className="card-text">
-        {sentNow ? 'We sent' : 'Enter'} a verification code to{' '}
-        <strong>{email}</strong>. Enter it below to activate your account. The
-        email can take a minute to arrive; check your spam folder too.
+        {t.auth.verifyText(sentNow ? t.auth.weSent : t.auth.enter, email)}
       </p>
 
       <label className="field">
-        <span>Verification code</span>
+        <span>{t.auth.verificationCode}</span>
         <input
           name="code"
           className="code-input"
           inputMode="numeric"
           autoComplete="one-time-code"
           pattern="[0-9]{6,10}"
-          title="The code from the email (digits only)"
+          title={t.auth.codeHint}
           maxLength={10}
           required
           autoFocus
@@ -97,7 +100,7 @@ export function VerifyEmailCard({
       )}
 
       <button type="submit" className="button-primary" disabled={busy}>
-        {busy ? 'Checking…' : 'Verify and continue'}
+        {busy ? t.auth.checking : t.auth.verifyButton}
       </button>
       <button
         type="button"
@@ -105,12 +108,12 @@ export function VerifyEmailCard({
         disabled={wait > 0}
         onClick={() => void handleResend()}
       >
-        {wait > 0 ? `Send a new code (${wait}s)` : 'Send a new code'}
+        {wait > 0 ? t.auth.newCodeIn(wait) : t.auth.newCode}
       </button>
       <p className="auth-footnote">
-        Wrong address?{' '}
+        {t.auth.wrongAddress}{' '}
         <button type="button" className="link-button" onClick={onCancel}>
-          Go back
+          {t.auth.goBack}
         </button>
       </p>
     </form>

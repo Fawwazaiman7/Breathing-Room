@@ -5,6 +5,9 @@ import '../advising/advising.css';
 import { useAuth } from '../auth/useAuth';
 import { AuthLayout } from '../components/AuthLayout';
 import { VerifyEmailCard } from '../components/VerifyEmailCard';
+import { useLanguage } from '../i18n/language';
+import { translateMessage } from '../i18n/messages';
+import { useT } from '../i18n/strings';
 import { usePageTitle } from '../lib/usePageTitle';
 
 /**
@@ -12,7 +15,9 @@ import { usePageTitle } from '../lib/usePageTitle';
  * the account can be used. Advisor accounts are created by the administrator.
  */
 export function SignUpPage() {
-  usePageTitle('Create an account');
+  const t = useT();
+  const { language } = useLanguage();
+  usePageTitle(t.titles.signUp);
   const { status, profile, signUp } = useAuth();
   const [fullName, setFullName] = useState('');
   const [studentNumber, setStudentNumber] = useState('');
@@ -42,7 +47,7 @@ export function SignUpPage() {
       password,
     });
     if (!result.ok) {
-      setError(result.message);
+      setError(translateMessage(result.message, language));
     } else if (result.needsEmailConfirmation) {
       setVerifying(address);
     }
@@ -66,14 +71,11 @@ export function SignUpPage() {
   return (
     <AuthLayout>
       <form className="auth-card" onSubmit={handleSubmit}>
-        <h1 className="card-title">Create a student account</h1>
-        <p className="card-text">
-          For students. We will email you a code to confirm your address.
-          Academic Advisors receive their account from the administrator.
-        </p>
+        <h1 className="card-title">{t.auth.signUpTitle}</h1>
+        <p className="card-text">{t.auth.signUpText}</p>
 
         <label className="field">
-          <span>Full name</span>
+          <span>{t.auth.fullName}</span>
           <input
             name="fullName"
             autoComplete="name"
@@ -84,19 +86,19 @@ export function SignUpPage() {
           />
         </label>
         <label className="field">
-          <span>Student number (NIM)</span>
+          <span>{t.auth.studentNumber}</span>
           <input
             name="studentNumber"
             inputMode="numeric"
             pattern="[0-9]{5,20}"
-            title="Digits only"
+            title={t.auth.digitsOnly}
             required
             value={studentNumber}
             onChange={(event) => setStudentNumber(event.target.value)}
           />
         </label>
         <label className="field">
-          <span>Class</span>
+          <span>{t.auth.className}</span>
           <input
             name="className"
             placeholder="TI 6A"
@@ -107,7 +109,7 @@ export function SignUpPage() {
           />
         </label>
         <label className="field">
-          <span>Email</span>
+          <span>{t.common.email}</span>
           <input
             type="email"
             name="email"
@@ -118,7 +120,7 @@ export function SignUpPage() {
           />
         </label>
         <label className="field">
-          <span>Password</span>
+          <span>{t.common.password}</span>
           <input
             type="password"
             name="password"
@@ -137,10 +139,11 @@ export function SignUpPage() {
         )}
 
         <button type="submit" className="button-primary" disabled={busy}>
-          {busy ? 'Creating account…' : 'Create account'}
+          {busy ? t.auth.creating : t.auth.createButton}
         </button>
         <p className="auth-footnote">
-          Already have an account? <Link to="/sign-in?as=student">Sign in</Link>
+          {t.auth.haveAccount}{' '}
+          <Link to="/sign-in?as=student">{t.common.signIn}</Link>
         </p>
       </form>
     </AuthLayout>

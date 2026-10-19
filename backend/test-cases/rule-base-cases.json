@@ -595,7 +595,7 @@
         "disengagementLevel": "LOW",
         "ruleId": "R9",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -660,7 +660,7 @@
         "disengagementLevel": "LOW",
         "ruleId": "R10",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -725,7 +725,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R11",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -790,7 +790,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R12",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -855,7 +855,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R13",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       },
       "sensitiveTo": [
         "WORKLOAD_BANDS"
@@ -923,7 +923,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R14",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -988,7 +988,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R15",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -1053,7 +1053,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R16",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -1118,7 +1118,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R17",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -1183,7 +1183,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R18",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       },
       "sensitiveTo": [
         "WORKLOAD_BANDS"
@@ -1251,7 +1251,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R19",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -1316,7 +1316,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R20",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     }
   ],
@@ -1779,7 +1779,7 @@
         "disengagementLevel": "LOW",
         "ruleId": "R9",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -1844,7 +1844,7 @@
         "disengagementLevel": "LOW",
         "ruleId": "R9",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -1909,7 +1909,7 @@
         "disengagementLevel": "LOW",
         "ruleId": "R10",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -1974,7 +1974,7 @@
         "disengagementLevel": "LOW",
         "ruleId": "R10",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -2104,7 +2104,7 @@
         "disengagementLevel": "LOW",
         "ruleId": "R9",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       },
       "sensitiveTo": [
         "OLBI_CUTOFF_INCLUSIVE"
@@ -2172,7 +2172,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R14",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       }
     },
     {
@@ -2237,7 +2237,7 @@
         "disengagementLevel": "HIGH",
         "ruleId": "R19",
         "category": "HIGH_RISK",
-        "recommendation": "Kuratif dengan rujukan konseling ke BK PNJ"
+        "recommendation": "Kuratif dengan rujukan konseling ke layanan konseling kampus"
       },
       "sensitiveTo": [
         "OLBI_CUTOFF_INCLUSIVE"

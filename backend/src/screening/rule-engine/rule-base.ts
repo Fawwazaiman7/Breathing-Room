@@ -39,9 +39,12 @@ export const RECOMMENDATIONS: Record<
     id: 'Preventif dengan konsultasi bersama dosen PA',
     en: 'Preventive: consultation with your Academic Advisor (DPA)',
   },
+  // General edition. The PNJ edition reads "Kuratif dengan rujukan
+  // konseling ke BK PNJ" / "Curative: counselling referral to the PNJ
+  // Counselling Unit (BK PNJ)"; see for-pnj-later/PNJ-EDITION.md.
   CURATIVE: {
-    id: 'Kuratif dengan rujukan konseling ke BK PNJ',
-    en: 'Curative: counselling referral to the PNJ Counselling Unit (BK PNJ)',
+    id: 'Kuratif dengan rujukan konseling ke layanan konseling kampus',
+    en: 'Curative: counselling referral to the campus counselling service',
   },
 };
 

@@ -78,20 +78,24 @@ export class ScreeningRepository {
   }
 
   /**
-   * Stores the LLM note. Only the two feedback columns are written; the
-   * rule-based result columns are never touched after the insert.
+   * Stores the LLM note. Only the feedback columns of that language are
+   * written; the rule-based result columns are never touched after the
+   * insert.
    */
   async saveFeedback(
     id: string,
     studentId: string,
     text: string,
+    language: 'en' | 'id' = 'en',
   ): Promise<void> {
+    const now = new Date().toISOString();
+    const columns =
+      language === 'id'
+        ? { feedback_text_id: text, feedback_id_generated_at: now }
+        : { feedback_text: text, feedback_generated_at: now };
     const { error } = await this.supabase.admin
       .from('screenings')
-      .update({
-        feedback_text: text,
-        feedback_generated_at: new Date().toISOString(),
-      })
+      .update(columns)
       .eq('id', id)
       .eq('student_id', studentId);
     if (error) {

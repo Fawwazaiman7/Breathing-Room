@@ -93,13 +93,12 @@ export const DIMENSION_CONTENT: Record<
  * ---------------------------------------------------------------------- */
 
 /**
- * Which wording of the 16 statements students see.
+ * The wording follows the interface language (i18n/screening-content.ts).
  * 'id' is the validated Indonesian instrument (Pratama et al., 2025), as
  * listed in the system workflow document. 'en' is an English wording of the
  * same items for the English interface; it has not been validated with this
  * student population.
  */
-export const OLBI_LANGUAGE: 'en' | 'id' = 'en';
 
 /** Items 1-16 in order. Scoring is done by the backend, not here. */
 export const OLBI_STATEMENTS: { en: string; id: string }[] = [
@@ -226,7 +225,7 @@ export const CATEGORY_CONTENT: Record<
     summary:
       'Your answers suggest things have been really hard lately. You do not have to handle this alone.',
     nextStep:
-      'We recommend speaking with a counsellor at the PNJ Counselling Unit (BK PNJ). Your Academic Advisor (DPA) can help you arrange it.',
+      'We recommend speaking with a counsellor at your campus counselling service. Your Academic Advisor (DPA) can help you arrange it.',
   },
 };
 

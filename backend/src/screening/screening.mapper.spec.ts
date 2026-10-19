@@ -107,10 +107,11 @@ describe('Screening mapper', () => {
       exhaustion: { score: 2.25, level: 'HIGH' },
       disengagement: { score: 2.88, level: 'HIGH' },
       recommendation: {
-        id: 'Kuratif dengan rujukan konseling ke BK PNJ',
-        en: 'Curative: counselling referral to the PNJ Counselling Unit (BK PNJ)',
+        id: 'Kuratif dengan rujukan konseling ke layanan konseling kampus',
+        en: 'Curative: counselling referral to the campus counselling service',
       },
       feedbackText: null,
+      feedbackTextId: null,
     });
   });
 });

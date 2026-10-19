@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
+import { useT } from '../i18n/strings';
 
-const APP_NAME = 'Breathing Room';
-
-/** Sets the browser tab title, e.g. "Your result · Breathing Room". */
+/** Sets the browser tab title, e.g. "Your result · Ruang Pulih". */
 export function usePageTitle(title?: string) {
+  const t = useT();
   useEffect(() => {
-    document.title = title ? `${title} · ${APP_NAME}` : `${APP_NAME} · Academic burnout screening`;
-  }, [title]);
+    document.title = title
+      ? `${title} · ${t.appName}`
+      : `${t.appName} · ${t.tagline}`;
+  }, [title, t]);
 }

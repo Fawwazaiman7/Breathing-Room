@@ -34,6 +34,9 @@ export interface StoredScreening extends ScreeningRow {
   created_at: string;
   feedback_text: string | null;
   feedback_generated_at: string | null;
+  /** The Indonesian note (migration 005). Absent before that migration. */
+  feedback_text_id?: string | null;
+  feedback_id_generated_at?: string | null;
 }
 
 /** One past screening as shown to the student. */
@@ -47,6 +50,7 @@ export interface ScreeningHistoryItem {
   disengagement: { score: number; level: BinaryLevel };
   recommendation: { id: string; en: string };
   feedbackText: string | null;
+  feedbackTextId: string | null;
 }
 
 export function toScreeningRow(
@@ -99,5 +103,6 @@ export function toHistoryItem(stored: StoredScreening): ScreeningHistoryItem {
     },
     recommendation: RECOMMENDATIONS[stored.intervention_level],
     feedbackText: stored.feedback_text,
+    feedbackTextId: stored.feedback_text_id ?? null,
   };
 }

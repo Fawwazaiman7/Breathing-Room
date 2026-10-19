@@ -12,7 +12,15 @@ import type {
  * Deliberately minimal: no name, student number, class, raw answers, or
  * scores. Only the categorical outcome already decided by the rule base.
  */
+/** Language of the note: the student's interface language. */
+export type FeedbackLanguage = 'en' | 'id';
+
+export function isFeedbackLanguage(value: unknown): value is FeedbackLanguage {
+  return value === 'en' || value === 'id';
+}
+
 export interface FeedbackContext {
+  language: FeedbackLanguage;
   category: ScreeningCategory;
   workloadLevel: WorkloadLevel;
   exhaustionLevel: BinaryLevel;
@@ -38,7 +46,17 @@ export const PLAIN_RECOMMENDATIONS: Record<InterventionLevel, string> = {
   PREVENTIVE:
     'Arrange a consultation with their Academic Advisor (DPA) to talk about their workload and how they have been feeling.',
   CURATIVE:
-    'Go for counselling at the PNJ Counselling Unit (BK PNJ). This is a referral to counselling.',
+    'Go for counselling at the campus counselling service. This is a referral to counselling.',
+};
+
+/** The same actions in Indonesian, for a note written in Indonesian. */
+export const PLAIN_RECOMMENDATIONS_ID: Record<InterventionLevel, string> = {
+  PROMOTIVE:
+    'Pengembangan diri secara mandiri: terus mempelajari dan mempraktikkan kebiasaan belajar dan istirahat yang sehat. Tidak perlu janji temu atau rujukan.',
+  PREVENTIVE:
+    'Mengatur konsultasi dengan Dosen Pembimbing Akademik (DPA) untuk membicarakan beban kerja dan apa yang dirasakan belakangan ini.',
+  CURATIVE:
+    'Mengikuti konseling di layanan konseling kampus. Ini adalah rujukan ke layanan konseling.',
 };
 
 /** The stored columns needed to build the context. */
@@ -51,15 +69,22 @@ export interface FeedbackSource {
   intervention_level: InterventionLevel;
 }
 
-export function toFeedbackContext(stored: FeedbackSource): FeedbackContext {
+export function toFeedbackContext(
+  stored: FeedbackSource,
+  language: FeedbackLanguage = 'en',
+): FeedbackContext {
   const rule = getRuleById(stored.rule_id);
   return {
+    language,
     category: stored.category,
     workloadLevel: stored.workload_level,
     exhaustionLevel: stored.exhaustion_level,
     disengagementLevel: stored.disengagement_level,
     interventionLevel: stored.intervention_level,
-    rationale: rule.rationale.en,
-    recommendation: PLAIN_RECOMMENDATIONS[stored.intervention_level],
+    // The Indonesian rationale is the psychologist's validated wording.
+    rationale: rule.rationale[language],
+    recommendation: (language === 'id'
+      ? PLAIN_RECOMMENDATIONS_ID
+      : PLAIN_RECOMMENDATIONS)[stored.intervention_level],
   };
 }

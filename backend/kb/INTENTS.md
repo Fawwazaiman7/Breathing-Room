@@ -105,6 +105,16 @@ On 15 October 2026 the result labels shown in the app gained the word
 widened to also match these labels. No question in the three data files
 contains such a label, so every figure reported here is unchanged.
 
+On 19 October 2026 the app became a general edition for the final-project
+presentation (no campus named). The PNJ-specific passages SS-04 to SS-13 and
+SS-16 were replaced by general ones; the PNJ knowledge base is kept in
+`for-pnj-later/knowledge-base-pnj.json`. Passages take part in the vote, so
+the evaluation must be run again after `node kb/index-kb.mjs`; the figures
+above are from the PNJ knowledge base. The keyword rules and the three data
+files did not change. The reply prompt now asks for one short answer
+sentence and 2 to 4 key points, at most 80 words; this changes the wording
+of replies, not the intent decision.
+
 ## The data files
 
 | File | Rows | Role |

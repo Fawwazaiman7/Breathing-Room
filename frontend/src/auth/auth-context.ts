@@ -60,6 +60,17 @@ export interface AuthState {
   verifyEmailCode: (email: string, code: string) => Promise<string | null>;
   /** Emails a new sign-up code. Returns an error message, or null. */
   resendEmailCode: (email: string) => Promise<string | null>;
+  /** Emails a code for setting a new password. Null when sent. */
+  requestPasswordReset: (email: string) => Promise<string | null>;
+  /**
+   * Checks the emailed code and saves the new password. On success the
+   * account is signed in. Returns an error message, or null.
+   */
+  resetPassword: (
+    email: string,
+    code: string,
+    newPassword: string,
+  ) => Promise<string | null>;
   signOut: () => Promise<void>;
   /** Reads the profile again, after the profile page has saved a change. */
   refreshProfile: () => Promise<void>;

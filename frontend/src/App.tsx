@@ -4,6 +4,7 @@ import { AdvisorShell } from './components/AdvisorShell';
 import { AppShell } from './components/AppShell';
 import { AdvisorDashboardPage } from './pages/advisor/AdvisorDashboardPage';
 import { AdvisorStudentPage } from './pages/advisor/AdvisorStudentPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { LandingPage } from './pages/LandingPage';
 import { OverviewPage } from './pages/OverviewPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/sign-in" element={<SignInPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
       <Route
         path="/app"

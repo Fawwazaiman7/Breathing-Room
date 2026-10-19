@@ -43,16 +43,22 @@ export function looksIndonesian(message: string): boolean {
   return (message.match(INDONESIAN_WORDS) ?? []).length >= 2;
 }
 
+/**
+ * General edition: no campus-specific contact. 112 is Indonesia's national
+ * emergency number; Healing119.id (119 ext. 8) is the Ministry of Health's
+ * free 24-hour mental health line. Awaiting the psychologist's approval.
+ * The PNJ edition is in for-pnj-later/PNJ-EDITION.md.
+ */
 export const CRISIS_REPLY = {
   en: [
     'Thank you for telling me. What you are feeling matters, and right now you deserve support from a person, not from a chatbot.',
-    'If you are in immediate danger, please contact local emergency services or go to the nearest emergency department, and tell someone you trust who is near you.',
-    'You can also reach Layanan Psikologis PNJ on WhatsApp at +62 823-7957-4919 (Monday to Friday, 08.00 to 16.00 WIB). Messages sent outside those hours are answered on the next working day. Counselling there is free and confidential for PNJ students.',
+    'If you are in immediate danger, please call 112 or go to the nearest emergency department, and tell someone you trust who is near you.',
+    'You can also call Healing119.id at 119, extension 8. It is a free mental health service from the Ministry of Health, open 24 hours. Your campus counselling service can support you too.',
   ].join('\n\n'),
   id: [
     'Terima kasih sudah menceritakannya. Apa yang kamu rasakan itu penting, dan saat ini kamu layak mendapat dukungan langsung dari seseorang, bukan dari chatbot.',
-    'Kalau kamu sedang dalam bahaya, segera hubungi layanan darurat setempat atau datang ke IGD terdekat, dan beri tahu orang yang kamu percaya di dekatmu.',
-    'Kamu juga bisa menghubungi Layanan Psikologis PNJ lewat WhatsApp di +62 823-7957-4919 (Senin sampai Jumat, 08.00 sampai 16.00 WIB). Pesan di luar jam itu dibalas pada hari kerja berikutnya. Konseling di sana gratis dan rahasia untuk mahasiswa PNJ.',
+    'Kalau kamu sedang dalam bahaya, segera hubungi 112 atau datang ke IGD terdekat, dan beri tahu orang yang kamu percaya di dekatmu.',
+    'Kamu juga bisa menghubungi Healing119.id di nomor 119, ekstensi 8. Layanan kesehatan jiwa dari Kementerian Kesehatan ini gratis dan buka 24 jam. Layanan konseling di kampusmu juga bisa membantumu.',
   ].join('\n\n'),
 };
 
@@ -95,8 +101,8 @@ export function smallTalkLanguage(message: string): 'en' | 'id' {
 
 export const SMALL_TALK_REPLY: Record<SmallTalk, { en: string; id: string }> = {
   greeting: {
-    en: 'Hello. I can help with questions about academic burnout, workload, exhaustion and disengagement, time management, your screening result, and student support at PNJ. What would you like to ask?',
-    id: 'Halo. Saya bisa membantu dengan pertanyaan tentang burnout akademik, beban kerja, kelelahan dan ketidakterlibatan, manajemen waktu, hasil skrining, dan dukungan mahasiswa di PNJ. Apa yang ingin kamu tanyakan?',
+    en: 'Hello. I can help with questions about academic burnout, workload, exhaustion and disengagement, time management, your screening result, and student support. What would you like to ask?',
+    id: 'Halo. Saya bisa membantu dengan pertanyaan tentang burnout akademik, beban kerja, kelelahan dan ketidakterlibatan, manajemen waktu, hasil skrining, dan dukungan mahasiswa. Apa yang ingin kamu tanyakan?',
   },
   thanks: {
     en: 'You are welcome. I am here if you have another question.',
@@ -105,8 +111,8 @@ export const SMALL_TALK_REPLY: Record<SmallTalk, { en: string; id: string }> = {
 };
 
 export const OUT_OF_SCOPE_REPLY = {
-  en: 'I can help with questions about academic burnout, workload, exhaustion and disengagement, time management, your screening result, and student support at PNJ. Could you ask about one of those?',
-  id: 'Saya bisa membantu dengan pertanyaan tentang burnout akademik, beban kerja, kelelahan dan ketidakterlibatan, manajemen waktu, hasil skrining, dan dukungan mahasiswa di PNJ. Boleh tanyakan salah satunya?',
+  en: 'I can help with questions about academic burnout, workload, exhaustion and disengagement, time management, your screening result, and student support. Could you ask about one of those?',
+  id: 'Saya bisa membantu dengan pertanyaan tentang burnout akademik, beban kerja, kelelahan dan ketidakterlibatan, manajemen waktu, hasil skrining, dan dukungan mahasiswa. Boleh tanyakan salah satunya?',
 };
 
 export const FALLBACK_REPLY = {

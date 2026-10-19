@@ -1,5 +1,5 @@
 {
-  "description": "Support Chat knowledge base. DRAFT: every passage awaits approval by the campus psychologist. Mirrors the document 'Breathing Room Support Chat Knowledge Base (Draft for Review)'. status: draft = awaiting review; adapted = source addressed another audience; to_confirm = wording or facts still to be confirmed.",
+  "description": "Support Chat knowledge base. DRAFT: every passage awaits approval by the campus psychologist. Mirrors the document 'Ruang Pulih Support Chat Knowledge Base (Draft for Review)'. status: draft = awaiting review; adapted = source addressed another audience; to_confirm = wording or facts still to be confirmed. General (non-institution) edition; the PNJ edition is kept in for-pnj-later/knowledge-base-pnj.json.",
   "version": "2026-10-12",
   "passages": [
     {
@@ -301,77 +301,77 @@
       "topic": "STUDENT_SUPPORT",
       "status": "to_confirm",
       "text": "When you message your advisor, greet them, give your name, student number, and class, and say briefly what you would like to discuss. Ask when they are available, and write during working hours.",
-      "source": "General guidance, not an official PNJ rule"
+      "source": "General guidance, not an official campus rule"
     },
     {
       "id": "SS-04",
       "topic": "STUDENT_SUPPORT",
       "status": "draft",
-      "text": "PNJ has a psychological service, Layanan Psikologis PNJ, that offers counselling for students, lecturers, and staff. Sessions can be in person or online. For PNJ students it is free and confidential.",
-      "source": "PNJ counselling registration form; published service flow"
+      "text": "Many universities have a counselling or psychological service for students. Sessions can be in person or online, and for students they are often free and confidential. Your Academic Advisor or student affairs office can tell you whether your campus has one.",
+      "source": "General guidance (general edition; PNJ version in for-pnj-later)"
     },
     {
       "id": "SS-05",
       "topic": "STUDENT_SUPPORT",
       "status": "draft",
-      "text": "To register for counselling, fill in the form at https://s.pnj.ac.id/KonselingPNJ. The service team then contacts you to arrange a schedule and explain how the session will run.",
-      "source": "PNJ counselling registration form; published service flow"
+      "text": "To start counselling, contact your campus counselling service and ask how to register. If you are not sure where to start, your Academic Advisor (DPA) can help you find the right contact.",
+      "source": "General guidance (general edition; PNJ version in for-pnj-later)"
     },
     {
       "id": "SS-06",
       "topic": "STUDENT_SUPPORT",
-      "status": "draft",
-      "text": "You can message Layanan Psikologis PNJ on WhatsApp at +62 823-7957-4919. The hotline is open Monday to Friday, 08.00 to 16.00 WIB.",
-      "source": "Published service flow; service WhatsApp profile"
+      "status": "to_confirm",
+      "text": "If you need to talk to someone today, Healing119.id is a free mental health service from the Indonesian Ministry of Health. You can call 119, extension 8, at any time of day. More information is at https://healing119.id.",
+      "source": "Healing119.id FAQ, Kementerian Kesehatan RI; 112 national emergency number"
     },
     {
       "id": "SS-07",
       "topic": "STUDENT_SUPPORT",
       "status": "draft",
-      "text": "In-person counselling takes place in Building Q, the PNJ directorate building, on the 3rd floor in Room 310.",
-      "source": "Confirmed by the service on WhatsApp"
+      "text": "Ask your campus counselling service where in-person sessions take place, or whether an online session is possible.",
+      "source": "General guidance (general edition; PNJ version in for-pnj-later)"
     },
     {
       "id": "SS-08",
       "topic": "STUDENT_SUPPORT",
       "status": "draft",
-      "text": "You do not need a referral for counselling. You can register on your own initiative, or because a lecturer suggested it.",
-      "source": "PNJ counselling registration form"
+      "text": "In most campus counselling services you do not need a referral. You can register on your own initiative, or because a lecturer suggested it.",
+      "source": "General guidance (general edition; PNJ version in for-pnj-later)"
     },
     {
       "id": "SS-09",
       "topic": "STUDENT_SUPPORT",
       "status": "draft",
-      "text": "Counselling is not only for a crisis. The registration form lists everyday reasons such as academic stress, trouble focusing or managing time, putting tasks off, exam anxiety, and low motivation.",
-      "source": "PNJ counselling registration form"
+      "text": "Counselling is not only for a crisis. Everyday reasons such as academic stress, trouble focusing or managing time, putting tasks off, exam anxiety, and low motivation are all good reasons to go.",
+      "source": "General guidance (general edition; PNJ version in for-pnj-later)"
     },
     {
       "id": "SS-10",
       "topic": "STUDENT_SUPPORT",
       "status": "draft",
-      "text": "A counselling session lasts about 45 to 60 minutes. Before the first session you sign a consent form. In the session you explain why you came, and the psychologist asks questions to understand your situation. Afterwards you are asked to fill in a short satisfaction survey.",
-      "source": "PNJ counselling registration form; published service flow"
+      "text": "A first counselling session usually lasts about 45 to 60 minutes. You explain why you came, and the counsellor asks questions to understand your situation. You decide what you want to share.",
+      "source": "General guidance (general edition; PNJ version in for-pnj-later)"
     },
     {
       "id": "SS-11",
       "topic": "STUDENT_SUPPORT",
       "status": "draft",
-      "text": "What you share in counselling is confidential and is used only to provide the service. If it is ever used to improve the service, your identity is hidden and only initials are written.",
-      "source": "PNJ counselling registration form"
+      "text": "What you share in counselling is confidential and is used only to provide the service.",
+      "source": "General guidance (general edition; PNJ version in for-pnj-later)"
     },
     {
       "id": "SS-12",
       "topic": "STUDENT_SUPPORT",
       "status": "draft",
-      "text": "When you register you choose at least three time slots that suit you. The form currently offers weekday slots at 09.00, 10.00, 12.00, and 14.00.",
-      "source": "PNJ counselling registration form; slots may change"
+      "text": "When you arrange counselling, you can usually ask for a time that fits around your classes.",
+      "source": "General guidance (general edition; PNJ version in for-pnj-later)"
     },
     {
       "id": "SS-13",
       "topic": "STUDENT_SUPPORT",
       "status": "draft",
-      "text": "A session can be cancelled if you are more than 15 minutes late. To cancel or reschedule, tell the service by 16.00 WIB the day before. If you cancel on the day or do not come, you register again and rejoin the queue.",
-      "source": "PNJ counselling registration form"
+      "text": "If you cannot make a counselling appointment, tell the service as early as you can, so they can offer the time to someone else and find you a new one.",
+      "source": "General guidance (general edition; PNJ version in for-pnj-later)"
     },
     {
       "id": "SS-14",
@@ -391,8 +391,8 @@
       "id": "SS-16",
       "topic": "STUDENT_SUPPORT",
       "status": "to_confirm",
-      "text": "If you feel unsafe or in crisis, do not wait for a reply here. If you are in immediate danger, contact local emergency services or go to the nearest emergency department, and tell someone you trust. The Layanan Psikologis PNJ hotline replies during working hours. Messages sent outside those hours are answered on the next working day.",
-      "source": "Figma design text; published service flow; out-of-hours handling as experienced by the student"
+      "text": "If you feel unsafe or in crisis, do not wait for a reply here. If you are in immediate danger, call 112 or go to the nearest emergency department, and tell someone you trust. You can also call Healing119.id at 119, extension 8, at any time of day.",
+      "source": "Healing119.id FAQ, Kementerian Kesehatan RI; 112 national emergency number"
     },
     {
       "id": "SS-17",

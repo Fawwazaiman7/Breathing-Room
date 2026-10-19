@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import '../advisor/advisor.css';
+import { EnglishOnly } from '../i18n/language';
 import { HomeIcon } from './Icons';
 import { LogoLink } from './Logo';
 import { SidebarAccount } from './SidebarAccount';
@@ -9,7 +10,9 @@ export function AdvisorShell() {
   const { pathname } = useLocation();
   const onProfile = pathname.startsWith('/advisor/profile');
 
+  // The advisor workspace is English only.
   return (
+    <EnglishOnly>
     <div className="shell">
       <aside className="sidebar">
         <LogoLink />
@@ -36,5 +39,6 @@ export function AdvisorShell() {
         <Outlet />
       </main>
     </div>
+    </EnglishOnly>
   );
 }

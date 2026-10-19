@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
+import { useT } from '../i18n/strings';
 import { ChevronRightIcon, SignOutIcon } from './Icons';
 
 function initialsOf(name: string): string {
@@ -29,6 +30,7 @@ export function SidebarAccount({
 }: SidebarAccountProps) {
   const { profile, signOut } = useAuth();
   const navigate = useNavigate();
+  const t = useT();
   const name = profile?.full_name || fallbackName;
 
   async function handleSignOut() {
@@ -43,8 +45,8 @@ export function SidebarAccount({
         className={({ isActive }: { isActive: boolean }) =>
           isActive ? 'sidebar-user active' : 'sidebar-user'
         }
-        aria-label={`Your profile: ${name}`}
-        title="View and edit your profile"
+        aria-label={t.nav.profileOf(name)}
+        title={t.nav.profileHint}
       >
         <span className="avatar">{initialsOf(name)}</span>
         <span className="sidebar-user-text">
@@ -54,7 +56,7 @@ export function SidebarAccount({
         <ChevronRightIcon size={16} />
       </NavLink>
       <button type="button" className="link-button" onClick={handleSignOut}>
-        <SignOutIcon /> Sign out
+        <SignOutIcon /> {t.common.signOut}
       </button>
     </div>
   );

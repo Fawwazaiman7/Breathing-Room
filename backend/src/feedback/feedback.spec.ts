@@ -3,7 +3,11 @@ import { checkFeedback } from './feedback.checker.js';
 import { toFeedbackContext } from './feedback.context.js';
 import type { FeedbackContext } from './feedback.context.js';
 import { generateFeedback } from './feedback.generator.js';
-import { buildFeedbackMessages, FEEDBACK_SYSTEM_PROMPT } from './feedback.prompt.js';
+import {
+  buildFeedbackMessages,
+  FEEDBACK_SYSTEM_PROMPT,
+  FEEDBACK_SYSTEM_PROMPT_ID,
+} from './feedback.prompt.js';
 import {
   DEFAULT_GROQ_MODEL,
   GROQ_CHAT_URL,
@@ -29,7 +33,7 @@ const NONE = contextFor('R2');
 
 const GOOD_HIGH_NOTE =
   'Your result is High risk. Your answers point to a heavy academic workload together with a lot of exhaustion, which is a tiring combination to carry for weeks. It makes sense that things feel hard right now.\n\n' +
-  'The recommended next step is to speak with a counsellor at BK PNJ. You do not need to prepare anything special; describing how the past two weeks have felt is enough to start. Your Academic Advisor can help you arrange a time.';
+  'The recommended next step is to speak with a counsellor at your campus counselling service. You do not need to prepare anything special; describing how the past two weeks have felt is enough to start. Your Academic Advisor can help you arrange a time.';
 
 const GOOD_MODERATE_NOTE =
   'Your result is Moderate risk. Your answers show clear signs of exhaustion even though your workload is at a standard level, so the tiredness you feel is real and worth paying attention to.\n\n' +
@@ -42,6 +46,7 @@ const GOOD_NONE_NOTE =
 describe('Feedback context and prompt', () => {
   it('builds the context from the stored result and the validated rule', () => {
     expect(HIGH).toEqual({
+      language: 'en',
       category: 'HIGH_RISK',
       workloadLevel: 'HIGH',
       exhaustionLevel: 'HIGH',
@@ -50,7 +55,7 @@ describe('Feedback context and prompt', () => {
       rationale:
         'Student appraises tasks as a threat; coping is overwhelmed, triggering distress and acute exhaustion.',
       recommendation:
-        'Go for counselling at the PNJ Counselling Unit (BK PNJ). This is a referral to counselling.',
+        'Go for counselling at the campus counselling service. This is a referral to counselling.',
     });
   });
 
@@ -84,7 +89,7 @@ describe('Feedback context and prompt', () => {
     expect(user.content).toContain('Exhaustion: High');
     expect(user.content).toContain('Disengagement: Low');
     expect(user.content).toContain(
-      'Recommended next step (final, must be kept): Go for counselling at the PNJ Counselling Unit (BK PNJ).',
+      'Recommended next step (final, must be kept): Go for counselling at the campus counselling service.',
     );
     // Staff labels are not given to the model, so it cannot copy them.
     expect(user.content).not.toMatch(/promotive|preventive|curative/i);
@@ -94,12 +99,54 @@ describe('Feedback context and prompt', () => {
       'disengagementLevel',
       'exhaustionLevel',
       'interventionLevel',
+      'language',
       'rationale',
       'recommendation',
       'workloadLevel',
     ]);
     expect(user.content).not.toMatch(/\bR9\b/);
     expect(user.content).not.toMatch(/\d+\.\d+/); // no scores
+  });
+});
+
+describe('Indonesian note', () => {
+  const rule = RULE_BASE.find((r) => r.id === 'R9')!;
+  const HIGH_ID = toFeedbackContext(
+    {
+      rule_id: rule.id,
+      category: rule.category,
+      workload_level: rule.workload,
+      exhaustion_level: rule.exhaustion,
+      disengagement_level: rule.disengagement,
+      intervention_level: rule.interventionLevel,
+    },
+    'id',
+  );
+  const GOOD_HIGH_NOTE_ID =
+    'Hasil skrining kamu adalah Risiko burnout tinggi. Jawabanmu menunjukkan beban akademik yang berat dan rasa lelah yang besar, dan itu kombinasi yang melelahkan untuk dijalani berminggu-minggu. Wajar kalau semuanya terasa berat sekarang.\n\n' +
+    'Langkah yang disarankan adalah berbicara dengan konselor di layanan konseling kampus. Kamu tidak perlu menyiapkan apa pun; cukup ceritakan bagaimana dua minggu terakhir ini terasa. Dosen Pembimbing Akademik kamu bisa membantu mengatur waktunya.';
+
+  it('uses the validated Indonesian rationale, Indonesian labels, and the Indonesian prompt', () => {
+    expect(HIGH_ID.language).toBe('id');
+    expect(HIGH_ID.rationale).toBe(rule.rationale.id);
+    const [system, user] = buildFeedbackMessages(HIGH_ID);
+    expect(system.content).toBe(FEEDBACK_SYSTEM_PROMPT_ID);
+    expect(system.content).toContain('Indonesian');
+    expect(system.content).toContain('"kuratif"');
+    expect(system.content).not.toContain('Write in English');
+    expect(user.content).toContain('Screening category (final): Risiko burnout tinggi');
+    expect(user.content).toContain('layanan konseling kampus');
+  });
+
+  it('accepts a good Indonesian note and rejects wrong category, language, or staff labels', () => {
+    expect(checkFeedback(GOOD_HIGH_NOTE_ID, HIGH_ID).ok).toBe(true);
+    const lower = GOOD_HIGH_NOTE_ID.replace('Risiko burnout tinggi', 'Risiko burnout sedang');
+    expect(JSON.stringify(checkFeedback(lower, HIGH_ID))).toContain('MODERATE_RISK');
+    expect(JSON.stringify(checkFeedback(GOOD_HIGH_NOTE, HIGH_ID))).toContain('not written in Indonesian');
+    const staff = GOOD_HIGH_NOTE_ID.replace('Langkah yang disarankan', 'Langkah kuratif yang disarankan');
+    expect(checkFeedback(staff, HIGH_ID).ok).toBe(false);
+    const noAction = GOOD_HIGH_NOTE_ID.replace('berbicara dengan konselor di layanan konseling kampus', 'beristirahat');
+    expect(JSON.stringify(checkFeedback(noAction, HIGH_ID))).toContain('recommended action is missing');
   });
 });
 
@@ -138,7 +185,7 @@ describe('Feedback checker', () => {
 
   it('rejects a note that drops the recommended action', () => {
     const noCounsellor = GOOD_HIGH_NOTE.replace(
-      'speak with a counsellor at BK PNJ',
+      'speak with a counsellor at your campus counselling service',
       'take a few days off',
     ).replace('Your Academic Advisor can help you arrange a time.', 'Rest well.');
     expect(checkFeedback(noCounsellor, HIGH)).toEqual({
@@ -172,10 +219,10 @@ describe('Feedback checker', () => {
       'The recommended next step is Promotive: self-help education. You can take advantage of available guides and workshops on healthy study routines, time‑management tips, and ways to keep a balanced approach to learning. Exploring these resources can help you maintain this positive momentum.';
     const realHighA =
       'Your screening shows a High risk result, reflecting the very high academic workload you’ve been handling and the strong feelings of exhaustion and disengagement you’ve experienced. It’s understandable that such pressures can take a toll.\n\n' +
-      'The next step is a Curative: counselling referral to the PNJ Counselling Unit (BK PNJ). Reaching out to the counselling team can give you a supportive space to talk through what’s going on and find practical ways to regain balance. Taking this step is a positive move toward feeling better.';
+      'The next step is a Curative: counselling referral to the campus counselling service. Reaching out to the counselling team can give you a supportive space to talk through what’s going on and find practical ways to regain balance. Taking this step is a positive move toward feeling better.';
     const realHighB =
       'Your screening result shows a High risk pattern, reflecting that you are currently handling a high academic workload and experiencing high levels of exhaustion and disengagement.\n\n' +
-      'The recommended next step is a counselling referral to the PNJ Counselling Unit (BK PNJ). Reaching out to this unit will give you a supportive space to discuss how you’re feeling and explore practical ways to manage your workload and wellbeing. You can contact them by phone or visit their office to set up an appointment. Taking this step can help you move toward a more balanced experience.';
+      'The recommended next step is a counselling referral to the campus counselling service. Reaching out to this unit will give you a supportive space to discuss how you’re feeling and explore practical ways to manage your workload and wellbeing. You can contact them by phone or visit their office to set up an appointment. Taking this step can help you move toward a more balanced experience.';
 
     expect(checkFeedback(realNoBurnout, contextFor('R1'))).toEqual({
       ok: false,
@@ -199,7 +246,7 @@ describe('Feedback checker', () => {
   it('rejects empty, too short, and too long replies', () => {
     expect(checkFeedback('', HIGH)).toEqual({ ok: false, reason: 'empty reply' });
     expect(checkFeedback('   ', HIGH).ok).toBe(false);
-    expect(checkFeedback('Talk to a counsellor at BK PNJ.', HIGH).ok).toBe(false);
+    expect(checkFeedback('Talk to a counsellor at your campus counselling service.', HIGH).ok).toBe(false);
     expect(checkFeedback((GOOD_HIGH_NOTE + ' ').repeat(3), HIGH).ok).toBe(false);
     expect(checkFeedback(undefined as unknown as string, HIGH).ok).toBe(false);
   });
