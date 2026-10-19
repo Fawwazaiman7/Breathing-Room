@@ -216,6 +216,11 @@ button {
   color: var(--teal);
 }
 
+.chat-urgent {
+  /* properti Anda yang lain */
+  text-align: justify;
+}
+
 .text-link:hover {
   color: var(--teal-dark);
 }
