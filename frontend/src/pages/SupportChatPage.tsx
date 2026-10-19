@@ -4,7 +4,12 @@ import { useAuth } from '../auth/useAuth';
 import { MAX_MESSAGE_LENGTH, sendChatMessage } from '../chat/api';
 import type { ChatReplyKind, ChatTurn } from '../chat/api';
 import '../chat/chat.css';
-import { ReplyBody, ReplyVisual, visualFor } from '../chat/ReplyParts';
+import {
+  ReplyBody,
+  ReplyVisual,
+  TopicBanner,
+  visualFor,
+} from '../chat/ReplyParts';
 import type { ReplyVisualKind } from '../chat/ReplyParts';
 import { ChevronRightIcon, SendIcon } from '../components/Icons';
 import { UrgentHelpCard } from '../components/UrgentHelpCard';
@@ -73,7 +78,7 @@ export function SupportChatPage() {
         // Pictures that explain a topic are shown once per conversation;
         // the result card is shown whenever the result is discussed.
         const shown = new Set(current.map((entry) => entry.visual));
-        const visual = visualFor(reply.kind, reply.intent, shown);
+        const visual = visualFor(reply.kind, reply.intent, text, shown);
         return [
           ...current.map((entry) =>
             entry.id === userId ? { ...entry, unanswered: false } : entry,
@@ -207,11 +212,8 @@ export function SupportChatPage() {
                     {entry.from === 'bot' &&
                       entry.intent &&
                       (entry.replyKind === 'answer' ||
-                        entry.replyKind === 'fallback') &&
-                      t.chat.intents[entry.intent] && (
-                        <span className="chat-topic-chip">
-                          {t.chat.intents[entry.intent]}
-                        </span>
+                        entry.replyKind === 'fallback') && (
+                        <TopicBanner intent={entry.intent} />
                       )}
                     {entry.from === 'bot' ? (
                       <div className="chat-bubble">
@@ -219,6 +221,7 @@ export function SupportChatPage() {
                             the contacts follow as a card. */}
                         <ReplyBody
                           text={crisis ? text.split(/\n{2,}/)[0] : text}
+                          intent={entry.intent}
                         />
                       </div>
                     ) : (

@@ -45,7 +45,7 @@ const INDONESIAN: Record<string, string> = {
   'Could not save the screening. Please try again.':
     'Skrining tidak dapat disimpan. Silakan coba lagi.',
   'The Support Chat is not available right now. Please try again later.':
-    'Obrolan dukungan sedang tidak tersedia. Silakan coba lagi nanti.',
+    'Layanan Obrolan sedang tidak tersedia. Silakan coba lagi nanti.',
   'Write a message first.': 'Tulis pesan terlebih dahulu.',
   'No Academic Advisor was found for this code. Check it with your advisor.':
     'Tidak ada Dosen Pembimbing Akademik dengan kode ini. Periksa kembali dengan dosenmu.',
