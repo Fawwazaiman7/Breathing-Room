@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import type { Role } from './auth-context';
 import { useAuth } from './useAuth';
 
@@ -16,13 +16,21 @@ export function RequireAuth({
   children: ReactNode;
 }) {
   const { status, profile } = useAuth();
+  const location = useLocation();
 
   if (status === 'loading') {
     return <p className="page-message">Loading…</p>;
   }
   if (status === 'signedOut') {
-    // Open the sign-in page for the portal the visitor was heading to.
-    return <Navigate to={`/sign-in?as=${role}`} replace />;
+    // Open the sign-in page for the portal the visitor was heading to, and
+    // come back to the same page afterwards.
+    return (
+      <Navigate
+        to={`/sign-in?as=${role}`}
+        replace
+        state={{ from: location.pathname }}
+      />
+    );
   }
   if (!profile) {
     return (
@@ -33,9 +41,9 @@ export function RequireAuth({
     );
   }
   if (profile.role !== role) {
-    return (
-      <Navigate to={profile.role === 'advisor' ? '/advisor' : '/app'} replace />
-    );
+    // The other portal's sign-in page explains that this account belongs to
+    // a different portal and offers the way back.
+    return <Navigate to={`/sign-in?as=${role}`} replace />;
   }
   return <>{children}</>;
 }

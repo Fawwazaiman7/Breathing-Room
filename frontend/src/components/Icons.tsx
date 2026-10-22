@@ -271,3 +271,75 @@ export function BatteryIcon(props: IconProps) {
     </Svg>
   );
 }
+
+export function PlusIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M12 5v14M5 12h14" />
+    </Svg>
+  );
+}
+
+export function CompassIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="m15.5 8.5-2 5-5 2 2-5Z" />
+    </Svg>
+  );
+}
+
+export function MusicIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M9 18V6l11-2v12" />
+      <circle cx="6.5" cy="18" r="2.5" />
+      <circle cx="17.5" cy="16" r="2.5" />
+    </Svg>
+  );
+}
+
+export function RainIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M7 15a4.5 4.5 0 1 1 1.2-8.8A5.5 5.5 0 0 1 19 8a3.5 3.5 0 0 1-1 7Z" />
+      <path d="M9 18l-1 2.5M13 18l-1 2.5M17 18l-1 2.5" />
+    </Svg>
+  );
+}
+
+export function WaterIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M3 9c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0" />
+      <path d="M3 14c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0" />
+      <path d="M3 19c2-1.5 4-1.5 6 0s4 1.5 6 0 4-1.5 6 0" />
+    </Svg>
+  );
+}
+
+export function WindIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M3 8h11a3 3 0 1 0-3-3" />
+      <path d="M3 12h16a3 3 0 1 1-3 3" />
+      <path d="M3 16h7" />
+    </Svg>
+  );
+}
+
+export function PlayIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M8 5.5v13l10.5-6.5Z" />
+    </Svg>
+  );
+}
+
+export function PauseIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M9 5v14M15 5v14" />
+    </Svg>
+  );
+}

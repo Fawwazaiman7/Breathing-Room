@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
+import { clearAllChats } from '../chat/history';
 import { supabase } from '../lib/supabase';
 import { AuthContext } from './auth-context';
 import type {
@@ -266,6 +267,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const signOut = useCallback(async () => {
+    clearAllChats();
     await supabase.auth.signOut();
   }, []);
 

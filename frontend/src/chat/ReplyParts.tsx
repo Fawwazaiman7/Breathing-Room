@@ -525,29 +525,40 @@ function PutOffLoop() {
   );
 }
 
-/** TM-04, TM-05: smaller steps with checkpoints; busiest near the end. */
+/**
+ * TM-04, TM-05: smaller steps with checkpoints; busiest near the end.
+ * A track of checkpoints, with bars above it that rise towards the last
+ * step, where combining and testing make the load highest.
+ */
+const BREAKDOWN_LOAD = [34, 46, 58, 100];
+
 function BreakItDown() {
   const v = useT().chat.breakdown;
+  const last = v.steps.length - 1;
   return (
     <figure className="reply-visual">
       <figcaption>{v.title}</figcaption>
       <div className="breakdown">
-        <span className="breakdown-start">{v.start}</span>
-        {v.steps.map((step, index) => (
-          <span
-            key={step}
-            className={
-              index === v.steps.length - 1
-                ? 'breakdown-step breakdown-last'
-                : 'breakdown-step'
-            }
-          >
-            <span className="breakdown-flag" aria-hidden="true" />
-            {step}
-          </span>
-        ))}
+        <ol className="breakdown-track">
+          {v.steps.map((step, index) => (
+            <li key={step} className={index === last ? 'is-last' : undefined}>
+              <span className="breakdown-bar-wrap" aria-hidden="true">
+                {index === last && (
+                  <span className="breakdown-peak">{v.busiest}</span>
+                )}
+                <span
+                  className="breakdown-bar"
+                  style={{ height: `${BREAKDOWN_LOAD[index]}%` }}
+                />
+              </span>
+              <span className="breakdown-dot" aria-hidden="true">
+                {index === last ? <TargetIcon size={14} /> : index + 1}
+              </span>
+              <span className="breakdown-label">{step}</span>
+            </li>
+          ))}
+        </ol>
       </div>
-      <p className="breakdown-busy">{v.busiest}</p>
       <p className="reply-visual-text">{v.note}</p>
     </figure>
   );

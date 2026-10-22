@@ -15,6 +15,11 @@ import {
   OLBI_STATEMENTS,
 } from '../screening/content';
 import { clearDraft, loadDraft, saveDraft } from '../screening/draft';
+import {
+  PartOneHowTo,
+  PartStepper,
+  PartTwoHowTo,
+} from '../screening/HowTo';
 import type { NasaTlxDimension, ScreeningPayload } from '../screening/types';
 import { usePageTitle } from '../lib/usePageTitle';
 
@@ -293,11 +298,11 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
             <p className="eyebrow">{t.screening.introKicker}</p>
             <h1 className="flow-title">{t.screening.introTitle}</h1>
             <p className="flow-sub">{t.screening.introText}</p>
-            <ul className="plain-list">
-              {t.screening.introPoints(advisorName).map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
+            <PartStepper current={1} />
+            <PartOneHowTo />
+            <p className="flow-note flow-share">
+              {t.screening.introPoints(advisorName)[2]}
+            </p>
             <button type="button" className="button-primary" onClick={goNext}>
               {t.screening.start} <ArrowRightIcon size={18} />
             </button>
@@ -311,7 +316,11 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
             </p>
             <h1 className="flow-title">{t.screening.compareTitle}</h1>
             <p className="flow-sub">{t.screening.compareText}</p>
-            <div className="choice-pair" key={`compare-${step.index}`}>
+            <div
+              className="choice-pair"
+              key={`compare-${step.index}`}
+              data-or={t.screening.or}
+            >
               {NASA_TLX_PAIRS[step.index].map((dimension, optionIndex) => (
                 <button
                   key={dimension}
@@ -416,6 +425,8 @@ function ScreeningFlow({ advisorName }: { advisorName: string }) {
             <p className="flow-sub">
               {t.screening.olbiIntroText(OLBI_STATEMENTS.length)}
             </p>
+            <PartStepper current={2} />
+            <PartTwoHowTo />
             <button type="button" className="button-primary" onClick={goNext}>
               {t.common.continue} <ArrowRightIcon size={18} />
             </button>

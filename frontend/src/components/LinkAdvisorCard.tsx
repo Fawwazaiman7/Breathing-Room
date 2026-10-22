@@ -64,7 +64,7 @@ export function LinkAdvisorCard({
 
   if (found !== null) {
     return (
-      <section className="card link-card">
+      <section className="card link-card" data-tour="advisor">
         <p className="eyebrow">{t.link.confirmKicker}</p>
         <h2 className="card-title">{t.link.confirmTitle}</h2>
         <p className="confirm-name">{found || t.common.unnamedAdvisor}</p>
@@ -100,7 +100,7 @@ export function LinkAdvisorCard({
   }
 
   return (
-    <section className="card link-card">
+    <section className="card link-card" data-tour="advisor">
       <p className="eyebrow">
         {current ? t.link.changeKicker : t.link.firstKicker}
       </p>

@@ -1,27 +1,53 @@
-import type { ReactNode } from 'react';
 import { useT } from '../i18n/strings';
-import { CampusIcon, HeartIcon, LifebuoyIcon, PhoneIcon } from './Icons';
+import { CONTACTS } from '../support/contacts';
+import type { ContactId } from '../support/contacts';
+import {
+  CampusIcon,
+  HeartIcon,
+  LifebuoyIcon,
+  PeopleIcon,
+  PhoneIcon,
+} from './Icons';
+
+const CONTACT_ICON: Record<ContactId, typeof PhoneIcon> = {
+  emergency: LifebuoyIcon,
+  befrienders: HeartIcon,
+  heal: PeopleIcon,
+};
 
 /**
- * Who to contact when a student needs a person now.
+ * Mental health contacts, set out like a phone book: who it is, when it
+ * is open, and the number itself as the button. The number is visible, so
+ * it can also be dialled from another phone or written down.
  *
- * General edition: 112 is Indonesia's national emergency number, and
- * Healing119.id (119 ext. 8) is the Ministry of Health's free, 24-hour
- * mental health line. The wording awaits the psychologist's approval. The
- * campus-specific edition (PNJ) is described in for-pnj-later/PNJ-EDITION.md.
- *
- * Each route is one row: what it is for, in a few words, then the action.
- * "chat" is the narrow version for the Support Chat sidebar; "result" sits
- * on a High burnout risk result and opens with a calmer heading.
+ * - "chat": the Support Chat sidebar (no notes, to stay short).
+ * - "result": a High burnout risk result, with a calmer heading.
+ * - "message": under a crisis reply in the chat.
+ * - "reply": under a chat reply that sends the student to a service.
  */
 export function UrgentHelpCard({
   variant,
 }: {
-  variant: 'chat' | 'result' | 'message';
+  variant: 'chat' | 'result' | 'message' | 'reply';
 }) {
   const t = useT();
-  const title = variant === 'result' ? t.help.resultTitle : t.help.title;
-  const lead = variant === 'result' ? t.help.resultLead : t.help.lead;
+  const title =
+    variant === 'result'
+      ? t.help.resultTitle
+      : variant === 'reply'
+        ? t.help.replyTitle
+        : t.help.title;
+  const lead =
+    variant === 'result'
+      ? t.help.resultLead
+      : variant === 'reply'
+        ? null
+        : t.help.lead;
+  // A reply about counselling does not need the emergency number first.
+  const contacts =
+    variant === 'reply'
+      ? CONTACTS.filter((contact) => !contact.urgent)
+      : CONTACTS;
 
   return (
     <section
@@ -30,83 +56,55 @@ export function UrgentHelpCard({
     >
       <div className="help-head">
         <span className="help-head-icon" aria-hidden="true">
-          <LifebuoyIcon size={20} />
+          <PhoneIcon size={18} />
         </span>
         <div>
           <h2 className="help-title">{title}</h2>
-          <p className="help-lead">{lead}</p>
+          {lead && <p className="help-lead">{lead}</p>}
+          <p className="help-region">{t.help.region}</p>
         </div>
       </div>
 
-      <ul className="help-list">
-        <HelpRow
-          icon={<PhoneIcon size={18} />}
-          title={t.help.danger}
-          text={t.help.dangerText}
-          action={
-            <a className="help-action help-action-strong" href="tel:112">
-              {t.help.call112}
-            </a>
-          }
-        />
-        <HelpRow
-          icon={<HeartIcon size={18} />}
-          title={t.help.counsellor}
-          text={t.help.counsellorText}
-          action={
-            <div className="help-actions">
-              {/* The comma makes the phone pause, then dial extension 8. */}
-              <a className="help-action" href="tel:119,8">
-                {t.help.call119}
-              </a>
+      <ul className="contact-list">
+        {contacts.map((contact) => {
+          const text = t.help.contacts[contact.id];
+          const Icon = CONTACT_ICON[contact.id];
+          return (
+            <li
+              key={contact.id}
+              className={contact.urgent ? 'contact urgent' : 'contact'}
+            >
+              <span className="contact-icon" aria-hidden="true">
+                <Icon size={18} />
+              </span>
+              <span className="contact-text">
+                <strong>{text.name}</strong>
+                <span className="contact-note">{text.note}</span>
+                <span className="contact-hours">{text.hours}</span>
+              </span>
               <a
-                className="help-action help-action-quiet"
-                href="https://healing119.id"
-                target="_blank"
-                rel="noopener noreferrer"
+                className="contact-number"
+                href={`tel:${contact.tel}`}
+                aria-label={t.help.callLabel(text.name, contact.number)}
               >
-                {t.help.website}
+                <PhoneIcon size={16} />
+                <span>{contact.number}</span>
               </a>
-            </div>
-          }
-        />
-        <HelpRow
-          icon={<CampusIcon size={18} />}
-          title={t.help.campus}
-          text={t.help.campusText}
-          keepText
-        />
+            </li>
+          );
+        })}
+        {variant !== 'reply' && (
+          <li className="contact contact-campus">
+            <span className="contact-icon" aria-hidden="true">
+              <CampusIcon size={18} />
+            </span>
+            <span className="contact-text">
+              <strong>{t.help.campus}</strong>
+              <span className="contact-note keep">{t.help.campusText}</span>
+            </span>
+          </li>
+        )}
       </ul>
     </section>
-  );
-}
-
-function HelpRow({
-  icon,
-  title,
-  text,
-  action,
-  keepText = false,
-}: {
-  icon: ReactNode;
-  title: string;
-  text: string;
-  action?: ReactNode;
-  /** In the compact card, rows with an action drop their description. */
-  keepText?: boolean;
-}) {
-  return (
-    <li className="help-row">
-      <span className="help-row-icon" aria-hidden="true">
-        {icon}
-      </span>
-      <div className="help-row-body">
-        <strong>{title}</strong>
-        <span className={keepText ? 'help-row-text keep' : 'help-row-text'}>
-          {text}
-        </span>
-        {action}
-      </div>
-    </li>
   );
 }

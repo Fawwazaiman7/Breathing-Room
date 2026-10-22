@@ -22,6 +22,11 @@
   --high-soft: #f2e2dc;
   --high-ink: #96503f;
 
+  /* The advisor portal's own colour, so the two sign-ins look different. */
+  --advisor: #3f5a86;
+  --advisor-dark: #314870;
+  --advisor-soft: #e8edf5;
+
   --radius: 14px;
   --radius-lg: 22px;
 
@@ -338,6 +343,8 @@ button {
 
 .sidebar {
   position: sticky;
+  /* Above the page, so the sound panel can open over it. */
+  z-index: 20;
   top: 0;
   display: flex;
   flex-direction: column;
@@ -725,7 +732,8 @@ button {
 }
 
 .choice-pair::after {
-  content: 'or';
+  /* The word between the two cards, in the interface language. */
+  content: attr(data-or);
   position: absolute;
   left: 50%;
   top: 50%;
@@ -1115,9 +1123,22 @@ button {
   color: #fff;
 }
 
-.sidebar-lang {
-  align-self: flex-start;
-  margin: 24px 0 0 14px;
+.sidebar-tools {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 24px;
+}
+
+.sidebar-lang-wrap {
+  display: inline-flex;
+  margin-left: 14px;
+  border-radius: 999px;
+}
+
+.sidebar-sound {
+  margin: 4px 0 4px 14px;
 }
 
 /* Sign-in pages: "Back to home" on the left, the language on the right. */
@@ -1158,9 +1179,9 @@ button {
   border: 0;
 }
 
-/* ---------- Urgent help card ----------
-   Calm, not alarming: a soft clay border and the same ink as the rest of
-   the app. Each route is one short row with its action under it. */
+/* ---------- Mental health contacts ----------
+   Calm, not alarming: a soft clay accent, and each contact as one row with
+   its number as the button. */
 
 .help-card {
   display: flex;
@@ -1170,7 +1191,7 @@ button {
   padding: 20px;
   background: var(--surface);
   border: 1px solid #e6cfc6;
-  border-left: 4px solid var(--high-ink);
+  border-top: 4px solid var(--high-ink);
   border-radius: var(--radius);
 }
 
@@ -1184,8 +1205,14 @@ button {
   padding: 16px;
 }
 
-.help-card-message {
+.help-card-message,
+.help-card-reply {
   margin-top: 10px;
+}
+
+.help-card-reply {
+  border-top-width: 1px;
+  border-color: var(--line);
 }
 
 .help-head {
@@ -1211,8 +1238,9 @@ button {
   line-height: 1.3;
 }
 
-.help-card-chat .help-title {
-  font-size: 0.98rem;
+.help-card-chat .help-title,
+.help-card-reply .help-title {
+  font-size: 0.95rem;
 }
 
 .help-lead {
@@ -1222,107 +1250,124 @@ button {
   line-height: 1.5;
 }
 
-.help-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.help-region {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.help-row {
+.contact-list {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
   gap: 12px;
   padding: 12px;
   background: var(--bg);
   border-radius: 12px;
 }
 
-.help-row-icon {
+.contact.urgent {
+  background: var(--high-soft);
+}
+
+.contact-icon {
   display: grid;
-  flex: none;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 10px;
   background: var(--surface);
   color: var(--teal-dark);
 }
 
-.help-row-body {
+.contact.urgent .contact-icon {
+  color: var(--high-ink);
+}
+
+.contact-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   min-width: 0;
-  font-size: 0.875rem;
-  line-height: 1.45;
+  font-size: 0.85rem;
+  line-height: 1.35;
 }
 
-.help-row-body strong {
-  font-size: 0.9rem;
+.contact-text strong {
+  font-size: 0.92rem;
 }
 
-.help-row-text {
+.contact-note {
   color: var(--ink-soft);
 }
 
-/* The Support Chat column is narrow: the card keeps what to do, and drops
-   the descriptions of rows that have a button. */
+.contact-hours {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--teal-dark);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.contact-number {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: var(--teal);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.contact.urgent .contact-number {
+  background: var(--high-ink);
+}
+
+.contact-campus {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+/* The Support Chat column is narrow: notes go, the number moves under the
+   name and fills the row. */
 .help-card-chat .help-lead,
-.help-card-chat .help-row-text:not(.keep),
-.help-card-chat .help-row-icon {
+.help-card-chat .contact-note:not(.keep) {
   display: none;
 }
 
-.help-card-chat .help-row {
-  padding: 10px 12px;
+.help-card-chat .contact {
+  grid-template-columns: auto minmax(0, 1fr);
 }
 
-.help-card-chat .help-head {
-  align-items: center;
+.help-card-chat .contact-number {
+  grid-column: 1 / -1;
+  justify-content: center;
 }
 
-.help-card-chat .help-action {
-  margin-top: 4px;
-}
-
-.help-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.help-action {
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  min-height: 36px;
-  margin-top: 6px;
-  padding: 0 14px;
-  border: 1px solid var(--teal);
-  border-radius: 999px;
-  color: var(--teal-dark);
-  font-weight: 600;
-  font-size: 0.85rem;
-}
-
-.help-action-strong {
-  background: var(--teal);
-  color: #fff;
-}
-
-.help-action-quiet {
-  border-color: var(--line);
-  color: var(--ink-soft);
-}
-
-@media (min-width: 640px) {
-  /* On the result page the three routes sit side by side. */
-  .help-card-result .help-list {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+@media (max-width: 560px) {
+  .contact {
+    grid-template-columns: auto minmax(0, 1fr);
   }
 
-  .help-card-result .help-row {
-    flex-direction: column;
+  .contact-number {
+    grid-column: 1 / -1;
+    justify-content: center;
   }
 }
 
@@ -1455,6 +1500,83 @@ button {
   }
 }
 
+/* ---------- Phone top bar and drawer ----------
+   Hidden on wide screens, where the sidebar is always shown. */
+
+.mobile-bar,
+.drawer-close,
+.drawer-scrim {
+  display: none;
+}
+
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  .mobile-bar {
+    position: sticky;
+    z-index: 40;
+    top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 60px;
+    padding: 8px 12px;
+    background: rgba(250, 249, 246, 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mobile-menu-button,
+  .drawer-close {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 12px;
+    background: none;
+    color: var(--ink);
+  }
+
+  .mobile-menu-button:hover,
+  .drawer-close:hover {
+    background: #f1efea;
+  }
+
+  .mobile-bar-end {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .drawer-scrim {
+    position: fixed;
+    z-index: 45;
+    inset: 0;
+    display: block;
+    background: rgba(31, 42, 55, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.26s ease;
+  }
+
+  .drawer-scrim.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  body.drawer-open {
+    overflow: hidden;
+  }
+}
+
 /* ---------- Small screens ---------- */
 
 @media (max-width: 900px) {
@@ -1462,40 +1584,51 @@ button {
     grid-template-columns: 1fr;
   }
 
+  /* The sidebar becomes a drawer that slides in from the left. */
   .sidebar {
-    position: static;
+    position: fixed;
+    z-index: 50;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(300px, 86vw);
     height: auto;
-    padding: 18px 16px;
-    gap: 14px;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
+    padding: 18px 18px 22px;
+    overflow-y: auto;
+    border-right: 1px solid var(--line);
+    box-shadow: 0 0 40px rgba(31, 42, 55, 0.18);
+    transform: translateX(-102%);
+    visibility: hidden;
+    transition:
+      transform 0.26s ease,
+      visibility 0s linear 0.26s;
+  }
+
+  .sidebar.open {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.26s ease;
+  }
+
+  .sidebar:focus {
+    outline: none;
   }
 
   .sidebar-heading {
+    margin: 26px 14px 10px;
+  }
+
+  .sidebar-tools {
+    margin-top: 18px;
+  }
+
+  /* On a phone the sound button lives in the top bar instead. */
+  .sidebar-sound {
     display: none;
   }
 
-  .sidebar-nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .nav-link {
-    padding: 10px 14px;
-    gap: 10px;
-  }
-
   .sidebar-footer {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 0;
-    padding-top: 14px;
-  }
-
-  .sidebar-user {
-    flex: 0 1 auto;
-    min-width: 0;
+    padding-top: 18px;
   }
 
   .back-home {
@@ -1552,5 +1685,140 @@ button {
   * {
     transition: none !important;
     animation-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Sign-in portals ----------
+   Students and advisors sign in on two pages that look alike. A switch
+   above the card shows which one this is, each portal has its own colour,
+   and the card slides in from the side of its tab when it changes. */
+
+.portal-switch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.portal-switch-label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.portal-switch-tabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  padding: 4px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.portal-switch-tabs a {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: color 0.25s ease;
+}
+
+.portal-switch-tabs a[aria-current='page'] {
+  color: #fff;
+}
+
+.portal-switch-marker {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: var(--teal);
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.on-advisor .portal-switch-marker {
+  transform: translateX(100%);
+  background: var(--advisor);
+}
+
+.portal-card {
+  border-top: 4px solid var(--teal);
+  animation: portal-from-left 0.32s ease-out;
+}
+
+.portal-advisor {
+  border-top-color: var(--advisor);
+  animation-name: portal-from-right;
+}
+
+.portal-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.portal-badge {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+}
+
+.portal-advisor .portal-badge {
+  background: var(--advisor-soft);
+  color: var(--advisor);
+}
+
+.portal-advisor .eyebrow {
+  color: var(--advisor);
+}
+
+.portal-advisor .button-primary {
+  background: var(--advisor);
+}
+
+.portal-advisor .button-primary:hover {
+  background: var(--advisor-dark);
+}
+
+@keyframes portal-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes portal-from-right {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

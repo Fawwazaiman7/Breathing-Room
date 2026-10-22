@@ -39,7 +39,7 @@ export function SidebarAccount({
   }
 
   return (
-    <div className="sidebar-footer">
+    <div className="sidebar-footer" data-tour="account">
       <NavLink
         to={profilePath}
         className={({ isActive }: { isActive: boolean }) =>

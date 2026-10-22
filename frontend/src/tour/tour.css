@@ -1,0 +1,287 @@
+/* App guide: dimmed screen, a lit-up window, and a card. */
+
+.tour {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.tour-dim {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 30, 38, 0.55);
+}
+
+/* The lit-up window: its huge shadow dims everything around it. */
+.tour-spot {
+  position: fixed;
+  border-radius: 16px;
+  box-shadow:
+    0 0 0 3px var(--teal),
+    0 0 0 9999px rgba(20, 30, 38, 0.55);
+  transition:
+    top 0.3s ease,
+    left 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease;
+  pointer-events: none;
+}
+
+.tour-card {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 26px 24px 20px;
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(20, 30, 38, 0.25);
+  overflow: hidden;
+  animation: tour-in 0.25s ease;
+}
+
+.tour-card-center {
+  top: 50%;
+  left: 50%;
+  width: min(420px, calc(100vw - 32px));
+  transform: translate(-50%, -50%);
+  text-align: center;
+  align-items: center;
+}
+
+/* On a phone the card is a sheet at the bottom of the screen. */
+.tour-card-sheet {
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+}
+
+@keyframes tour-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+.tour-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--teal-soft);
+}
+
+.tour-progress span {
+  display: block;
+  height: 100%;
+  background: var(--teal);
+  transition: width 0.3s ease;
+}
+
+.tour-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--muted);
+}
+
+.tour-close:hover {
+  background: var(--bg);
+}
+
+.tour-count {
+  color: var(--teal-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.tour-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.tour-text {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.tour-dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.tour-dots li {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line);
+  transition: width 0.2s ease;
+}
+
+.tour-dots li.seen {
+  background: var(--teal-soft);
+}
+
+.tour-dots li.on {
+  width: 22px;
+  background: var(--teal);
+}
+
+.tour-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.tour-card-center .tour-actions {
+  justify-content: center;
+  flex-wrap: wrap-reverse;
+}
+
+.tour-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.tour-next,
+.tour-back {
+  padding: 11px 18px;
+  font-size: 0.9rem;
+}
+
+.tour-back {
+  padding: 11px 13px;
+}
+
+.tour-skip {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* Welcome: the leaf in a slowly breathing ring. */
+.tour-hero,
+.tour-badge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 4px;
+}
+
+.tour-hero-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--teal-soft);
+  animation: tour-breathe 3s ease-in-out infinite;
+}
+
+.tour-hero-mark,
+.tour-badge-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+}
+
+@keyframes tour-breathe {
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+/* Done: a burst of small dots around the check mark. */
+.tour-burst {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--teal) 3px, transparent 4px) 50% 0 / 10px 10px no-repeat,
+    radial-gradient(circle, var(--moderate-ink) 3px, transparent 4px) 100% 50% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--teal) 3px, transparent 4px) 50% 100% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--high-ink) 3px, transparent 4px) 0 50% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--moderate-ink) 3px, transparent 4px) 15% 15% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--teal) 3px, transparent 4px) 85% 15% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--high-ink) 3px, transparent 4px) 85% 85% / 10px 10px no-repeat,
+    radial-gradient(circle, var(--teal) 3px, transparent 4px) 15% 85% / 10px 10px no-repeat;
+  animation: tour-burst 0.6s ease-out both;
+}
+
+@keyframes tour-burst {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
+.tour-badge-mark {
+  animation: tour-pop 0.4s ease-out both;
+}
+
+@keyframes tour-pop {
+  from {
+    transform: scale(0.6);
+  }
+  70% {
+    transform: scale(1.08);
+  }
+}
+
+.tour-earned {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--moderate-soft);
+  color: var(--moderate-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* Sidebar button that opens the guide again. */
+.guide-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 0 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--teal-dark);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-spot,
+  .tour-card,
+  .tour-hero-ring,
+  .tour-burst,
+  .tour-badge-mark {
+    animation: none;
+    transition: none;
+  }
+}

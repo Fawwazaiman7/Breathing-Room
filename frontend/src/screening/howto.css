@@ -1,0 +1,396 @@
+/* Instructions before each part of the screening. */
+
+.part-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 44rem;
+}
+
+.part-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  text-align: left;
+}
+
+.part-number {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--ink-soft);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.part-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+  font-size: 0.85rem;
+}
+
+.part-text > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.part-on {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-soft);
+}
+
+.part-on .part-number {
+  background: var(--teal);
+  color: #fff;
+}
+
+.part-done .part-number {
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+}
+
+.part-next {
+  opacity: 0.7;
+}
+
+.how-to {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 46rem;
+}
+
+.how-heading {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+.how-grid-one {
+  grid-template-columns: minmax(0, 32rem);
+  justify-content: center;
+}
+
+.how-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 16px 18px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+
+.how-demo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 118px;
+  margin-bottom: 8px;
+  padding: 26px 12px 14px;
+  background: var(--bg);
+  border-radius: 14px;
+}
+
+.how-demo-label {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.how-count {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.how-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.how-text {
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.how-tips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.how-tips li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.how-tips .icon {
+  color: var(--teal);
+}
+
+.flow-share {
+  max-width: 34rem;
+}
+
+/* ---- The moving examples ---- */
+
+.demo-pair {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.demo-choice,
+.demo-option {
+  position: relative;
+  padding: 12px 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.demo-or {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+/* The picked answer turns teal a moment after the "finger" taps it. */
+.demo-picked {
+  animation: demo-pick 3.2s ease-in-out infinite;
+}
+
+.demo-tap {
+  position: absolute;
+  right: 10%;
+  bottom: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(31, 122, 122, 0.35);
+  box-shadow: 0 0 0 0 rgba(31, 122, 122, 0.35);
+  animation: demo-tap 3.2s ease-in-out infinite;
+}
+
+@keyframes demo-tap {
+  0%,
+  20% {
+    opacity: 0;
+    transform: translate(10px, 10px) scale(0.8);
+  }
+  35% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  42% {
+    box-shadow: 0 0 0 10px rgba(31, 122, 122, 0);
+    transform: scale(0.85);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes demo-pick {
+  0%,
+  38% {
+    border-color: var(--line);
+    background: var(--surface);
+  }
+  45%,
+  88% {
+    border-color: var(--teal);
+    background: var(--teal-soft);
+    color: var(--teal-dark);
+  }
+  100% {
+    border-color: var(--line);
+    background: var(--surface);
+  }
+}
+
+.demo-slider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 88%;
+}
+
+.demo-value {
+  color: var(--teal-dark);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.demo-track {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line);
+}
+
+.demo-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: var(--teal);
+  animation: demo-fill 3.2s ease-in-out infinite;
+}
+
+.demo-thumb {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 3px solid var(--teal);
+  transform: translate(-50%, -50%);
+  animation: demo-thumb 3.2s ease-in-out infinite;
+}
+
+@keyframes demo-thumb {
+  0%,
+  15% {
+    left: 30%;
+  }
+  55%,
+  100% {
+    left: 70%;
+  }
+}
+
+@keyframes demo-fill {
+  0%,
+  15% {
+    width: 30%;
+  }
+  55%,
+  100% {
+    width: 70%;
+  }
+}
+
+.demo-ends {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.demo-statement {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.demo-statement p {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.demo-scale {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.demo-option {
+  padding: 8px 4px;
+  font-size: 0.7rem;
+  line-height: 1.25;
+}
+
+@media (max-width: 640px) {
+  .how-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .part-stepper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .demo-scale {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-picked {
+    animation: none;
+    border-color: var(--teal);
+    background: var(--teal-soft);
+  }
+
+  .demo-tap {
+    display: none;
+  }
+
+  .demo-thumb,
+  .demo-fill {
+    animation: none;
+  }
+
+  .demo-thumb {
+    left: 70%;
+  }
+
+  .demo-fill {
+    width: 70%;
+  }
+}

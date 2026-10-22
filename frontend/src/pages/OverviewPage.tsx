@@ -103,7 +103,7 @@ export function OverviewPage() {
               onCancel={() => setChanging(false)}
             />
           ) : (
-            <p className="advisor-line">
+            <p className="advisor-line" data-tour="advisor">
               <span>
                 {t.overview.yourAdvisor}{' '}
                 <strong>

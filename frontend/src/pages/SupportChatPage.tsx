@@ -4,6 +4,7 @@ import { useAuth } from '../auth/useAuth';
 import { MAX_MESSAGE_LENGTH, sendChatMessage } from '../chat/api';
 import type { ChatReplyKind, ChatTurn } from '../chat/api';
 import '../chat/chat.css';
+import { clearChat, loadChat, saveChat } from '../chat/history';
 import {
   ReplyBody,
   ReplyVisual,
@@ -11,11 +12,12 @@ import {
   visualFor,
 } from '../chat/ReplyParts';
 import type { ReplyVisualKind } from '../chat/ReplyParts';
-import { ChevronRightIcon, SendIcon } from '../components/Icons';
+import { ChevronRightIcon, PlusIcon, SendIcon } from '../components/Icons';
 import { UrgentHelpCard } from '../components/UrgentHelpCard';
 import { localeOf, useLanguage } from '../i18n/language';
 import { translateMessage } from '../i18n/messages';
 import { useT } from '../i18n/strings';
+import { MENTIONS_A_SERVICE } from '../support/contacts';
 import { ApiError } from '../lib/api';
 import { usePageTitle } from '../lib/usePageTitle';
 
@@ -50,18 +52,38 @@ export function SupportChatPage() {
   });
   const now = () => timeFormat.format(new Date());
 
-  const [messages, setMessages] = useState<Message[]>(() => [
-    {
-      id: 0,
-      from: 'bot',
-      kind: 'greeting',
-      text: '',
-      time: now(),
-    },
-  ]);
+  const userId = profile?.id ?? null;
+  const greeting = (): Message[] => [
+    { id: 0, from: 'bot', kind: 'greeting', text: '', time: now() },
+  ];
+  // The conversation is kept in this browser tab, so it is still here after
+  // visiting another page. A message that was still waiting is dropped.
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const stored = loadChat(userId) as Message[] | null;
+    return stored ?? greeting();
+  });
   const [draft, setDraft] = useState('');
   const [waiting, setWaiting] = useState(false);
-  const nextId = useRef(1);
+  const nextId = useRef(
+    Math.max(0, ...messages.map((entry) => entry.id)) + 1,
+  );
+
+  useEffect(() => {
+    saveChat(
+      userId,
+      messages.filter((entry) => !entry.unanswered && entry.kind !== 'error'),
+    );
+  }, [userId, messages]);
+
+  function startOver() {
+    if (waiting) {
+      return;
+    }
+    clearChat(userId);
+    nextId.current = 1;
+    setMessages(greeting());
+    setDraft('');
+  }
   const endRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -174,6 +196,16 @@ export function SupportChatPage() {
         <p className="eyebrow">{t.chat.kicker}</p>
         <h1 className="chat-title">{t.chat.title}</h1>
         <p className="chat-lead">{t.chat.lead}</p>
+        {messages.length > 1 && (
+          <button
+            type="button"
+            className="button-secondary chat-new"
+            onClick={startOver}
+            disabled={waiting}
+          >
+            <PlusIcon size={16} /> {t.chat.newChat}
+          </button>
+        )}
       </header>
 
       <div className="chat-layout">
@@ -228,6 +260,14 @@ export function SupportChatPage() {
                       <p className="chat-bubble">{text}</p>
                     )}
                     {crisis && <UrgentHelpCard variant="message" />}
+                    {/* A reply that points to a service brings its numbers. */}
+                    {!crisis &&
+                      entry.from === 'bot' &&
+                      (entry.replyKind === 'answer' ||
+                        entry.replyKind === 'fallback') &&
+                      MENTIONS_A_SERVICE.test(entry.text) && (
+                        <UrgentHelpCard variant="reply" />
+                      )}
                     {entry.visual && <ReplyVisual kind={entry.visual} />}
                     {entry.kind === 'error' && (
                       <button
@@ -274,7 +314,9 @@ export function SupportChatPage() {
                 <SendIcon size={20} />
               </button>
             </div>
-            <p className="chat-note">{t.chat.disclaimer}</p>
+            <p className="chat-note">
+              {t.chat.disclaimer} {t.chat.keptNote}
+            </p>
           </form>
         </section>
       </div>

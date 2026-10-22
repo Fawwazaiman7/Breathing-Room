@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigationType } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
 import {
   ArrowRightIcon,
@@ -100,6 +100,14 @@ export function LandingPage() {
       ? '/advisor'
       : '/app';
   const accountLabel = signedIn ? t.landing.goToDashboard : t.common.signIn;
+
+  // A signed-in visitor who arrives here with the browser's Back button (or
+  // by opening the site again) goes straight back to their workspace. The
+  // logo link still opens this page on purpose.
+  const navigationType = useNavigationType();
+  if (signedIn && navigationType === 'POP') {
+    return <Navigate to={accountPath} replace />;
+  }
 
   return (
     <div className="lp">

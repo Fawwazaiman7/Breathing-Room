@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Link, Navigate, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import '../advising/advising.css';
 import type { Role, SignInFailure } from '../auth/auth-context';
 import { useAuth } from '../auth/useAuth';
 import { AuthLayout } from '../components/AuthLayout';
-import { ArrowRightIcon } from '../components/Icons';
+import { ArrowRightIcon, BookIcon, PeopleIcon } from '../components/Icons';
 import { VerifyEmailCard } from '../components/VerifyEmailCard';
 import { useLanguage } from '../i18n/language';
 import { translateMessage } from '../i18n/messages';
@@ -53,6 +53,36 @@ function portalCopy(t: Strings): Record<
   };
 }
 
+/**
+ * Two tabs above the form: which sign-in this is, and the way to the other.
+ * The marker slides to the chosen side and each portal has its own colour.
+ */
+function PortalSwitch({ portal }: { portal: Role }) {
+  const t = useT();
+  return (
+    <nav className={`portal-switch on-${portal}`} aria-label={t.auth.switchLabel}>
+      <span className="portal-switch-label">{t.auth.switchLabel}</span>
+      <span className="portal-switch-tabs">
+        <span className="portal-switch-marker" aria-hidden="true" />
+        <Link
+          to="/sign-in?as=student"
+          replace
+          aria-current={portal === 'student' ? 'page' : undefined}
+        >
+          <BookIcon size={16} /> {t.auth.studentTab}
+        </Link>
+        <Link
+          to="/sign-in?as=advisor"
+          replace
+          aria-current={portal === 'advisor' ? 'page' : undefined}
+        >
+          <PeopleIcon size={16} /> {t.auth.advisorTab}
+        </Link>
+      </span>
+    </nav>
+  );
+}
+
 const HOME: Record<Role, string> = { student: '/app', advisor: '/advisor' };
 
 export function SignInPage() {
@@ -62,6 +92,8 @@ export function SignInPage() {
   const PORTAL_COPY = portalCopy(t);
   const { status, profile, signIn, signOut, resendEmailCode } = useAuth();
   const [searchParams] = useSearchParams();
+  // The page the visitor was trying to open before signing in, if any.
+  const from = (useLocation().state as { from?: string } | null)?.from;
   // /sign-in?as=advisor is the advisor portal; everything else is the
   // student portal.
   const portal: Role =
@@ -86,7 +118,8 @@ export function SignInPage() {
 
   if (status === 'signedIn' && profile) {
     if (profile.role === portal) {
-      return <Navigate to={HOME[portal]} replace />;
+      const back = from && from.startsWith(HOME[portal]) ? from : HOME[portal];
+      return <Navigate to={back} replace />;
     }
     // Signed in with the other role: this portal stays closed until they
     // sign out.
@@ -152,10 +185,24 @@ export function SignInPage() {
 
   return (
     <AuthLayout>
-      <form className="auth-card" onSubmit={handleSubmit}>
-        <p className="eyebrow">{copy.eyebrow}</p>
+      <PortalSwitch portal={portal} />
+      {/* Remounted per portal, so it slides in and the change is seen. */}
+      <form
+        key={portal}
+        className={`auth-card portal-card portal-${portal}`}
+        onSubmit={handleSubmit}
+      >
+        <div className="portal-head">
+          <span className="portal-badge" aria-hidden="true">
+            {portal === 'advisor' ? <PeopleIcon size={22} /> : <BookIcon size={22} />}
+          </span>
+          <p className="eyebrow">{copy.eyebrow}</p>
+        </div>
         <h1 className="card-title">{copy.title}</h1>
         <p className="card-text">{copy.text}</p>
+        <p className="visually-hidden" role="status">
+          {t.auth.nowOn(portal === 'advisor' ? t.auth.advisorTab : t.auth.studentTab)}
+        </p>
 
         <label className="field">
           <span>{t.common.email}</span>
