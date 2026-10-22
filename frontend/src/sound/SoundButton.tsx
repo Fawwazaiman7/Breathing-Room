@@ -2,12 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
   CloseIcon,
+  MoonIcon,
   MusicIcon,
   PauseIcon,
   PlayIcon,
-  RainIcon,
-  WaterIcon,
-  WindIcon,
+  TargetIcon,
 } from '../components/Icons';
 import { useT } from '../i18n/strings';
 import { ambient, loadPrefs, savePrefs, SOUND_IDS } from './ambient';
@@ -15,13 +14,13 @@ import type { SoundId } from './ambient';
 import './sound.css';
 
 const ICONS: Record<SoundId, ReactNode> = {
-  rain: <RainIcon size={18} />,
-  stream: <WaterIcon size={18} />,
-  focus: <WindIcon size={18} />,
+  calm: <MusicIcon size={18} />,
+  focus: <TargetIcon size={18} />,
+  night: <MoonIcon size={18} />,
 };
 
 /**
- * A small button that opens the sound panel: three natural sounds, play
+ * A small button that opens the music panel: three calm piano moods, play
  * and pause, and a volume slider. The choice is remembered on this device;
  * the sound itself never starts by itself.
  */

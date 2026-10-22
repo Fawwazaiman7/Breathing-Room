@@ -35,19 +35,19 @@ const en = {
     forgot: 'Reset your password',
   },
   sound: {
-    button: 'Calming sound',
-    title: 'Calming background sound',
+    button: 'Calm piano',
+    title: 'Calm piano music',
     playing: (name: string) => `Playing: ${name}`,
     play: 'Play',
     pause: 'Pause',
     volume: 'Volume',
     close: 'Close',
     options: {
-      rain: { name: 'Soft rain', text: 'Steady rain that covers noise around you' },
-      stream: { name: 'Forest stream', text: 'Gently flowing water' },
-      focus: { name: 'Deep hush', text: 'Brown noise, even and low, for focus' },
+      calm: { name: 'Calm piano', text: 'Slow, warm chords for a quiet mind' },
+      focus: { name: 'Focus piano', text: 'A few soft notes at a time, for studying' },
+      night: { name: 'Night piano', text: 'Low and gentle, for winding down' },
     },
-    note: 'Plays only when you press play. A low volume works best.',
+    note: 'Original piano music played live in the app, without words. It starts only when you press play; a low volume works best.',
   },
   nav: {
     workspace: 'Student workspace',
@@ -523,7 +523,7 @@ const en = {
       },
       sound: {
         title: 'A calmer place to focus',
-        text: 'Play soft rain, a forest stream or a deep hush while you use the app. It only plays when you press play.',
+        text: 'Play calm piano music while you use the app: calm, focus or night. It only plays when you press play.',
       },
       advisor: {
         title: 'Your Academic Advisor',
@@ -600,19 +600,19 @@ const id: Strings = {
     forgot: 'Atur ulang kata sandi',
   },
   sound: {
-    button: 'Suara menenangkan',
-    title: 'Suara latar yang menenangkan',
+    button: 'Piano tenang',
+    title: 'Musik piano yang menenangkan',
     playing: (name: string) => `Sedang diputar: ${name}`,
     play: 'Putar',
     pause: 'Jeda',
     volume: 'Volume',
     close: 'Tutup',
     options: {
-      rain: { name: 'Hujan lembut', text: 'Hujan stabil yang meredam bising di sekitarmu' },
-      stream: { name: 'Sungai hutan', text: 'Aliran air yang tenang' },
-      focus: { name: 'Desau dalam', text: 'Brown noise, rata dan rendah, untuk fokus' },
+      calm: { name: 'Piano tenang', text: 'Akor lambat dan hangat untuk pikiran yang tenang' },
+      focus: { name: 'Piano fokus', text: 'Beberapa nada lembut, cocok untuk belajar' },
+      night: { name: 'Piano malam', text: 'Rendah dan lembut, untuk bersantai' },
     },
-    note: 'Hanya diputar saat kamu menekan putar. Volume pelan paling nyaman.',
+    note: 'Musik piano orisinal yang dimainkan langsung di aplikasi, tanpa lirik. Hanya diputar saat kamu menekan putar; volume pelan paling nyaman.',
   },
   nav: {
     workspace: 'Ruang mahasiswa',
@@ -1084,7 +1084,7 @@ const id: Strings = {
       },
       sound: {
         title: 'Tempat yang lebih tenang untuk fokus',
-        text: 'Putar hujan lembut, sungai hutan, atau desau dalam selama memakai aplikasi. Suara hanya diputar saat kamu menekan putar.',
+        text: 'Putar musik piano yang menenangkan selama memakai aplikasi: tenang, fokus, atau malam. Musik hanya diputar saat kamu menekan putar.',
       },
       advisor: {
         title: 'Dosen Pembimbing Akademikmu',
