@@ -43,11 +43,12 @@ const en = {
     volume: 'Volume',
     close: 'Close',
     options: {
-      calm: { name: 'Calm piano', text: 'Slow, warm chords for a quiet mind' },
-      focus: { name: 'Focus piano', text: 'A few soft notes at a time, for studying' },
-      night: { name: 'Night piano', text: 'Low and gentle, for winding down' },
+      calm: { name: 'Calm piano', text: 'Slow, singing nocturnes for a quiet mind' },
+      focus: { name: 'Focus piano', text: 'Gentle preludes with a steady pulse, for studying' },
+      night: { name: 'Night piano', text: 'Soft nocturnes for winding down' },
     },
-    note: 'Original piano music played live in the app, without words. It starts only when you press play; a low volume works best.',
+    nowPlaying: 'Now playing',
+    note: 'Real piano recordings of Chopin by the Musopen project, free to use (public domain). It starts only when you press play; a low volume works best.',
   },
   nav: {
     workspace: 'Student workspace',
@@ -361,6 +362,11 @@ const en = {
     replyTitle: 'Contacts you can call',
     region: 'Mental health contacts in Malaysia',
     callLabel: (name: string, number: string) => `Call ${name}, ${number}`,
+    copyLabel: (name: string, number: string) =>
+      `Copy the number of ${name}, ${number}, to call it from your phone`,
+    copied: 'Copied',
+    desktopHint:
+      'On a computer, select a number to copy it, then call it from your phone.',
     contacts: {
       emergency: {
         name: 'Emergency',
@@ -608,11 +614,12 @@ const id: Strings = {
     volume: 'Volume',
     close: 'Tutup',
     options: {
-      calm: { name: 'Piano tenang', text: 'Akor lambat dan hangat untuk pikiran yang tenang' },
-      focus: { name: 'Piano fokus', text: 'Beberapa nada lembut, cocok untuk belajar' },
-      night: { name: 'Piano malam', text: 'Rendah dan lembut, untuk bersantai' },
+      calm: { name: 'Piano tenang', text: 'Nocturne lambat dan merdu untuk pikiran yang tenang' },
+      focus: { name: 'Piano fokus', text: 'Prelude lembut dengan ketukan tenang, cocok untuk belajar' },
+      night: { name: 'Piano malam', text: 'Nocturne lembut untuk bersantai' },
     },
-    note: 'Musik piano orisinal yang dimainkan langsung di aplikasi, tanpa lirik. Hanya diputar saat kamu menekan putar; volume pelan paling nyaman.',
+    nowPlaying: 'Sedang diputar',
+    note: 'Rekaman piano asli karya Chopin dari proyek Musopen, bebas digunakan (domain publik). Hanya diputar saat kamu menekan putar; volume pelan paling nyaman.',
   },
   nav: {
     workspace: 'Ruang mahasiswa',
@@ -923,6 +930,11 @@ const id: Strings = {
     replyTitle: 'Kontak yang bisa kamu hubungi',
     region: 'Kontak kesehatan mental di Malaysia',
     callLabel: (name: string, number: string) => `Telepon ${name}, ${number}`,
+    copyLabel: (name: string, number: string) =>
+      `Salin nomor ${name}, ${number}, untuk dihubungi dari ponselmu`,
+    copied: 'Tersalin',
+    desktopHint:
+      'Di komputer, pilih nomor untuk menyalinnya, lalu hubungi dari ponselmu.',
     contacts: {
       emergency: {
         name: 'Darurat',

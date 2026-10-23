@@ -1,8 +1,12 @@
+import { useEffect, useRef, useState } from 'react';
 import { useT } from '../i18n/strings';
+import { copyText, useCanCall } from '../support/canCall';
 import { CONTACTS } from '../support/contacts';
 import type { ContactId } from '../support/contacts';
 import {
   CampusIcon,
+  CheckIcon,
+  CopyIcon,
   HeartIcon,
   LifebuoyIcon,
   PeopleIcon,
@@ -20,6 +24,10 @@ const CONTACT_ICON: Record<ContactId, typeof PhoneIcon> = {
  * is open, and the number itself as the button. The number is visible, so
  * it can also be dialled from another phone or written down.
  *
+ * On a phone the button calls the number. A computer cannot place calls
+ * (a tel: link there only opens an empty tab), so on a computer the button
+ * copies the number instead, to be dialled from a phone.
+ *
  * - "chat": the Support Chat sidebar (no notes, to stay short).
  * - "result": a High burnout risk result, with a calmer heading.
  * - "message": under a crisis reply in the chat.
@@ -31,6 +39,19 @@ export function UrgentHelpCard({
   variant: 'chat' | 'result' | 'message' | 'reply';
 }) {
   const t = useT();
+  const canCall = useCanCall();
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const timer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  async function copyNumber(id: string, number: string) {
+    if (await copyText(number)) {
+      setCopiedId(id);
+      window.clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => setCopiedId(null), 2000);
+    }
+  }
+
   const title =
     variant === 'result'
       ? t.help.resultTitle
@@ -82,14 +103,44 @@ export function UrgentHelpCard({
                 <span className="contact-note">{text.note}</span>
                 <span className="contact-hours">{text.hours}</span>
               </span>
-              <a
-                className="contact-number"
-                href={`tel:${contact.tel}`}
-                aria-label={t.help.callLabel(text.name, contact.number)}
-              >
-                <PhoneIcon size={16} />
-                <span>{contact.number}</span>
-              </a>
+              {canCall ? (
+                <a
+                  className="contact-number"
+                  href={`tel:${contact.tel}`}
+                  aria-label={t.help.callLabel(text.name, contact.number)}
+                >
+                  <PhoneIcon size={16} />
+                  <span>{contact.number}</span>
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  className={
+                    copiedId === contact.id
+                      ? 'contact-number copy copied'
+                      : 'contact-number copy'
+                  }
+                  onClick={() => copyNumber(contact.id, contact.number)}
+                  aria-label={t.help.copyLabel(text.name, contact.number)}
+                  title={t.help.copyLabel(text.name, contact.number)}
+                >
+                  {copiedId === contact.id ? (
+                    <CheckIcon size={16} />
+                  ) : (
+                    <PhoneIcon size={16} />
+                  )}
+                  {/* For two seconds the number says "Copied", so the
+                      confirmation fits even in the narrow chat column. */}
+                  <span aria-live="polite">
+                    {copiedId === contact.id ? t.help.copied : contact.number}
+                  </span>
+                  {copiedId !== contact.id && (
+                    <span className="contact-copy-tag" aria-hidden="true">
+                      <CopyIcon size={14} />
+                    </span>
+                  )}
+                </button>
+              )}
             </li>
           );
         })}
@@ -105,6 +156,7 @@ export function UrgentHelpCard({
           </li>
         )}
       </ul>
+      {!canCall && <p className="help-desktop-hint">{t.help.desktopHint}</p>}
     </section>
   );
 }

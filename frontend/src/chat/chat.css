@@ -54,7 +54,7 @@
   overflow-y: auto;
 }
 
-.chat-topics h2 {
+.chat-topics > h2 {
   font-size: 1.05rem;
   font-weight: 600;
 }
@@ -65,16 +65,16 @@
   font-size: 0.875rem;
 }
 
-.chat-topics ul {
+.chat-topics > ul {
   margin-top: 18px;
   border-top: 1px solid var(--line);
 }
 
-.chat-topics li {
+.chat-topics > ul > li {
   border-bottom: 1px solid var(--line);
 }
 
-.chat-topics li button {
+.chat-topics > ul > li > button {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -88,11 +88,11 @@
   text-align: left;
 }
 
-.chat-topics li button:hover:not(:disabled) {
+.chat-topics > ul > li > button:hover:not(:disabled) {
   color: var(--teal);
 }
 
-.chat-topics li button:disabled {
+.chat-topics > ul > li > button:disabled {
   color: var(--muted);
   cursor: not-allowed;
 }
@@ -1098,7 +1098,7 @@ div.chat-bubble {
     display: none;
   }
 
-  .chat-topics ul {
+  .chat-topics > ul {
     display: flex;
     gap: 8px;
     margin-top: 12px;
@@ -1107,12 +1107,12 @@ div.chat-bubble {
     overflow-x: auto;
   }
 
-  .chat-topics li {
+  .chat-topics > ul > li {
     flex: none;
     border-bottom: 0;
   }
 
-  .chat-topics li button {
+  .chat-topics > ul > li > button {
     min-height: 44px;
     padding: 0 14px;
     border: 1px solid var(--line);
@@ -1120,7 +1120,7 @@ div.chat-bubble {
     white-space: nowrap;
   }
 
-  .chat-topics li button .icon {
+  .chat-topics > ul > li > button .icon {
     display: none;
   }
 

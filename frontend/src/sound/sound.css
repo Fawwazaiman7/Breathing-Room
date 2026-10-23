@@ -207,3 +207,29 @@
     top: calc(100% + 8px);
   }
 }
+
+/* The recording that is playing now. */
+.sound-now {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--teal-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.8rem;
+  color: var(--teal-dark);
+}
+
+.sound-now span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.sound-now strong {
+  font-weight: 600;
+  line-height: 1.35;
+}

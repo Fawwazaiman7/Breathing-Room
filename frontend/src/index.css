@@ -1340,6 +1340,44 @@ button {
   background: var(--high-ink);
 }
 
+/* On a computer the number copies instead of calling. */
+button.contact-number {
+  border: 0;
+  font-family: inherit;
+  transition: background-color 0.15s ease;
+}
+
+button.contact-number:hover {
+  background: var(--teal-dark);
+}
+
+.contact.urgent button.contact-number:hover {
+  background: #7f4334;
+}
+
+button.contact-number.copied,
+.contact.urgent button.contact-number.copied {
+  background: var(--low-ink);
+}
+
+.contact-copy-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 2px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: normal;
+  opacity: 0.9;
+}
+
+.help-desktop-hint {
+  margin: 12px 2px 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
 .contact-campus {
   grid-template-columns: auto minmax(0, 1fr);
 }

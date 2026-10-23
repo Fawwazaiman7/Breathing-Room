@@ -20,7 +20,8 @@ const ICONS: Record<SoundId, ReactNode> = {
 };
 
 /**
- * A small button that opens the music panel: three calm piano moods, play
+ * A small button that opens the music panel: three calm piano moods (real
+ * Chopin recordings, public domain), play
  * and pause, and a volume slider. The choice is remembered on this device;
  * the sound itself never starts by itself.
  */
@@ -29,6 +30,14 @@ export function SoundButton({ placement }: { placement: 'side' | 'down' }) {
   const [open, setOpen] = useState(false);
   const [prefs, setPrefs] = useState(loadPrefs);
   const [playing, setPlaying] = useState(ambient.current !== null);
+  const [track, setTrack] = useState(ambient.track);
+
+  useEffect(() => {
+    ambient.onTrack = setTrack;
+    return () => {
+      ambient.onTrack = null;
+    };
+  }, []);
   const wrapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => savePrefs(prefs), [prefs]);
@@ -161,6 +170,12 @@ export function SoundButton({ placement }: { placement: 'side' | 'down' }) {
               />
             </label>
           </div>
+          {playing && track && (
+            <p className="sound-now" aria-live="polite">
+              <span>{t.sound.nowPlaying}</span>
+              <strong>Chopin · {track.title}</strong>
+            </p>
+          )}
           <p className="sound-note">{t.sound.note}</p>
         </div>
       )}
