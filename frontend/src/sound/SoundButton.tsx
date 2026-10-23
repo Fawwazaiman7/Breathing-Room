@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import {
   CloseIcon,
@@ -12,6 +12,9 @@ import { useT } from '../i18n/strings';
 import { ambient, loadPrefs, savePrefs, SOUND_IDS } from './ambient';
 import type { SoundId } from './ambient';
 import './sound.css';
+
+const BOTTOM_GAP = 32;
+const TOP_GAP = 16;
 
 const ICONS: Record<SoundId, ReactNode> = {
   calm: <MusicIcon size={18} />,
@@ -39,8 +42,38 @@ export function SoundButton({ placement }: { placement: 'side' | 'down' }) {
     };
   }, []);
   const wrapRef = useRef<HTMLDivElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  // How far the side panel moves up so it keeps a calm gap above the bottom edge.
+  const [lift, setLift] = useState(0);
+  const liftRef = useRef(0);
 
   useEffect(() => savePrefs(prefs), [prefs]);
+
+  // The side panel opens next to the button; on a shorter screen it would
+  // touch the bottom edge, so it moves up just enough to keep a 32px gap.
+  useLayoutEffect(() => {
+    const panel = panelRef.current;
+    if (!open || placement !== 'side' || !panel) {
+      liftRef.current = 0;
+      setLift(0);
+      return;
+    }
+    const fit = () => {
+      // Measure where the panel would sit without any lift.
+      const rect = panel.getBoundingClientRect();
+      const current = liftRef.current;
+      const bottom = rect.bottom + current;
+      const top = rect.top + current;
+      const overflow = bottom - (window.innerHeight - BOTTOM_GAP);
+      const room = Math.max(0, top - TOP_GAP);
+      const next = Math.max(0, Math.min(overflow, room));
+      liftRef.current = next;
+      setLift(next);
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, [open, placement, playing, track]);
 
   // Close the panel on Escape or a click outside it.
   useEffect(() => {
@@ -115,6 +148,8 @@ export function SoundButton({ placement }: { placement: 'side' | 'down' }) {
 
       {open && (
         <div
+          ref={panelRef}
+          style={lift ? { transform: `translateY(-${lift}px)` } : undefined}
           className={`sound-panel sound-panel-${placement}`}
           role="dialog"
           aria-label={t.sound.title}
