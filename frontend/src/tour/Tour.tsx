@@ -35,6 +35,11 @@ const STEP_KEYS: Record<TourVariant, StepKey[]> = {
   advisor: ['students', 'invite', 'summary', 'insights', 'list', 'account', 'guide'],
 };
 
+/** Card size and spacing on a wide screen. */
+const CARD_WIDTH = 340;
+const CARD_GAP = 16;
+const EDGE = 16;
+
 const DONE_PREFIX: Record<TourVariant, string> = {
   student: 'ruang-pulih:tour-done:',
   advisor: 'ruang-pulih:advisor-tour-done:',
@@ -195,6 +200,7 @@ function TourOverlay({
   const [box, setBox] = useState<Box | null>(null);
   const [narrow, setNarrow] = useState(() => window.innerWidth <= 900);
   const primaryRef = useRef<HTMLButtonElement | null>(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
   const stepKey = stage.kind === 'step' ? steps[stage.index] : null;
 
   // Find the lit-up element, scroll it into view, and follow it on resize.
@@ -214,6 +220,26 @@ function TourOverlay({
     setDrawer(inDrawer);
     if (!inDrawer) {
       element.scrollIntoView({ block: 'center', behavior: 'auto' });
+      // A wide part (like the student list) leaves no room beside it, and
+      // when centred it may leave too little room above or below as well.
+      // Then scroll so the card fits under the part, or else above it.
+      const cardHeight = cardRef.current?.offsetHeight ?? 300;
+      const fits = () => {
+        const rect = element.getBoundingClientRect();
+        return (
+          rect.bottom + CARD_GAP + cardHeight <= window.innerHeight - EDGE ||
+          rect.top - CARD_GAP - cardHeight >= EDGE
+        );
+      };
+      const first = element.getBoundingClientRect();
+      const sideRoom = Math.max(window.innerWidth - first.right, first.left);
+      if (sideRoom <= CARD_WIDTH + 40 && !fits()) {
+        window.scrollBy({ top: first.top - EDGE, behavior: 'auto' });
+        if (!fits()) {
+          const rect = element.getBoundingClientRect();
+          window.scrollBy({ top: rect.top - (EDGE + cardHeight + CARD_GAP), behavior: 'auto' });
+        }
+      }
     }
     const measure = () => {
       const rect = element.getBoundingClientRect();
@@ -298,14 +324,28 @@ function TourOverlay({
   } else if (narrow) {
     cardClass += ' tour-card-sheet';
   } else {
-    const width = 340;
-    const roomRight = window.innerWidth - (box.left + box.width);
-    const left =
-      roomRight > width + 40
-        ? box.left + box.width + 20
-        : Math.max(16, Math.min(box.left, window.innerWidth - width - 16));
-    const below = roomRight > width + 40 ? box.top : box.top + box.height + 16;
-    const top = Math.max(16, Math.min(below, window.innerHeight - 260));
+    // Beside the lit-up part when there is room; otherwise below it, or
+    // above it, so the card never covers what it is pointing at.
+    const width = CARD_WIDTH;
+    const height = cardRef.current?.offsetHeight ?? 300;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const roomRight = W - (box.left + box.width);
+    const clampTop = (value: number) => Math.max(EDGE, Math.min(value, H - height - EDGE));
+    let left: number;
+    let top: number;
+    if (roomRight > width + 40) {
+      left = box.left + box.width + 20;
+      top = clampTop(box.top);
+    } else if (box.left > width + 40) {
+      left = box.left - width - 20;
+      top = clampTop(box.top);
+    } else {
+      left = Math.max(EDGE, Math.min(box.left, W - width - EDGE));
+      const below = box.top + box.height + CARD_GAP;
+      const above = box.top - CARD_GAP - height;
+      top = below + height <= H - EDGE ? below : above >= EDGE ? above : clampTop(below);
+    }
     cardStyle = { top, left, width };
   }
 
@@ -331,6 +371,7 @@ function TourOverlay({
       )}
 
       <div
+        ref={cardRef}
         className={cardClass}
         style={cardStyle}
         role="dialog"
