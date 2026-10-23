@@ -48,7 +48,6 @@ const en = {
       night: { name: 'Night piano', text: 'Soft nocturnes for winding down' },
     },
     nowPlaying: 'Now playing',
-    note: 'Real piano recordings of Chopin by the Musopen project, free to use (public domain). It starts only when you press play; a low volume works best.',
   },
   nav: {
     workspace: 'Student workspace',
@@ -551,6 +550,45 @@ const en = {
     startScreening: 'Start my screening',
     finish: 'Finish',
   },
+  advisorTour: {
+    welcomeTitle: 'Welcome to your advisor workspace',
+    welcomeText:
+      'A one-minute tour of how to follow your students’ burnout screening results. You can skip it now and open it again at any time.',
+    steps: {
+      students: {
+        title: 'Your students',
+        text: 'Everything about the students you advise starts here.',
+      },
+      invite: {
+        title: 'Your advisor code',
+        text: 'Share this code with your students. They enter it once to connect, and their results then appear in your list. Copy it here, or create a new one if it was shared too widely.',
+      },
+      summary: {
+        title: 'At a glance',
+        text: 'How many students have screened, and how many may need follow-up (Moderate or High risk).',
+      },
+      insights: {
+        title: 'Patterns across your students',
+        text: 'The spread of burnout risk, and how many students report heavy workload, exhaustion or disengagement.',
+      },
+      list: {
+        title: 'Follow up, most urgent first',
+        text: 'Filter by category, then open a student to see their result, the rule behind it and the suggested follow-up.',
+      },
+      account: {
+        title: 'Your profile',
+        text: 'Change your name or password here, and sign out when you are done.',
+      },
+      guide: {
+        title: 'Need this again?',
+        text: 'Open the guide from here whenever you like.',
+      },
+    },
+    doneText:
+      'A good first step is to share your advisor code with your students. Results are a screening, not a diagnosis: use them to start a supportive conversation.',
+    badge: 'Advisor guide complete',
+    showCode: 'Show my advisor code',
+  },
   profile: {
     studentAccount: 'Student account',
     advisorAccount: 'Academic Advisor account',
@@ -619,7 +657,6 @@ const id: Strings = {
       night: { name: 'Piano malam', text: 'Nocturne lembut untuk bersantai' },
     },
     nowPlaying: 'Sedang diputar',
-    note: 'Rekaman piano asli karya Chopin dari proyek Musopen, bebas digunakan (domain publik). Hanya diputar saat kamu menekan putar; volume pelan paling nyaman.',
   },
   nav: {
     workspace: 'Ruang mahasiswa',
@@ -1117,6 +1154,45 @@ const id: Strings = {
     badge: 'Lencana Penjelajah didapat',
     startScreening: 'Mulai skrining',
     finish: 'Selesai',
+  },
+  advisorTour: {
+    welcomeTitle: 'Selamat datang di ruang kerja dosen',
+    welcomeText:
+      'Tur satu menit tentang cara memantau hasil skrining burnout mahasiswa Anda. Anda bisa melewatinya sekarang dan membukanya lagi kapan saja.',
+    steps: {
+      students: {
+        title: 'Mahasiswa Anda',
+        text: 'Semua informasi tentang mahasiswa bimbingan Anda dimulai dari sini.',
+      },
+      invite: {
+        title: 'Kode dosen Anda',
+        text: 'Bagikan kode ini kepada mahasiswa. Mereka memasukkannya sekali untuk terhubung, lalu hasilnya muncul di daftar Anda. Salin di sini, atau buat kode baru jika sudah tersebar terlalu luas.',
+      },
+      summary: {
+        title: 'Sekilas',
+        text: 'Berapa mahasiswa yang sudah skrining, dan berapa yang mungkin perlu ditindaklanjuti (risiko sedang atau tinggi).',
+      },
+      insights: {
+        title: 'Pola di antara mahasiswa Anda',
+        text: 'Sebaran risiko burnout, dan berapa mahasiswa yang melaporkan beban kerja berat, kelelahan, atau ketidakterlibatan.',
+      },
+      list: {
+        title: 'Tindak lanjut, yang paling mendesak dulu',
+        text: 'Saring menurut kategori, lalu buka seorang mahasiswa untuk melihat hasilnya, aturan di baliknya, dan saran tindak lanjut.',
+      },
+      account: {
+        title: 'Profil Anda',
+        text: 'Ubah nama atau kata sandi di sini, dan keluar setelah selesai.',
+      },
+      guide: {
+        title: 'Perlu lagi?',
+        text: 'Buka panduan dari sini kapan saja.',
+      },
+    },
+    doneText:
+      'Langkah pertama yang baik adalah membagikan kode dosen kepada mahasiswa. Hasilnya adalah skrining, bukan diagnosis: gunakan untuk memulai percakapan yang mendukung.',
+    badge: 'Panduan dosen selesai',
+    showCode: 'Tampilkan kode dosen saya',
   },
   profile: {
     studentAccount: 'Akun mahasiswa',

@@ -5,30 +5,14 @@ import { LanguageSwitch } from '../i18n/LanguageSwitch';
 import { useT } from '../i18n/strings';
 import { ambient } from '../sound/ambient';
 import { SoundButton } from '../sound/SoundButton';
-import { TourProvider, useTour } from '../tour/Tour';
+import { GuideButton, TourProvider } from '../tour/Tour';
 import { DrawerClose, DrawerScrim, MobileBar, useDrawer } from './Drawer';
-import { BookIcon, CompassIcon, HomeIcon, MessageIcon } from './Icons';
+import { BookIcon, HomeIcon, MessageIcon } from './Icons';
 import { LogoLink } from './Logo';
 import { SidebarAccount } from './SidebarAccount';
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
   isActive ? 'nav-link active' : 'nav-link';
-
-/** Opens the app guide again. */
-function GuideButton() {
-  const t = useT();
-  const { start } = useTour();
-  return (
-    <button
-      type="button"
-      className="guide-button"
-      data-tour="guide"
-      onClick={start}
-    >
-      <CompassIcon size={18} /> {t.tour.open}
-    </button>
-  );
-}
 
 /** Student workspace layout: sidebar on the left (a drawer on a phone). */
 export function AppShell() {

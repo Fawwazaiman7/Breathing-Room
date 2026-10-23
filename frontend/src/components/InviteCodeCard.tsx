@@ -59,7 +59,7 @@ export function InviteCodeCard() {
   }
 
   return (
-    <section className="card code-card">
+    <section className="card code-card" data-tour="invite">
       <p className="eyebrow">Your advisor code</p>
       <h2 className="card-title">Share this code with your students</h2>
       <p className="card-text">

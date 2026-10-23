@@ -13,7 +13,7 @@ import { ambient, loadPrefs, savePrefs, SOUND_IDS } from './ambient';
 import type { SoundId } from './ambient';
 import './sound.css';
 
-const BOTTOM_GAP = 32;
+const BOTTOM_GAP = 48;
 const TOP_GAP = 16;
 
 const ICONS: Record<SoundId, ReactNode> = {
@@ -50,7 +50,7 @@ export function SoundButton({ placement }: { placement: 'side' | 'down' }) {
   useEffect(() => savePrefs(prefs), [prefs]);
 
   // The side panel opens next to the button; on a shorter screen it would
-  // touch the bottom edge, so it moves up just enough to keep a 32px gap.
+  // touch the bottom edge, so it moves up just enough to keep a 48px gap.
   useLayoutEffect(() => {
     const panel = panelRef.current;
     if (!open || placement !== 'side' || !panel) {
@@ -211,7 +211,6 @@ export function SoundButton({ placement }: { placement: 'side' | 'down' }) {
               <strong>Chopin · {track.title}</strong>
             </p>
           )}
-          <p className="sound-note">{t.sound.note}</p>
         </div>
       )}
     </div>

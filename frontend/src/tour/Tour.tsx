@@ -10,47 +10,71 @@ import {
 } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, CloseIcon, LeafIcon } from '../components/Icons';
+import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, CloseIcon, CompassIcon, LeafIcon } from '../components/Icons';
 import { useT } from '../i18n/strings';
 import type { Strings } from '../i18n/strings';
 import { setDrawer } from '../components/Drawer';
 import './tour.css';
 
 /*
- * A step-by-step guide over the student workspace, like the tutorial at
+ * A step-by-step guide over the student or advisor workspace, like the tutorial at
  * the start of a game: the screen dims, one part of it is lit up, and a
  * card says what it is for. It opens by itself on the first visit after
  * sign-in, and from the "App guide" button at any time.
  */
 
-type StepKey = keyof Strings['tour']['steps'];
+export type TourVariant = 'student' | 'advisor';
+
+type StudentKey = keyof Strings['tour']['steps'];
+type AdvisorKey = keyof Strings['advisorTour']['steps'];
+type StepKey = StudentKey | AdvisorKey;
 
 /** Each step lights up the element marked data-tour="<key>". */
-const STEP_KEYS: StepKey[] = [
-  'overview',
-  'screening',
-  'chat',
-  'language',
-  'sound',
-  'advisor',
-  'account',
-  'guide',
-];
+const STEP_KEYS: Record<TourVariant, StepKey[]> = {
+  student: ['overview', 'screening', 'chat', 'language', 'sound', 'advisor', 'account', 'guide'],
+  advisor: ['students', 'invite', 'summary', 'insights', 'list', 'account', 'guide'],
+};
 
-const DONE_PREFIX = 'ruang-pulih:tour-done:';
+const DONE_PREFIX: Record<TourVariant, string> = {
+  student: 'ruang-pulih:tour-done:',
+  advisor: 'ruang-pulih:advisor-tour-done:',
+};
 
-function isDone(userId: string): boolean {
+/** The words for one variant: welcome, steps and the closing card. */
+function wordsFor(t: Strings, variant: TourVariant) {
+  if (variant === 'advisor') {
+    const a = t.advisorTour;
+    return {
+      welcomeTitle: a.welcomeTitle,
+      welcomeText: a.welcomeText,
+      steps: a.steps as Record<string, { title: string; text: string }>,
+      doneText: a.doneText,
+      badge: a.badge,
+      cta: a.showCode,
+    };
+  }
+  return {
+    welcomeTitle: t.tour.welcomeTitle,
+    welcomeText: t.tour.welcomeText,
+    steps: t.tour.steps as Record<string, { title: string; text: string }>,
+    doneText: t.tour.doneText,
+    badge: t.tour.badge,
+    cta: t.tour.startScreening,
+  };
+}
+
+function isDone(variant: TourVariant, userId: string): boolean {
   try {
-    return window.localStorage.getItem(DONE_PREFIX + userId) === '1';
+    return window.localStorage.getItem(DONE_PREFIX[variant] + userId) === '1';
   } catch {
     // Without storage the guide would open on every visit; treat it as seen.
     return true;
   }
 }
 
-function markDone(userId: string) {
+function markDone(variant: TourVariant, userId: string) {
   try {
-    window.localStorage.setItem(DONE_PREFIX + userId, '1');
+    window.localStorage.setItem(DONE_PREFIX[variant] + userId, '1');
   } catch {
     // Nothing more to do.
   }
@@ -66,45 +90,60 @@ export function useTour(): TourState {
   return useContext(TourContext);
 }
 
+/** Opens the app guide again (sidebar button in both workspaces). */
+export function GuideButton() {
+  const t = useT();
+  const { start } = useTour();
+  return (
+    <button type="button" className="guide-button" data-tour="guide" onClick={start}>
+      <CompassIcon size={18} /> {t.tour.open}
+    </button>
+  );
+}
+
 /** The visible stage: 'welcome', one of the steps, or 'done'. */
 type Stage = { kind: 'welcome' } | { kind: 'step'; index: number } | { kind: 'done' };
 
 export function TourProvider({
   userId,
   autoStart,
+  variant = 'student',
   children,
 }: {
   userId: string | null;
   /** True on the page where the guide may open by itself (the overview). */
   autoStart: boolean;
+  variant?: TourVariant;
   children: ReactNode;
 }) {
   const [stage, setStage] = useState<Stage | null>(null);
 
   // First visit after sign-in: open once, after the page has drawn.
   useEffect(() => {
-    if (!userId || !autoStart || isDone(userId)) {
+    if (!userId || !autoStart || isDone(variant, userId)) {
       return;
     }
     const timer = window.setTimeout(() => setStage({ kind: 'welcome' }), 500);
     return () => window.clearTimeout(timer);
-  }, [userId, autoStart]);
+  }, [userId, autoStart, variant]);
 
   const start = useCallback(() => setStage({ kind: 'welcome' }), []);
   const value = useMemo(() => ({ start }), [start]);
 
   const close = useCallback(() => {
     if (userId) {
-      markDone(userId);
+      markDone(variant, userId);
     }
     setDrawer(false);
     setStage(null);
-  }, [userId]);
+  }, [userId, variant]);
 
   return (
     <TourContext.Provider value={value}>
       {children}
-      {stage && <TourOverlay stage={stage} setStage={setStage} close={close} />}
+      {stage && (
+        <TourOverlay stage={stage} setStage={setStage} close={close} variant={variant} />
+      )}
     </TourContext.Provider>
   );
 }
@@ -125,8 +164,8 @@ function targetOf(key: string): HTMLElement | null {
 }
 
 /** Steps whose element is on this page; the others are left out. */
-function presentSteps(): StepKey[] {
-  return STEP_KEYS.filter((key) => targetOf(key) !== null);
+function presentSteps(variant: TourVariant): StepKey[] {
+  return STEP_KEYS[variant].filter((key) => targetOf(key) !== null);
 }
 
 interface Box {
@@ -140,14 +179,19 @@ function TourOverlay({
   stage,
   setStage,
   close,
+  variant,
 }: {
   stage: Stage;
   setStage: (stage: Stage) => void;
   close: () => void;
+  variant: TourVariant;
 }) {
   const t = useT();
+  const words = wordsFor(t, variant);
   const navigate = useNavigate();
-  const [steps] = useState(presentSteps);
+  // Found again when the steps begin, so parts that loaded after the
+  // welcome card opened (the advisor's student list) are included.
+  const [steps, setSteps] = useState(() => presentSteps(variant));
   const [box, setBox] = useState<Box | null>(null);
   const [narrow, setNarrow] = useState(() => window.innerWidth <= 900);
   const primaryRef = useRef<HTMLButtonElement | null>(null);
@@ -220,7 +264,9 @@ function TourOverlay({
 
   function goNext() {
     if (stage.kind === 'welcome') {
-      setStage(steps.length > 0 ? { kind: 'step', index: 0 } : { kind: 'done' });
+      const found = presentSteps(variant);
+      setSteps(found);
+      setStage(found.length > 0 ? { kind: 'step', index: 0 } : { kind: 'done' });
     } else if (stage.kind === 'step') {
       setStage(
         stage.index + 1 < steps.length
@@ -308,9 +354,9 @@ function TourOverlay({
             </div>
             <p className="eyebrow">{t.tour.welcomeKicker}</p>
             <h2 id="tour-title" className="tour-title">
-              {t.tour.welcomeTitle}
+              {words.welcomeTitle}
             </h2>
-            <p className="tour-text">{t.tour.welcomeText}</p>
+            <p className="tour-text">{words.welcomeText}</p>
             <div className="tour-actions">
               <button type="button" className="link-button tour-skip" onClick={close}>
                 {t.tour.later}
@@ -331,9 +377,9 @@ function TourOverlay({
           <>
             <p className="tour-count">{t.tour.stepOf(stage.index + 1, total)}</p>
             <h2 id="tour-title" className="tour-title">
-              {t.tour.steps[stepKey].title}
+              {words.steps[stepKey].title}
             </h2>
-            <p className="tour-text">{t.tour.steps[stepKey].text}</p>
+            <p className="tour-text">{words.steps[stepKey].text}</p>
             <ol className="tour-dots" aria-hidden="true">
               {steps.map((key, index) => (
                 <li
@@ -378,9 +424,9 @@ function TourOverlay({
             <h2 id="tour-title" className="tour-title">
               {t.tour.doneTitle}
             </h2>
-            <p className="tour-text">{t.tour.doneText}</p>
+            <p className="tour-text">{words.doneText}</p>
             <p className="tour-earned">
-              <LeafIcon size={16} /> {t.tour.badge}
+              <LeafIcon size={16} /> {words.badge}
             </p>
             <div className="tour-actions">
               <button type="button" className="link-button tour-skip" onClick={close}>
@@ -392,10 +438,14 @@ function TourOverlay({
                 className="button-primary tour-next"
                 onClick={() => {
                   close();
-                  navigate('/app/screening');
+                  if (variant === 'advisor') {
+                    showAdvisorCode();
+                  } else {
+                    navigate('/app/screening');
+                  }
                 }}
               >
-                {t.tour.startScreening} <ArrowRightIcon size={16} />
+                {words.cta} <ArrowRightIcon size={16} />
               </button>
             </div>
           </>
@@ -403,4 +453,19 @@ function TourOverlay({
       </div>
     </div>
   );
+}
+
+/** Brings the advisor code card into view and lights it up for a moment. */
+function showAdvisorCode() {
+  const card = document.querySelector<HTMLElement>('[data-tour="invite"]');
+  if (!card) {
+    return;
+  }
+  card.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  card.classList.remove('tour-flash');
+  // Restart the highlight even if it ran before.
+  void card.offsetWidth;
+  card.classList.add('tour-flash');
+  window.setTimeout(() => card.classList.remove('tour-flash'), 2400);
+  card.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true });
 }

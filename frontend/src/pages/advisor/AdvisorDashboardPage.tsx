@@ -128,7 +128,7 @@ export function AdvisorDashboardPage() {
       <InviteCodeCard />
 
       {overview.totalStudents === 0 ? (
-        <section className="card">
+        <section className="card" data-tour="list">
           <h2 className="card-title">No students yet</h2>
           <p className="card-text">
             Students appear here after they connect with your advisor code.
@@ -136,7 +136,7 @@ export function AdvisorDashboardPage() {
         </section>
       ) : (
         <>
-          <section className="stat-row" aria-label="Summary">
+          <section className="stat-row" aria-label="Summary" data-tour="summary">
             <div className="stat-tile">
               <span className="stat-label">Students you advise</span>
               <span className="stat-value">{overview.totalStudents}</span>
@@ -157,7 +157,7 @@ export function AdvisorDashboardPage() {
             </div>
           </section>
 
-          <div className="advisor-grid">
+          <div className="advisor-grid" data-tour="insights">
             <section className="card">
               <p className="eyebrow">Latest result</p>
               <h2 className="card-title">Burnout risk across your students</h2>
@@ -210,7 +210,7 @@ export function AdvisorDashboardPage() {
             </section>
           </div>
 
-          <section className="card">
+          <section className="card" data-tour="list">
             <p className="eyebrow">Student list</p>
             <div className="chip-row" role="group" aria-label="Filter students">
               {filters.map((option) => (
