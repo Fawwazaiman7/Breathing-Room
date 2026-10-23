@@ -12,7 +12,14 @@ import {
   visualFor,
 } from '../chat/ReplyParts';
 import type { ReplyVisualKind } from '../chat/ReplyParts';
-import { ChevronRightIcon, PlusIcon, SendIcon } from '../components/Icons';
+import {
+  ChevronRightIcon,
+  CloseIcon,
+  ListIcon,
+  PhoneIcon,
+  PlusIcon,
+  SendIcon,
+} from '../components/Icons';
 import { UrgentHelpCard } from '../components/UrgentHelpCard';
 import { localeOf, useLanguage } from '../i18n/language';
 import { translateMessage } from '../i18n/messages';
@@ -75,10 +82,27 @@ export function SupportChatPage() {
     );
   }, [userId, messages]);
 
+  // Phone only: the sheet opened from the bar above the message box.
+  const [sheet, setSheet] = useState<'topics' | 'help' | null>(null);
+
+  useEffect(() => {
+    if (!sheet) {
+      return;
+    }
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSheet(null);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [sheet]);
+
   function startOver() {
     if (waiting) {
       return;
     }
+    setSheet(null);
     clearChat(userId);
     nextId.current = 1;
     setMessages(greeting());
@@ -298,6 +322,36 @@ export function SupportChatPage() {
           </div>
 
           <form className="chat-composer" onSubmit={handleSubmit}>
+            {/* Phone: topics, help and a new chat stay one tap away above the
+                message box, however long the conversation gets. */}
+            <div className="chat-bar" role="toolbar" aria-label={t.chat.barLabel}>
+              <button
+                type="button"
+                className="chat-bar-button"
+                aria-haspopup="dialog"
+                aria-expanded={sheet === 'topics'}
+                onClick={() => setSheet('topics')}
+              >
+                <ListIcon size={16} /> {t.chat.barTopics}
+              </button>
+              <button
+                type="button"
+                className="chat-bar-button chat-bar-help"
+                aria-haspopup="dialog"
+                aria-expanded={sheet === 'help'}
+                onClick={() => setSheet('help')}
+              >
+                <PhoneIcon size={16} /> {t.chat.barHelp}
+              </button>
+              <button
+                type="button"
+                className="chat-bar-button"
+                onClick={startOver}
+                disabled={waiting || messages.length <= 1}
+              >
+                <PlusIcon size={16} /> {t.chat.barNew}
+              </button>
+            </div>
             <div className="chat-input-row">
               <input
                 aria-label={t.chat.inputLabel}
@@ -320,6 +374,56 @@ export function SupportChatPage() {
           </form>
         </section>
       </div>
+
+      {sheet && (
+        <div className="chat-sheet-layer">
+          <div className="chat-sheet-scrim" aria-hidden="true" onClick={() => setSheet(null)} />
+          <div
+            className="chat-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label={sheet === 'topics' ? t.chat.topicsTitle : t.help.title}
+          >
+            <div className="chat-sheet-head">
+              <span className="chat-sheet-grip" aria-hidden="true" />
+              <button
+                type="button"
+                className="chat-sheet-close"
+                aria-label={t.chat.closeSheet}
+                onClick={() => setSheet(null)}
+                autoFocus
+              >
+                <CloseIcon size={18} />
+              </button>
+            </div>
+            {sheet === 'topics' ? (
+              <>
+                <h2 className="chat-sheet-title">{t.chat.topicsTitle}</h2>
+                <p className="chat-sheet-text">{t.chat.topicsText}</p>
+                <ul className="chat-sheet-topics">
+                  {t.chat.topics.map((topic) => (
+                    <li key={topic}>
+                      <button
+                        type="button"
+                        disabled={waiting}
+                        onClick={() => {
+                          setSheet(null);
+                          send(t.chat.topicMessage(topic));
+                        }}
+                      >
+                        {topic}
+                        <ChevronRightIcon size={16} />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <UrgentHelpCard variant="message" />
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -56,6 +56,12 @@
   bottom: 12px;
 }
 
+/* When the lit-up part is at the bottom of the screen, the sheet moves up. */
+.tour-card-sheet-top {
+  top: 12px;
+  bottom: auto;
+}
+
 @keyframes tour-in {
   from {
     opacity: 0;

@@ -39,6 +39,8 @@ const STEP_KEYS: Record<TourVariant, StepKey[]> = {
 const CARD_WIDTH = 340;
 const CARD_GAP = 16;
 const EDGE = 16;
+/** Height of the phone's top bar, which stays over the page. */
+const MOBILE_BAR = 72;
 
 const DONE_PREFIX: Record<TourVariant, string> = {
   student: 'ruang-pulih:tour-done:',
@@ -233,7 +235,15 @@ function TourOverlay({
       };
       const first = element.getBoundingClientRect();
       const sideRoom = Math.max(window.innerWidth - first.right, first.left);
-      if (sideRoom <= CARD_WIDTH + 40 && !fits()) {
+      if (window.innerWidth <= 900) {
+        // Phone: the card is a sheet at the bottom. Scroll the part up so it
+        // ends above the sheet, without going under the top bar.
+        const sheetTop = window.innerHeight - cardHeight - 24;
+        const delta = Math.min(first.bottom - sheetTop, first.top - MOBILE_BAR);
+        if (delta > 0) {
+          window.scrollBy({ top: delta, behavior: 'auto' });
+        }
+      } else if (sideRoom <= CARD_WIDTH + 40 && !fits()) {
         window.scrollBy({ top: first.top - EDGE, behavior: 'auto' });
         if (!fits()) {
           const rect = element.getBoundingClientRect();
@@ -318,11 +328,28 @@ function TourOverlay({
   // Where the card goes: beside the lit-up part on a wide screen, as a
   // sheet at the bottom on a phone, in the middle for welcome and done.
   let cardStyle: CSSProperties | undefined;
+  let spot: Box | null = box;
   let cardClass = 'tour-card';
   if (stage.kind !== 'step' || !box) {
     cardClass += ' tour-card-center';
   } else if (narrow) {
-    cardClass += ' tour-card-sheet';
+    // A sheet at the bottom of a phone screen, unless the lit-up part is
+    // down there too (the profile at the foot of the menu): then at the top.
+    const height = cardRef.current?.offsetHeight ?? 260;
+    const sheetTop = window.innerHeight - 12 - height;
+    const sheetBottom = 12 + height;
+    const underBottom = Math.max(0, box.top + box.height - sheetTop);
+    const underTop = Math.max(0, sheetBottom - box.top);
+    const atTop = underTop < underBottom;
+    cardClass += atTop ? ' tour-card-sheet tour-card-sheet-top' : ' tour-card-sheet';
+    // A part taller than the free space (the student list) is lit up only
+    // where it shows, so the sheet never sits on top of the light.
+    if (atTop && box.top < sheetBottom + 16) {
+      const top = sheetBottom + 16;
+      spot = { ...box, top, height: Math.max(48, box.top + box.height - top) };
+    } else if (!atTop && box.top + box.height > sheetTop - 16) {
+      spot = { ...box, height: Math.max(48, sheetTop - 16 - box.top) };
+    }
   } else {
     // Beside the lit-up part when there is room; otherwise below it, or
     // above it, so the card never covers what it is pointing at.
@@ -359,10 +386,10 @@ function TourOverlay({
         <div
           className="tour-spot"
           style={{
-            top: box.top - PAD,
-            left: box.left - PAD,
-            width: box.width + PAD * 2,
-            height: box.height + PAD * 2,
+            top: (spot ?? box).top - PAD,
+            left: (spot ?? box).left - PAD,
+            width: (spot ?? box).width + PAD * 2,
+            height: (spot ?? box).height + PAD * 2,
           }}
           aria-hidden="true"
         />
